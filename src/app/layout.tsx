@@ -1,5 +1,3 @@
-import { React } from "next/dist/server/route-modules/app-page/vendored/rsc/entrypoints"
-
 export default function RootLayout({
     children,
 }: {
