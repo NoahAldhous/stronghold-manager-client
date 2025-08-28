@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useAuth } from "contexts/AuthContext";
 
 export default function LoginForm() {
   //create state object for login details
@@ -8,26 +9,48 @@ export default function LoginForm() {
     password: "",
   });
 
-  //triggered on click of submit button
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  //get context + auth functions from AuthContext
+  const { userName, isLoggedIn, userId, role, login, logout} = useAuth();
+
+  //triggered on click of login button
   async function handleSubmit(e) {
     //prevent browser from reloading page
     e.preventDefault();
+    setError(null);
+    setLoading(true)
 
     //Read the form data
     const form = e.target;
 
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, {
-        method: form.method,
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginDetails)
-    });
+    try{
 
-    //if login success, will return an access token
-    const token = await data.json()
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, {
+          method: form.method,
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginDetails)
+      });
+  
+      if (!res.ok) {
+        throw new Error("Invalid Credentials")
+      }
 
-    console.log(token)
+      //if login success, will return an access token
+      const data = await res.json();
+
+      login(data.access_token);
+  
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+
+    
   }
 
   //uses spread operator to only change the email value
@@ -44,6 +67,11 @@ export default function LoginForm() {
       ...loginDetails,
       password: e.target.value,
     });
+  }
+
+  //logs out the user, removing their auth token from local storage
+  function handleLogout() {
+    logout()
   }
 
   return (
@@ -68,7 +96,11 @@ export default function LoginForm() {
           onChange={handlePasswordChange}
         />
       </label>
-      <button type="submit">Login</button>
+      <button type="submit">Log In</button>
+      <p>{isLoggedIn ? "logged in!" : "not logged in"}</p>
+      <p>role: {role}</p>
+      <p> welcome, {userName}!</p>
+      <button type="button" onClick={handleLogout}>Log out</button>
     </form>
   );
 }
