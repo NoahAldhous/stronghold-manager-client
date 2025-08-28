@@ -25,8 +25,7 @@ export default function LoginForm() {
     //Read the form data
     const form = e.target;
 
-    try{
-
+    try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, {
           method: form.method,
           headers: {
@@ -42,6 +41,7 @@ export default function LoginForm() {
       //if login success, will return an access token
       const data = await res.json();
 
+      //and login in the user, setting context and storing the token in local storage
       login(data.access_token);
   
     } catch (err: any) {
