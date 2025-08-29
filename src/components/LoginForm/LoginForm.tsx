@@ -9,7 +9,9 @@ export default function LoginForm() {
     password: "",
   });
 
+  //TODO: add an error message pop up in log in fails
   const [error, setError] = useState<string | null>(null);
+  //TODO: add animated 'logging you in' message whilst loading is true for user assurance
   const [loading, setLoading] = useState(false);
 
   //get context + auth functions from AuthContext

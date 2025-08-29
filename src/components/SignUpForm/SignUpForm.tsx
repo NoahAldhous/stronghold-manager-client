@@ -15,10 +15,6 @@ export default function SignUpForm(){
         email: "",
         password: ""
     })
-    const [loginCredentials, setLoginCredentals] = useState({
-        email: userCredentials.email,
-        password: userCredentials.password
-    })
 
     //use to render loading message whilst making request to server
     const [loading, setLoading] = useState(false);
