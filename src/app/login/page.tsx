@@ -19,6 +19,8 @@ export default function Page(){
         }
     },[isLoggedIn])
 
+    
+
     return <>
         <h1>Welcome to Login</h1>
         <h2>or signup, if you dont have an account</h2>

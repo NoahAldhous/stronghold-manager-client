@@ -58,7 +58,6 @@ export default function SignUpForm(){
         } catch (err) {
             setError(err.message)
         } finally {
-            //TODO: redirect if logged in
             setLoading(false)
         }
     }
