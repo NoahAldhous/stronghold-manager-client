@@ -46,7 +46,7 @@ export default function LoginForm() {
       //and login in the user, setting context and storing the token in local storage
       login(data.access_token);
   
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message)
     } finally {
       setLoading(false)

@@ -18,7 +18,7 @@ export default function Page(){
 
     return <>
         <h1>This is the homepage!</h1>
-        <h2>You should only be here if you're logged in!</h2>
+        <h2>You should only be here if you are logged in!</h2>
         <button onClick={logout}>Log Out</button>
         {/* <LoginForm/>
         <SignUpForm/> */}

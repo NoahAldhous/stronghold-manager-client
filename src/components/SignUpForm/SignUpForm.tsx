@@ -55,7 +55,7 @@ export default function SignUpForm(){
             //and log in the user, updating context and storing token in local storage
             login(data.access_token)
             
-        } catch (err: any) {
+        } catch (err) {
             setError(err.message)
         } finally {
             //TODO: redirect if logged in
