@@ -2,8 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "contexts/AuthContext";
-import LoginForm from "components/LoginForm/LoginForm";
-import SignUpForm from "components/SignUpForm/SignUpForm";
 import Link from "next/link";
 
 export default function Page() {
@@ -17,7 +15,7 @@ export default function Page() {
     stronghold_type_id:0,
   },])
   const router = useRouter();
-  const { isLoggedIn, logout, userId } = useAuth();
+  const { isLoggedIn, logout, userId, userName } = useAuth();
 
   //redirect user to login/signup page if not logged in
   useEffect(() => {
@@ -54,11 +52,12 @@ export default function Page() {
     setLoading(false);
     }
   }
-
+  //TODO: break this up into components
   return (
     <>
-      <h1>This is the homepage!</h1>
+      <h1>Welcome, {userName}!</h1>
       <h2>You should only be here if you are logged in!</h2>
+
       <button onClick={logout}>Log Out</button>
       {noStrongholds && !loading ? (
         <div>
@@ -68,16 +67,15 @@ export default function Page() {
       ) : (
         <div>
           <p>here are your strongholds:</p>
-          <ul>
             {listOfStrongholds.map((item, index) => {
-              return <li key={index}>name: {item.stronghold_name}</li>
+              return <>
+              <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link> <br key={item.id}/>
+              </>
             })}
-          </ul>
+          <Link href="/create">Create a new stronghold</Link>
         </div>
         
       )}
-      {/* <LoginForm/>
-        <SignUpForm/> */}
     </>
   );
 }

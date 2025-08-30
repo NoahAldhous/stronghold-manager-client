@@ -152,7 +152,7 @@ export default function Page() {
             <div>
                 <h4>Success! Your stronghold has been created</h4>
                 <Link href="/">Back to dashboard</Link>
-                <Link href={`/strongholds/${strongholdId}`}>View my stronghold id: {strongholdId}</Link>
+                <Link href={`/stronghold/${strongholdId}`}>View my stronghold id: {strongholdId}</Link>
             </div>  
         :
             null
