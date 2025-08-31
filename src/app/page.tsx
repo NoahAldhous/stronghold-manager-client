@@ -68,10 +68,11 @@ export default function Page() {
         <div>
           <p>here are your strongholds:</p>
             {listOfStrongholds.map((item, index) => {
-              return <>
-              <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link> <br key={item.id}/>
-              </>
+              return (
+                <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link>
+              )
             })}
+            <br/>
           <Link href="/create">Create a new stronghold</Link>
         </div>
         
