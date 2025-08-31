@@ -75,7 +75,6 @@ export default function Page() {
             <br/>
           <Link href="/create">Create a new stronghold</Link>
         </div>
-        
       )}
     </>
   );

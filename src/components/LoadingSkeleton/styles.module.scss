@@ -1,0 +1,31 @@
+.main{
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    position:absolute;
+    top:0;
+    left:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .text{
+        font-size: xx-large;
+        color: whitesmoke;
+        animation-duration: 2s;
+        animation-name: pulse;
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+}

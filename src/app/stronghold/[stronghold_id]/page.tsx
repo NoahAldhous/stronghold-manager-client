@@ -37,6 +37,10 @@ export default function Page({
 
   const router = useRouter();
   const { isLoggedIn } = useAuth();
+  const [contextualInfo, setContextualInfo] = useState({
+    title: "",
+    description: ""
+  })
 
   //redirect user to login/signup page if not logged in
   useEffect(() => {
@@ -62,6 +66,7 @@ export default function Page({
       //TODO: in api, change so object does not return 'data:', instead returns 'stronghold:'
       const data = await res.json();
       setStronghold(data.stronghold);
+      console.log(data.stronghold)
     } catch (err) {
       console.log(err.message);
     } finally {
@@ -81,32 +86,51 @@ export default function Page({
           </section>
           <section className={styles.strongholdStats}>
             <section className={styles.numericalStats}>
-              <div className={styles.strongholdSize}>
+              <div className={styles.strongholdStatNumber}>
                 <div>
                   {stronghold.stronghold_size}
                 </div>
                 <p>size</p>
               </div>  
-              <div className={styles.strongholdSize}>
+              <div className={styles.strongholdStatNumber}>
                 <div>
-                  {stronghold.stronghold_size}
+                  +{stronghold.stats.morale_bonus ? stronghold.stats.morale_bonus : 0}
                 </div>
-                <p>size</p>
+                <p>fort bonus</p>
               </div>  
-              <div className={styles.strongholdSize}>
+              <div className={styles.strongholdStatNumber}>
                 <div>
-                  {stronghold.stronghold_size}
+                  {stronghold.stats.toughness}
                 </div>
-                <p>size</p>
+                <p>toughness</p>
               </div>  
+            </section>
+            <section className={styles.featuresContainer}>
+              <section className={styles.features}>
+                {stronghold.features.map((item, index) => {
+                  return(<button onClick={() => setContextualInfo({
+                    title: item.title,
+                    description: item.description
+                  })} key={index}>{item.title}</button>)
+                })}
+                <br/>
+                //demense effects <br/>
+                //stronghold actions
+              </section>
+              <section className={styles.features}>
+                // class abilities <br/>
+                // uses <br/>
+                // take extended rest <br/>
+              </section>
             </section>
           </section>
           <section className={styles.strongholdAssets}></section>
         </section>
-        <section className={styles.contextualPanel}></section>
+        <section className={styles.contextualPanel}>
+                {contextualInfo.title}
+                {contextualInfo.description}
+        </section>
       </section>
-      {/* <h1>Stronghold: {stronghold_id}</h1>
-      <p>{stronghold_id}</p> */}
     </main>
   );
 }
