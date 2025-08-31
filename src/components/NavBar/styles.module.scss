@@ -1,0 +1,19 @@
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: lightgrey;
+    // border: 1;
+    // border-style: dotted;
+
+    .buttonContainer{
+        width: 50%;
+        // border: 1;
+        // border-style: dashed;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+}
