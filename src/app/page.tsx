@@ -44,7 +44,7 @@ export default function Page() {
         setNoStrongholds(true);
     } else {
       setNoStrongholds(false)
-      setListOfStrongholds(data.data)
+      setListOfStrongholds(data.strongholds)
     }
     } catch (err) {
     console.log(err.message);

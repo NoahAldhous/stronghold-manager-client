@@ -1,0 +1,78 @@
+.main{
+    background-color: grey;
+    width: full;
+    height: 90vh; //make this a variable call 'page' or something
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .strongholdSheetContainer{
+        background-color: whitesmoke;
+        width: 90%;
+        height: 90%;
+        display: flex;
+        flex-direction: row;
+
+        .strongholdSheet{
+            width: 75%;
+            height: full;
+            background-color: antiquewhite;
+            display: flex;
+            flex-direction: column;
+
+            .strongholdOverview{
+                width: full;
+                height: 15%;
+                background-color: bisque;
+
+                .strongholdName{
+                    font-size: xx-large;
+                }
+
+                .strongholdInfo{
+                    font-size: larger;
+                }
+            }
+
+            .strongholdStats{
+                width: full;
+                height: 20%;
+                background-color: beige;
+
+                .numericalStats{
+                    height: 100%;
+                    width: 25%;
+                    background-color: aqua;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+
+                    .strongholdSize{
+                        border: 5px;
+                        border-style: groove;
+                        border-color: black;
+                        height: full;
+                        width: 30%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+            }
+
+            .strongholdAssets{
+                width: full;
+                height: 65%;
+                background-color: azure;
+            }
+        }
+
+        .contextualPanel{
+            width: 25%;
+            height: full;
+            background-color: aliceblue;
+        }
+    }
+
+}

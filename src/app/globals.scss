@@ -1,0 +1,24 @@
+/* General styles */
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  
+  html,
+  body {
+    max-width: 100dvw;
+    overflow-x: hidden;
+  }
+  
+  html {
+    height: 100vh;  // will be overriden by js code in Main
+    overflow-x: hidden;
+  }
+  
+  body {
+    height: 100%;
+    color: black;  // remove from here
+    overflow-x: hidden;
+  }

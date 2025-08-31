@@ -2,6 +2,7 @@
 import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
+import styles from "./styles.module.scss";
 
 export default function Page({
   params,
@@ -69,9 +70,43 @@ export default function Page({
   }
 
   return (
-    <>
-      <h1>Stronghold: {stronghold_id}</h1>
-      <p>{stronghold_id}</p>
-    </>
+    <main className={styles.main}>
+      <section className={styles.strongholdSheetContainer}>
+        <section className={styles.strongholdSheet}>
+          <section className={styles.strongholdOverview}>
+            <p className={styles.strongholdName}>{stronghold.stronghold_name}</p>
+            <section className={styles.strongholdInfo}>
+              <p>Level {stronghold.stronghold_level} {stronghold.stronghold_type}</p>
+            </section>
+          </section>
+          <section className={styles.strongholdStats}>
+            <section className={styles.numericalStats}>
+              <div className={styles.strongholdSize}>
+                <div>
+                  {stronghold.stronghold_size}
+                </div>
+                <p>size</p>
+              </div>  
+              <div className={styles.strongholdSize}>
+                <div>
+                  {stronghold.stronghold_size}
+                </div>
+                <p>size</p>
+              </div>  
+              <div className={styles.strongholdSize}>
+                <div>
+                  {stronghold.stronghold_size}
+                </div>
+                <p>size</p>
+              </div>  
+            </section>
+          </section>
+          <section className={styles.strongholdAssets}></section>
+        </section>
+        <section className={styles.contextualPanel}></section>
+      </section>
+      {/* <h1>Stronghold: {stronghold_id}</h1>
+      <p>{stronghold_id}</p> */}
+    </main>
   );
 }
