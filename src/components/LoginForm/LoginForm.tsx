@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useAuth } from "contexts/AuthContext";
+import styles from "./styles.module.scss";
+import Link from "next/link";
 
 export default function LoginForm() {
   //create state object for login details
@@ -13,6 +15,7 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   //TODO: add animated 'logging you in' message whilst loading is true for user assurance
   const [loading, setLoading] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(true)
 
   //get context + auth functions from AuthContext
   const { userName, isLoggedIn, userId, role, login, logout} = useAuth();
@@ -51,8 +54,6 @@ export default function LoginForm() {
     } finally {
       setLoading(false)
     }
-
-    
   }
 
   //uses spread operator to only change the email value
@@ -71,38 +72,33 @@ export default function LoginForm() {
     });
   }
 
-  //logs out the user, removing their auth token from local storage
-  function handleLogout() {
-    logout()
-  }
-
   return (
-    <form method="post" onSubmit={handleSubmit}>
-      <p>Email state:{loginDetails.email}</p>
-      <p>Password state:{loginDetails.password}</p>
-      <label>
-        Email:
-        <input
-          type="email"
-          name="email"
-          value={loginDetails.email}
-          onChange={handleEmailChange}
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          name="password"
-          value={loginDetails.password}
-          onChange={handlePasswordChange}
-        />
-      </label>
-      <button type="submit">Log In</button>
-      <p>{isLoggedIn ? "logged in!" : "not logged in"}</p>
-      <p>role: {role}</p>
-      <p> welcome, {userName}!</p>
-      <button type="button" onClick={handleLogout}>Log out</button>
-    </form>
+    <div className={styles.formContainer}>
+      <form className={styles.loginForm} method="post" onSubmit={handleSubmit}>
+        <h3>Welcome to Stronghold Manager</h3>
+        <p>Enter your details to log in</p>
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={loginDetails.email}
+            onChange={handleEmailChange}
+          />
+        </label>
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            value={loginDetails.password}
+            onChange={handlePasswordChange}
+          />
+        </label>
+        <button type="submit">Log In</button>
+      </form>
+      <p>First time?</p>
+      <Link href = "/register">Sign Up</Link>
+    </div>
   );
 }

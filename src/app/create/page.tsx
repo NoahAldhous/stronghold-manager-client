@@ -73,7 +73,7 @@ export default function Page() {
         //if success, will create message
         const data = await res.json();
         console.log(data)
-        //create message modal, with button which either - return to list of strongholds or navigates to created stronghold page
+        //create message modal, with buttons which either - return to list of strongholds or navigates to created stronghold page
         if (data.id) {
             setStrongholdId(data.id)
             setDisplayModal(true)

@@ -60,7 +60,7 @@ export default function Page({
 
       //TODO: in api, change so object does not return 'data:', instead returns 'stronghold:'
       const data = await res.json();
-      setStronghold(data.data);
+      setStronghold(data.stronghold);
     } catch (err) {
       console.log(err.message);
     } finally {

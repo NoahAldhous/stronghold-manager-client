@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useAuth } from "contexts/AuthContext";
+import styles from "./styles.module.scss"
+import Link from "next/link";
 
 type userCredentialsType = {
     name: string | undefined;
@@ -87,42 +89,44 @@ export default function SignUpForm(){
     }
 
     return (
-        <form method="post" onSubmit={handleSubmit}>
-            <p>Username:{userCredentials.name}</p>
-            <p>Email:{userCredentials.email}</p>
-            <p>Password:{userCredentials.password}</p>
-            <label>
-                Username:
-                <input
+        <section className={styles.formContainer}>
+            <form className={styles.signUpForm} method="post" onSubmit={handleSubmit}>
+            <h3>Welcome to Stronghold Manager!</h3>
+            <p>create a free account:</p>
+                <label>
+                    Username:
+                    <input
+                        required
+                        type="text"
+                        name="name"
+                        value={userCredentials.name}
+                        onChange={handleUserNameChange}
+                    />
+                </label>
+                <label>
+                    Email:
+                    <input
                     required
-                    type="text"
-                    name="name"
-                    value={userCredentials.name}
-                    onChange={handleUserNameChange}
-                />
-            </label>
-            <label>
-                Email:
-                <input
-                required
-                type="email"
-                name="email"
-                value={userCredentials.email}
-                onChange={handleEmailChange}
-                />
-            </label>
-            <label>
-                Password:
-                <input
-                required
-                type="password"
-                name="password"
-                value={userCredentials.password}
-                onChange={handlePasswordChange}
-                />
-            </label>
-            <button type="submit">Sign Up</button>
-            <p>error message: {error}</p>
-        </form>
+                    type="email"
+                    name="email"
+                    value={userCredentials.email}
+                    onChange={handleEmailChange}
+                    />
+                </label>
+                <label>
+                    Password:
+                    <input
+                    required
+                    type="password"
+                    name="password"
+                    value={userCredentials.password}
+                    onChange={handlePasswordChange}
+                    />
+                </label>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>already have an account?</p>
+            <Link href="/login">Log In</Link>
+        </section>
     )
 }

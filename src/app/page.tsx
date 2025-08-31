@@ -39,8 +39,8 @@ export default function Page() {
 
     //TODO: in api, change so object does not return 'data:', instead returns 'strongholds:'
     const data = await res.json();
-    console.log(data.data)
-    if (data.data.length === 0) {
+    console.log(data.strongholds)
+    if (data.strongholds.length === 0) {
         setNoStrongholds(true);
     } else {
       setNoStrongholds(false)

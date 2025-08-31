@@ -20,8 +20,8 @@ export default function Page(){
         }
     },[isLoggedIn])
 
-    return <section className={styles.loginPage}>
-        <LoginForm/>
-        {/* <SignUpForm/> */}
+    return <section className={styles.signUpPage}>
+        {/* <LoginForm/> */}
+        <SignUpForm/>
     </section>
 }
