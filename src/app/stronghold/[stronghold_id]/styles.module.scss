@@ -1,7 +1,9 @@
+@use "../../variables" as *;
+
 .main{
     background-color: grey;
     width: full;
-    height: 90vh; //make this a variable call 'page' or something
+    height: $page-height;
     display: flex;
     justify-content: center;
     align-items: center;

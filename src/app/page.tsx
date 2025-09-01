@@ -3,10 +3,17 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "contexts/AuthContext";
 import Link from "next/link";
+import styles from "./styles.module.scss";
+import StrongholdCard from "components/StrongholdCard/StrongholdCard";
+import DeleteItemModal from "components/DeleteItemModal/DeleteItemModal";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
   const [noStrongholds, setNoStrongholds] = useState(true);
+  const [deleteItemModal, setDeleteItemModal] = useState({
+    isVisible: false,
+    strongholdId: 0
+  })
   const [listOfStrongholds, setListOfStrongholds] = useState([{
     id: 0,
     stronghold_name: "",
@@ -54,28 +61,36 @@ export default function Page() {
   }
   //TODO: break this up into components
   return (
-    <>
-      <h1>Welcome, {userName}!</h1>
-      <h2>You should only be here if you are logged in!</h2>
-
-      <button onClick={logout}>Log Out</button>
-      {noStrongholds && !loading ? (
-        <div>
-          <p>you have no strongholds! boo!</p>
-          <Link href="/create">Create your first stronghold</Link>
-        </div>
-      ) : (
-        <div>
-          <p>here are your strongholds:</p>
-            {listOfStrongholds.map((item, index) => {
-              return (
-                <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link>
-              )
-            })}
-            <br/>
-          <Link href="/create">Create a new stronghold</Link>
-        </div>
-      )}
-    </>
+    <main className={styles.main}>
+      <section className={styles.strongholdsContainer}>
+        <h1>Welcome, {userName}!</h1>
+        {noStrongholds && !loading ? (
+          <div>
+            <p>you have no strongholds! boo!</p>
+            <Link href="/create">Create your first stronghold</Link>
+          </div>
+        ) : (
+          <div className={styles.list}>
+            <p>here are your strongholds:</p>
+              <div className={styles.cardContainer}>
+                {listOfStrongholds.map((item, index) => {
+                  return (
+                    <StrongholdCard key={index} stronghold={item} setDeleteItemModal={setDeleteItemModal}/>
+                    // <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link>
+                  )
+                })}
+              </div>
+              <br/>
+              <section className={styles.createButtonContainer}>
+                <Link className={styles.createButton} href="/create">Create a new stronghold</Link>
+              </section>
+          </div>
+        )}
+      </section>
+      {deleteItemModal.isVisible ? 
+        <DeleteItemModal deleteItemModal={deleteItemModal} setDeleteItemModal={setDeleteItemModal} listOfStrongholds={listOfStrongholds} setListOfStrongholds={setListOfStrongholds}/>
+      : null
+      }
+    </main>
   );
 }

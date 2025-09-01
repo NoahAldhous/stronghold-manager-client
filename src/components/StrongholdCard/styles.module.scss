@@ -1,0 +1,35 @@
+.card{
+    width: full;
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+    background-color: lightcyan;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px;
+
+    .textContainer{
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        height: full;
+        justify-content: center;
+
+        .name{
+            font-size: larger;
+        }
+
+        .info{
+            font-size: medium;
+        }
+    }
+
+    .buttonContainer{
+        width: 50%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}

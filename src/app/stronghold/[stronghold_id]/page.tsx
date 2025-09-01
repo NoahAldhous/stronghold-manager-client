@@ -114,13 +114,13 @@ export default function Page({
                   })} key={index}>{item.title}</button>)
                 })}
                 <br/>
-                //demense effects <br/>
-                //stronghold actions
+                demense effects <br/>
+                stronghold actions
               </section>
               <section className={styles.features}>
-                // class abilities <br/>
-                // uses <br/>
-                // take extended rest <br/>
+                class abilities <br/>
+                uses <br/>
+                take extended rest <br/>
               </section>
             </section>
           </section>
