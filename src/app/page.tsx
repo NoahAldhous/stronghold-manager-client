@@ -19,7 +19,7 @@ export default function Page() {
     stronghold_name: "",
     owner_name:"",
     stronghold_level:0,
-    stronghold_type_id:0,
+    stronghold_type:"",
   },])
   const router = useRouter();
   const { isLoggedIn, logout, userId, userName } = useAuth();

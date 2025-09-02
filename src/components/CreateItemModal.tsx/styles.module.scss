@@ -1,0 +1,22 @@
+.modalBackground{
+    width: 100dvw;
+    height: 100dvh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .modalMenu{
+        height: 40%;
+        width: 50%;
+        background-color: azure;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}

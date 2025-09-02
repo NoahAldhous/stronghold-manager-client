@@ -14,7 +14,7 @@ export default function StrongholdCard({stronghold, setDeleteItemModal}){
         <section className={styles.card}>
             <Link href={`/stronghold/${stronghold.id}`} className={styles.textContainer}>
                 <p className={styles.name}>{stronghold.stronghold_name}</p>
-                <p className={styles.info}>Level {stronghold.stronghold_level} {stronghold.stronghold_type_id}</p>
+                <p className={styles.info}>Level {stronghold.stronghold_level} {stronghold.stronghold_type}</p>
             </Link>
             <section className={styles.buttonContainer}>
                 <button onClick={() => handleDelete()}>delete</button>
