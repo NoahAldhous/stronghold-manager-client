@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -12,19 +12,68 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [strongholdId, setStrongholdId] = useState(0);
   const [displayModal, setDisplayModal] = useState(false);
+  const [activeStrongholdClass, setActiveStrongholdClass] = useState({
+    id:0,
+    name: "",
+    strongholdName: "",
+    strongholdDescription: "",
+    demesneEffects: [
+      {
+        description: ""
+      }
+    ],
+    featureImprovement: {
+      name: "",
+      restriction: "",
+      description: ""
+    },
+    strongholdActions: [
+      {
+        name: "",
+        description: ""
+      }
+    ]
+  })
   const [strongholdTypes, setStrongholdTypes] = useState([
     {
       type_name: "",
       id: 0,
     },
   ]);
+  const [strongholdClasses, setStrongholdClasses] = useState([
+    {
+      id: 0,
+      name: "",
+      strongholdDescription: "",
+      strongholdName: "",
+      demesneEffects: [
+        {
+          description: ""
+        }
+      ],
+      featureImprovement: {
+        name: "",
+        description: "",
+        restriction: ""
+      },
+      strongholdActions: [
+        {
+          name: "",
+          description: ""
+        }
+      ]
+    }
+  ])
   const [userStronghold, setUserStronghold] = useState({
     user_id: userId,
     stronghold_name: "",
     owner_name: "",
     stronghold_level: 1,
     stronghold_type: "keep",
+    stronghold_class: "fighter"
   });
+
+  // hard-code levels for simplicity
   const levels = [1, 2, 3, 4, 5];
 
   //redirect user to login/signup page if not logged in
@@ -33,8 +82,16 @@ export default function Page() {
       router.push("/login");
     } else {
       fetchStrongholdTypes();
+      fetchStrongholdClasses();
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    setActiveStrongholdClass(
+      strongholdClasses.filter(strongholdClass => strongholdClass.name == userStronghold.stronghold_class)[0]
+    )
+    console.log(activeStrongholdClass)
+  }, [userStronghold.stronghold_class])
 
   async function fetchStrongholdTypes() {
     try {
@@ -47,12 +104,32 @@ export default function Page() {
       }
 
       const data = await res.json();
-      console.log(data.data);
+      // console.log(data.data);
       setStrongholdTypes(data.data);
     } catch (err) {
       console.log(err.message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function fetchStrongholdClasses() {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/classes/list`
+      );
+
+      if(!res.ok) {
+        throw new Error("Could not fetch data");
+      }
+
+      const data = await res.json();
+      console.log(data.data);
+      setStrongholdClasses(data.data);
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -92,6 +169,10 @@ export default function Page() {
 
   function handleStrongholdTypeChange(type: string) {
     setUserStronghold({ ...userStronghold, stronghold_type: type });
+  }
+
+  function handleStrongholdClassChange(strongholdClass: string) {
+    setUserStronghold({...userStronghold, stronghold_class: strongholdClass})
   }
 
   function handleStrongholdLevelChange(level: number) {
@@ -178,6 +259,22 @@ export default function Page() {
                 ></input>
               </label>
             </section>
+            <section className={styles.formSection}>
+              <p className={styles.formText}>Select Stronghold Class</p>
+                <div className={`${styles.buttonContainer}`}>
+                  {strongholdClasses.map((item) => {
+                    return (
+                      <button
+                        onClick={() => handleStrongholdClassChange(item.name)}
+                        key={item.id}
+                        className={`${styles.button} ${userStronghold.stronghold_class == item.name ? styles.activeButton : ""}`}
+                      >
+                        {item.name}
+                      </button>
+                    );
+                  })}
+                </div>
+            </section>
           </section>
           <section className={styles.formFooter}>
             <div className={styles.costToBuild}> cost to build:</div>
@@ -185,12 +282,39 @@ export default function Page() {
           </section>
         </div>
         <div className={styles.features}>
-          <div className={styles.header}>
+          <section className={styles.header}>
             <p className={styles.headerText}>Stronghold Features</p>
             <p className={styles.headerText}>
               {userStronghold.stronghold_type}
             </p>
-          </div>
+          </section>
+            {strongholdClasses.map( item => (
+              item.name == userStronghold.stronghold_class ?
+              <section className={styles.body} key={item.id}>
+                    <h3>Stronghold Class: the {item.name}'s {item.strongholdName}</h3>
+                    <p>{item.strongholdDescription}</p>
+                    <h4>Demesne Effects</h4>
+                    <ul>
+                      {item.demesneEffects.map( effect => (
+                        <li key={effect.description}>{effect.description}</li>
+                      ))}
+                    </ul>
+                    <h4>Class Feature Improvement</h4>
+                    <h5>{item.featureImprovement.name}</h5>
+                    <p>{item.featureImprovement.description}</p>
+                    <p>{item.featureImprovement.restriction}</p>
+                    <h4>Stronghold Actions</h4>
+                    <ul>
+                      {item.strongholdActions.map( action => (
+                        <li key={action.name}>
+                          <h5>{action.name}</h5>
+                          <p>{action.description}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+              : null
+            ))}
         </div>
       </section>
       {displayModal ? (

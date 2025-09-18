@@ -48,6 +48,7 @@
                 // background-color: red;
                 display: flex;
                 flex-direction: row;
+                flex-flow: wrap;
                 justify-content: space-evenly;
                 border-top: 0;
                 border-left: 0;
@@ -56,10 +57,13 @@
                 border-style: solid;
 
                 .button{
-                    border: none;
+                    border: 1px;
+                    border-color: rgba(245, 245, 220, 0.477);
+                    border-style: solid;
                     background: none;
                     cursor: pointer;
                     padding: 0.5rem;
+                    margin: 0.5rem;
                     font-size: medium;
                     text-transform: capitalize;
                 }
@@ -106,10 +110,12 @@
         }
         
         .features{
-            height: 50%;
+            height: 100%;
             width: 35%;
             background-color: rgb(192, 212, 230);
             position: relative;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
         }
 
         .header{
@@ -130,6 +136,15 @@
                 font-size: large;
                 text-transform: capitalize;
             }
+        }
+
+        .body{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-top: 2.5rem;
         }
     }
 }
