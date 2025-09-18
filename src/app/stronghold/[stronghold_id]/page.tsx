@@ -103,7 +103,7 @@ export default function Page({
             <p className={styles.strongholdName}>{stronghold.stronghold_name}</p>
             <section className={styles.strongholdInfo}>
               <p>Level {stronghold.stronghold_level} {stronghold.stronghold_type}</p>
-              <p>{stronghold.class.name}'s {stronghold.class.stronghold_name}</p>
+              <p>{stronghold.class.name}&apos;s {stronghold.class.stronghold_name}</p>
             </section>
           </section>
           <section className={styles.strongholdStats}>
