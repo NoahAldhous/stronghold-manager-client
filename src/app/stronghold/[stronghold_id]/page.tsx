@@ -33,6 +33,27 @@ export default function Page({
       morale_bonus: 0,
       toughness: 0,
     },
+    class: {
+      name: "",
+      stronghold_name: "",
+      description: "",
+      class_feature_improvement: {
+        description: "",
+        name: "",
+        restriction: ""
+      },
+      demesne_effects: [
+        {
+          description: ""
+        }
+      ],
+      stronghold_actions: [
+        {
+          name: "",
+          description: ""
+        }
+      ]
+    }
   });
 
   const router = useRouter();
@@ -82,6 +103,7 @@ export default function Page({
             <p className={styles.strongholdName}>{stronghold.stronghold_name}</p>
             <section className={styles.strongholdInfo}>
               <p>Level {stronghold.stronghold_level} {stronghold.stronghold_type}</p>
+              <p>{stronghold.class.name}'s {stronghold.class.stronghold_name}</p>
             </section>
           </section>
           <section className={styles.strongholdStats}>

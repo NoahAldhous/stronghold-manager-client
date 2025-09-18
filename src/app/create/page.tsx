@@ -291,7 +291,7 @@ export default function Page() {
             {strongholdClasses.map( item => (
               item.name == userStronghold.stronghold_class ?
               <section className={styles.body} key={item.id}>
-                    <h3>Stronghold Class: the {item.name}'s {item.strongholdName}</h3>
+                    <h3>Stronghold Class: the {item.name}`&apos;`s {item.strongholdName}</h3>
                     <p>{item.strongholdDescription}</p>
                     <h4>Demesne Effects</h4>
                     <ul>
