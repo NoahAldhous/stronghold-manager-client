@@ -16,10 +16,12 @@ export default function Page() {
   })
   const [listOfStrongholds, setListOfStrongholds] = useState([{
     id: 0,
-    stronghold_name: "",
-    owner_name:"",
-    stronghold_level:0,
-    stronghold_type:"",
+    name: "",
+    ownerName:"",
+    level:0,
+    type:"",
+    ownerClass: "",
+    classStrongholdName: ""
   },])
   const router = useRouter();
   const { isLoggedIn, logout, userId, userName } = useAuth();
@@ -44,7 +46,6 @@ export default function Page() {
         throw new Error("There was a problem getting a response.");
     }
 
-    //TODO: in api, change so object does not return 'data:', instead returns 'strongholds:'
     const data = await res.json();
     console.log(data.strongholds)
     if (data.strongholds.length === 0) {
