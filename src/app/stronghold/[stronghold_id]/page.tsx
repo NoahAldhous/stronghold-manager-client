@@ -55,6 +55,12 @@ export default function Page({
       ]
     }
   });
+  const strongholdMenuButtons = [
+    "stronghold",
+    "units",
+    "artisans",
+    "followers"
+  ]
 
   const router = useRouter();
   const { isLoggedIn } = useAuth();
@@ -102,7 +108,7 @@ export default function Page({
           <section className={styles.strongholdOverview}>
             <p className={styles.strongholdName}>{stronghold.stronghold_name}</p>
             <section className={styles.strongholdInfo}>
-              <p>Level {stronghold.stronghold_level} {stronghold.stronghold_type}</p>
+              <p>{stronghold.owner_name}&apos;s Level {stronghold.stronghold_level} {stronghold.stronghold_type}</p>
               <p>{stronghold.class.name}&apos;s {stronghold.class.stronghold_name}</p>
             </section>
           </section>
@@ -135,22 +141,37 @@ export default function Page({
                     description: item.description
                   })} key={index}>{item.title}</button>)
                 })}
-                <br/>
-                demense effects <br/>
-                stronghold actions
               </section>
               <section className={styles.features}>
+                <button onClick={() => setContextualInfo({
+                  title: stronghold.class.class_feature_improvement.name,
+                  description: `${stronghold.class.class_feature_improvement.description} ${stronghold.class.class_feature_improvement.restriction}`
+                })}>Class Feature Improvement</button>
                 class abilities <br/>
                 uses <br/>
                 take extended rest <br/>
               </section>
             </section>
           </section>
-          <section className={styles.strongholdAssets}></section>
+          <section className={styles.strongholdAssets}>
+            <section className={styles.strongholdTreasury}></section>
+            <section className={styles.strongholdMenu}>
+              <section className={styles.strongholdMenuHeader}>
+                {strongholdMenuButtons.map( item => (
+                  <button>{item}</button>
+                ))}
+              </section>
+              
+            </section>
+          </section>
         </section>
         <section className={styles.contextualPanel}>
-                {contextualInfo.title}
-                {contextualInfo.description}
+                <h3>
+                  {contextualInfo.title}
+                </h3>
+                <p>
+                  {contextualInfo.description}
+                </p>
         </section>
       </section>
     </main>

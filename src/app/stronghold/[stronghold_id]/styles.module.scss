@@ -1,7 +1,8 @@
 @use "../../variables" as *;
 
 .main{
-    background-color: grey;
+    background-color: black;
+    color: white;
     width: full;
     height: $page-height;
     display: flex;
@@ -9,23 +10,24 @@
     align-items: center;
 
     .strongholdSheetContainer{
-        background-color: whitesmoke;
+        border: 1px solid red;
+        background-color: darkblue;
         width: 90%;
         height: 90%;
         display: flex;
         flex-direction: row;
 
         .strongholdSheet{
+            border: 1px solid blue;
             width: 75%;
             height: full;
-            background-color: antiquewhite;
             display: flex;
             flex-direction: column;
 
             .strongholdOverview{
+                border: 1px solid yellow;
                 width: full;
                 height: 15%;
-                background-color: bisque;
 
                 .strongholdName{
                     font-size: xx-large;
@@ -37,16 +39,17 @@
             }
 
             .strongholdStats{
+                border: 1px solid green;
                 width: full;
                 height: 20%;
-                background-color: beige;
                 display: flex;
                 flex-direction: row;
+                align-items: center;
+                justify-content: space-evenly;
 
                 .featuresContainer{
                     height: 100%;
                     width: 65%;
-                    background-color: lightgrey;
                     border:5;
                     font-size: large;
                     display: flex;
@@ -55,37 +58,37 @@
                     align-items: center;
 
                     .features{
-                        border: 1px;
-                        border-style: dotted;
                         height: 80%;
                         width: 40%;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         justify-content: space-evenly;
+                        background-color: white;
+                        color: black
                     }
 
                 }
 
                 .numericalStats{
-                    height: 100%;
-                    width: 35%;
-                    background-color: aqua;
+                    height: 80%;
+                    width: 30%;
                     display: flex;
                     flex-direction: row;
                     justify-content: space-around;
+                    align-items: center;
+                    background-color: white;
 
                     .strongholdStatNumber{
-                        border: 5px;
-                        border-style: groove;
-                        border-color: black;
-                        height: full;
+                        height: 80%;
                         width: 30%;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         justify-content: center;
                         font-size: medium;
+                        background-color: white;
+                        color: black;
                     }
                 }
             }
@@ -93,14 +96,29 @@
             .strongholdAssets{
                 width: full;
                 height: 65%;
-                background-color: azure;
+                border: 1px solid purple;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+
+                .strongholdTreasury{
+                    height: 100%;
+                    width: 30%;
+                    background-color: white;
+                }
+
+                .strongholdMenu{
+                    height: 100%;
+                    width: 60%;
+                    background-color: white;
+                }
             }
         }
 
         .contextualPanel{
             width: 25%;
             height: full;
-            background-color: aliceblue;
+            // background-color: aliceblue;
         }
     }
 
