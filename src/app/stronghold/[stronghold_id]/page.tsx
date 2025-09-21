@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { act, use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 
 export default function Page({
@@ -11,6 +11,10 @@ export default function Page({
 }) {
   const { stronghold_id } = use(params);
   const [loading, setLoading] = useState(false);
+  const [activeButton, setActiveButton] = useState({
+    category: "stronghold",
+    subCategory: "stronghold actions"
+  });
   const [stronghold, setStronghold] = useState({
     id: 0,
     owner_name: "",
@@ -40,34 +44,57 @@ export default function Page({
       class_feature_improvement: {
         description: "",
         name: "",
-        restriction: ""
+        restriction: "",
       },
       demesne_effects: [
         {
-          description: ""
-        }
+          description: "",
+        },
       ],
       stronghold_actions: [
         {
           name: "",
-          description: ""
-        }
-      ]
-    }
+          description: "",
+        },
+      ],
+    },
   });
   const strongholdMenuButtons = [
-    "stronghold",
-    "units",
-    "artisans",
-    "followers"
-  ]
+    {
+      category: "stronghold",
+      subCategories: [
+        "stronghold actions",
+        "demesne effects",
+        `${stronghold.stronghold_type} features`,
+        "class feature improvment",
+      ],
+    },
+    {
+      category: "units",
+      subCategories: ["list", "card", "icon"],
+    },
+    {
+      category: "artisans",
+      subCategories: ["all", "acquired", "unacquired"],
+    },
+    {
+      category: "followers",
+      subCategories: [
+        "all",
+        "reatiners",
+        "ambassadors",
+        "allies",
+        "follower chart",
+      ],
+    },
+  ];
 
   const router = useRouter();
   const { isLoggedIn } = useAuth();
   const [contextualInfo, setContextualInfo] = useState({
     title: "",
-    description: ""
-  })
+    description: "",
+  });
 
   //redirect user to login/signup page if not logged in
   useEffect(() => {
@@ -90,10 +117,9 @@ export default function Page({
         throw new Error("There was a problem fetching stronghold data");
       }
 
-      //TODO: in api, change so object does not return 'data:', instead returns 'stronghold:'
       const data = await res.json();
       setStronghold(data.stronghold);
-      console.log(data.stronghold)
+      console.log(data.stronghold);
     } catch (err) {
       console.log(err.message);
     } finally {
@@ -106,50 +132,72 @@ export default function Page({
       <section className={styles.strongholdSheetContainer}>
         <section className={styles.strongholdSheet}>
           <section className={styles.strongholdOverview}>
-            <p className={styles.strongholdName}>{stronghold.stronghold_name}</p>
+            <p className={styles.strongholdName}>
+              {stronghold.stronghold_name}
+            </p>
             <section className={styles.strongholdInfo}>
-              <p>{stronghold.owner_name}&apos;s Level {stronghold.stronghold_level} {stronghold.stronghold_type}</p>
-              <p>{stronghold.class.name}&apos;s {stronghold.class.stronghold_name}</p>
+              <p>
+                {stronghold.owner_name}&apos;s Level{" "}
+                {stronghold.stronghold_level} {stronghold.stronghold_type}
+              </p>
+              <p>
+                {stronghold.class.name}&apos;s{" "}
+                {stronghold.class.stronghold_name}
+              </p>
             </section>
           </section>
           <section className={styles.strongholdStats}>
             <section className={styles.numericalStats}>
               <div className={styles.strongholdStatNumber}>
-                <div>
-                  {stronghold.stronghold_size}
-                </div>
+                <div>{stronghold.stronghold_size}</div>
                 <p>size</p>
-              </div>  
+              </div>
               <div className={styles.strongholdStatNumber}>
                 <div>
-                  +{stronghold.stats.morale_bonus ? stronghold.stats.morale_bonus : 0}
+                  +
+                  {stronghold.stats.morale_bonus
+                    ? stronghold.stats.morale_bonus
+                    : 0}
                 </div>
                 <p>fort bonus</p>
-              </div>  
+              </div>
               <div className={styles.strongholdStatNumber}>
-                <div>
-                  {stronghold.stats.toughness}
-                </div>
+                <div>{stronghold.stats.toughness}</div>
                 <p>toughness</p>
-              </div>  
+              </div>
             </section>
             <section className={styles.featuresContainer}>
               <section className={styles.features}>
                 {stronghold.features.map((item, index) => {
-                  return(<button onClick={() => setContextualInfo({
-                    title: item.title,
-                    description: item.description
-                  })} key={index}>{item.title}</button>)
+                  return (
+                    <button
+                      onClick={() =>
+                        setContextualInfo({
+                          title: item.title,
+                          description: item.description,
+                        })
+                      }
+                      key={index}
+                    >
+                      {item.title}
+                    </button>
+                  );
                 })}
               </section>
               <section className={styles.features}>
-                <button onClick={() => setContextualInfo({
-                  title: stronghold.class.class_feature_improvement.name,
-                  description: `${stronghold.class.class_feature_improvement.description} ${stronghold.class.class_feature_improvement.restriction}`
-                })}>Class Feature Improvement</button>
-                class abilities <br/>
-                uses <br/>
-                take extended rest <br/>
+                <button
+                  onClick={() =>
+                    setContextualInfo({
+                      title: stronghold.class.class_feature_improvement.name,
+                      description: `${stronghold.class.class_feature_improvement.description} ${stronghold.class.class_feature_improvement.restriction}`,
+                    })
+                  }
+                >
+                  Class Feature Improvement
+                </button>
+                class abilities <br />
+                uses <br />
+                take extended rest <br />
               </section>
             </section>
           </section>
@@ -157,21 +205,45 @@ export default function Page({
             <section className={styles.strongholdTreasury}></section>
             <section className={styles.strongholdMenu}>
               <section className={styles.strongholdMenuHeader}>
-                {strongholdMenuButtons.map( item => (
-                  <button>{item}</button>
-                ))}
+                Stronghold Features
               </section>
-              
+              <section className={styles.strongholdMenuButtons}>
+                <section className={styles.menuCategories}>
+                  {strongholdMenuButtons.map((item) => (
+                    <button
+                      onClick={() => setActiveButton({category: item.category, subCategory:item.subCategories[0]})}
+                      key={item.category}
+                      className={`${styles.categoryButton} ${
+                        item.category == activeButton.category ? styles.activeButton : ""
+                      }`}
+                    >
+                      {item.category}
+                    </button>
+                  ))}
+                </section>
+                <section className={styles.menuSubCategories}>
+                  {strongholdMenuButtons.map((item) =>
+                    item.category == activeButton.category
+                      ? item.subCategories.map((subCategory) => (
+                          <button 
+                            key={subCategory}
+                            onClick={() => setActiveButton({...activeButton, subCategory: subCategory})}
+                            className={`${styles.subCategoryButton} ${
+                            subCategory == activeButton.subCategory ? styles.activeButton : ""
+                          }`}>
+                            {subCategory}
+                          </button>
+                        ))
+                      : null
+                  )}
+                </section>
+              </section>
             </section>
           </section>
         </section>
         <section className={styles.contextualPanel}>
-                <h3>
-                  {contextualInfo.title}
-                </h3>
-                <p>
-                  {contextualInfo.description}
-                </p>
+          <h3>{contextualInfo.title}</h3>
+          <p>{contextualInfo.description}</p>
         </section>
       </section>
     </main>
