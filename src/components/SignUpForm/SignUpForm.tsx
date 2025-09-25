@@ -91,34 +91,34 @@ export default function SignUpForm(){
     return (
         <section className={styles.formContainer}>
             <form className={styles.signUpForm} method="post" onSubmit={handleSubmit}>
-            <h3>Welcome to Stronghold Manager!</h3>
+            <h3 className={styles.cardHeader}>Welcome to Stronghold Manager!</h3>
             <p>create a free account:</p>
                 <label>
-                    Username:
                     <input
                         required
                         type="text"
                         name="name"
+                        placeholder="username"
                         value={userCredentials.name}
                         onChange={handleUserNameChange}
                     />
                 </label>
                 <label>
-                    Email:
                     <input
                     required
                     type="email"
                     name="email"
+                    placeholder="email"
                     value={userCredentials.email}
                     onChange={handleEmailChange}
                     />
                 </label>
                 <label>
-                    Password:
                     <input
                     required
                     type="password"
                     name="password"
+                    placeholder="password"
                     value={userCredentials.password}
                     onChange={handlePasswordChange}
                     />

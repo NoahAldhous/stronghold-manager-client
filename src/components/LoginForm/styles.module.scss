@@ -1,5 +1,6 @@
+@use "../../app/variables" as *;
+
 .formContainer {
-    background-color: lightcyan;
     width: 100%;
     height: 100%;
     display: flex;
@@ -8,10 +9,14 @@
     align-items: center;
 
     .loginForm {
-        width: 50%;
-        background-color: lightgrey;
+        width: 40%;
+        height: 60%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
+        @include cardContainer;
+        box-shadow: $boxShadow;
+
     }
 }

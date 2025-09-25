@@ -4,7 +4,7 @@ import {IBM_Plex_Mono} from "next/font/google"
 import "./globals.scss";
 import ScreenEffect from "components/ScreenEffect/ScreenEffect";
 
-const plexMono = IBM_Plex_Mono({weight:"300", variable:"--font-ibm", subsets: ["latin"]});
+const plexMono = IBM_Plex_Mono({weight:["300", "400", "500", "600", "700"], variable:"--font-ibm", subsets: ["latin"]});
 
 export default function RootLayout({
     children,

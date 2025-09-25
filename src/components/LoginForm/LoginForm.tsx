@@ -75,26 +75,26 @@ export default function LoginForm() {
   return (
     <div className={styles.formContainer}>
       <form className={styles.loginForm} method="post" onSubmit={handleSubmit}>
-        <h3>Welcome to Stronghold Manager</h3>
+        <h3 className={styles.cardHeader}>Welcome to Stronghold Manager!</h3>
         <p>Enter your details to log in</p>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={loginDetails.email}
-            onChange={handleEmailChange}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={loginDetails.password}
-            onChange={handlePasswordChange}
-          />
-        </label>
+          <label>
+            <input
+              type="email"
+              name="email"
+              placeholder={"email"}
+              value={loginDetails.email}
+              onChange={handleEmailChange}
+            />
+          </label>
+          <label>
+            <input
+              type="password"
+              name="password"
+              placeholder="password"
+              value={loginDetails.password}
+              onChange={handlePasswordChange}
+            />
+          </label>
         <button type="submit">Log In</button>
       </form>
       <p>First time?</p>

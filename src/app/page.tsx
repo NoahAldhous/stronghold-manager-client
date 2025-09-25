@@ -64,7 +64,7 @@ export default function Page() {
   return (
     <main className={styles.main}>
       <section className={styles.strongholdsContainer}>
-        <h1>Welcome, {userName}!</h1>
+        <div className={styles.cardHeader}>Welcome, {userName}!</div>
         {loading ?
           <section className={styles.loadingContainer}>
             <span className={styles.loader}></span>
@@ -76,7 +76,7 @@ export default function Page() {
           </div>
           ) : (
             <div className={styles.list}>
-            <p>here are your strongholds:</p>
+            <p>your strongholds</p>
               <div className={styles.cardContainer}>
                 {listOfStrongholds.map((item, index) => {
                   return (

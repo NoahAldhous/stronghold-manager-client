@@ -1,14 +1,15 @@
+@use "../../app/variables" as *;
+
 .card{
     width: full;
-    border: 1px;
-    border-color: black;
-    border-style: solid;
-    background-color: lightcyan;
+    background-color: $highlight;
+    border-bottom: 2px solid $dark;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding: 2px;
+
 
     .textContainer{
         display: flex;

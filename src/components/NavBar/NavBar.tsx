@@ -10,7 +10,7 @@ export default function NavBar(){
 
     return (
         <div className={styles.navbar}>
-            <h1>Stronghold Manager</h1>
+            <h1 className={styles.title}>Stronghold Manager</h1>
             <section className={styles.buttonContainer}>
                 <Link href="/">Home</Link>
                 <button onClick={logout}>Log Out</button>

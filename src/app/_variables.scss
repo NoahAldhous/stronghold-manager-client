@@ -14,7 +14,8 @@ $selected : #B0B0B0;
 $text : #0E131B;
 
 //Shadow
-$boxShadow: 3px 3px 0 rgba($text, .6);
+$boxShadow: 7px 7px 0 rgba($text, .3);
+$textShadow: 3px 3px 0 rgba($text, .3);
 
 //Background Texture
 @mixin pixelBackground {
@@ -35,7 +36,7 @@ $boxShadow: 3px 3px 0 rgba($text, .6);
         position: absolute;
         top: 0;
         width: 100%;
-
+        font-weight: 500;
         text-transform: capitalize;
         background-color: $highlight;
         padding: 0.2rem 0.5rem;
