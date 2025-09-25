@@ -2,9 +2,10 @@
 
 .main{
     width: 100vw;
-    height: $page-height;
+    height: 100vh;
     position: absolute;
     bottom: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -13,20 +14,19 @@
     .loadingScreen{
         height:100%;
         width: 100%;
-        background-color: black;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         
         .loader {
-            width: 96px;
-            height: 24px;
+            width: 400px;
+            height: 25px;
             display: inline-block;
-            background-color: #FFF;
-            border: 1px solid #FFF;
+            background-color: $highlight;
+            border: 1px solid $highlight;
             border-radius: 4px;
-            background: linear-gradient(45deg, transparent 49%, #FFF 50%, #FFF 50%, transparent 51%, transparent), linear-gradient(-45deg, transparent 49%, #FFF 50%, #FFF 50%, transparent 51%, transparent);
+            background: linear-gradient(45deg, transparent 49%, $highlight 50%, $highlight 50%, transparent 51%, transparent), linear-gradient(-45deg, transparent 49%, $highlight 50%, $highlight 50%, transparent 51%, transparent);
             font-size: 15px;
             background-size: 1em 1em;
             box-sizing: border-box;
@@ -43,11 +43,12 @@
           }
     
         .text{
-            font-size: xx-large;
-            color: whitesmoke;
-            animation-duration: 2s;
-            animation-name: pulse;
-            animation-iteration-count: infinite;
+            margin-bottom: 2.5rem;
+            font-size: large;
+            color: $highlight;
+            // animation-duration: 2s;
+            // animation-name: pulse;
+            // animation-iteration-count: infinite;
         }
     
         @keyframes pulse {

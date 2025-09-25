@@ -9,21 +9,18 @@
     align-items: center;
 
     .strongholdSheetContainer{
-        border: 1px solid red;
         width: 90%;
         height: 90%;
         display: flex;
         flex-direction: row;
 
         .strongholdSheet{
-            border: 1px solid blue;
             width: 75%;
             height: full;
             display: flex;
             flex-direction: column;
 
             .strongholdOverview{
-                border: 1px solid yellow;
                 width: full;
                 height: 15%;
 
@@ -37,7 +34,6 @@
             }
 
             .strongholdStats{
-                border: 1px solid green;
                 width: full;
                 height: 20%;
                 display: flex;
@@ -93,7 +89,7 @@
                             justify-content: center;
                             font-size: medium;
                             background-color: $highlight;
-                            border: 1px solid $selected;
+                            border: 2px solid $selected;
                             transform: rotate(45deg);
     
                             .statNumberText{

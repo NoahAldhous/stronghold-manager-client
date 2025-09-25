@@ -4,8 +4,8 @@ export default function LoadingSkeleton(){
     return(
         <main className={styles.main}>
             <section className={styles.loadingScreen}>
-                <span className={styles.loader}></span>
                 <p className={styles.text}>Loading</p>
+                <span className={styles.loader}></span>
             </section>
         </main>
     )

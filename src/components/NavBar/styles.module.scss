@@ -6,7 +6,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     background-color: lightgrey;
+    @include pixelBackground;
+    border-bottom: 2px solid $dark;
     // border: 1;
     // border-style: dotted;
 
