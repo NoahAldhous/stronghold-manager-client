@@ -81,20 +81,20 @@ export default function Page({
       category: "followers",
       subCategories: [
         "all",
-        "reatiners",
+        "retainers",
         "ambassadors",
         "allies",
         "follower chart",
       ],
     },
   ];
-
-  const router = useRouter();
-  const { isLoggedIn } = useAuth();
   const [contextualInfo, setContextualInfo] = useState({
     title: "",
     description: "",
   });
+
+  const router = useRouter();
+  const { isLoggedIn } = useAuth();
 
   //redirect user to login/signup page if not logged in
   useEffect(() => {
@@ -148,26 +148,44 @@ export default function Page({
           </section>
           <section className={styles.strongholdStats}>
             <section className={styles.numericalStats}>
-              <div className={styles.strongholdStatNumber}>
-                <div>{stronghold.stronghold_size}</div>
+              <section className={styles.cardHeader}>
+                stats
+              </section>
+              <div className={styles.statContainer}>
+                <div className={styles.strongholdStatNumber}>
+                  <div className={styles.statNumberText}>
+                    <div>{stronghold.stronghold_size}</div>
+                  </div>
+                </div>
                 <p>size</p>
               </div>
-              <div className={styles.strongholdStatNumber}>
-                <div>
-                  +
-                  {stronghold.stats.morale_bonus
-                    ? stronghold.stats.morale_bonus
-                    : 0}
+              <div className={styles.statContainer}>
+                <div className={styles.strongholdStatNumber}>
+                  <div className={styles.statNumberText}>
+                    <div>
+                      +
+                      {stronghold.stats.morale_bonus
+                        ? stronghold.stats.morale_bonus
+                        : 0}
+                    </div>
+                  </div>
                 </div>
                 <p>fort bonus</p>
               </div>
-              <div className={styles.strongholdStatNumber}>
-                <div>{stronghold.stats.toughness}</div>
+              <div className={styles.statContainer}>
+                <div className={styles.strongholdStatNumber}>
+                  <div className={styles.statNumberText}>
+                    <div>{stronghold.stats.toughness}</div>
+                  </div>
+                </div>
                 <p>toughness</p>
               </div>
             </section>
             <section className={styles.featuresContainer}>
               <section className={styles.features}>
+                <div className={styles.cardHeader}>
+                  {stronghold.stronghold_type} features
+                </div>
                 {stronghold.features.map((item, index) => {
                   return (
                     <button
@@ -185,6 +203,9 @@ export default function Page({
                 })}
               </section>
               <section className={styles.features}>
+                <div className={styles.cardHeader}>
+                  class improvement
+                </div>
                 <button
                   onClick={() =>
                     setContextualInfo({
@@ -202,10 +223,14 @@ export default function Page({
             </section>
           </section>
           <section className={styles.strongholdAssets}>
-            <section className={styles.strongholdTreasury}></section>
+            <section className={styles.strongholdTreasury}>
+              <div className={styles.cardHeader}>
+                treasury
+              </div>
+            </section>
             <section className={styles.strongholdMenu}>
-              <section className={styles.strongholdMenuHeader}>
-                Stronghold Features
+              <section className={styles.cardHeader}>
+                stronghold features
               </section>
               <section className={styles.strongholdMenuButtons}>
                 <section className={styles.menuCategories}>
@@ -238,10 +263,16 @@ export default function Page({
                   )}
                 </section>
               </section>
+              <section className={styles.strongholdMenuText}>
+                <p></p>
+              </section>
             </section>
           </section>
         </section>
         <section className={styles.contextualPanel}>
+          <div className={styles.cardHeader}>
+            contextual information
+          </div>
           <h3>{contextualInfo.title}</h3>
           <p>{contextualInfo.description}</p>
         </section>

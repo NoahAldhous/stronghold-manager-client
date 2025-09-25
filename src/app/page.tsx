@@ -65,7 +65,34 @@ export default function Page() {
     <main className={styles.main}>
       <section className={styles.strongholdsContainer}>
         <h1>Welcome, {userName}!</h1>
-        {noStrongholds && !loading ? (
+        {loading ?
+          <section className={styles.loadingContainer}>
+            <span className={styles.loader}></span>
+          </section>
+          : noStrongholds ? (
+            <div>
+            <p>you have no strongholds! boo!</p>
+            <Link href="/create">Create your first stronghold</Link>
+          </div>
+          ) : (
+            <div className={styles.list}>
+            <p>here are your strongholds:</p>
+              <div className={styles.cardContainer}>
+                {listOfStrongholds.map((item, index) => {
+                  return (
+                    <StrongholdCard key={index} stronghold={item} setDeleteItemModal={setDeleteItemModal}/>
+                    // <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link>
+                  )
+                })}
+              </div>
+              <br/>
+              <section className={styles.createButtonContainer}>
+                <Link className={styles.createButton} href="/create">Create a new stronghold</Link>
+              </section>
+          </div>
+          )
+      }
+        {/* {noStrongholds && !loading ? (
           <div>
             <p>you have no strongholds! boo!</p>
             <Link href="/create">Create your first stronghold</Link>
@@ -86,7 +113,7 @@ export default function Page() {
                 <Link className={styles.createButton} href="/create">Create a new stronghold</Link>
               </section>
           </div>
-        )}
+        )} */}
       </section>
       {deleteItemModal.isVisible ? 
         <DeleteItemModal deleteItemModal={deleteItemModal} setDeleteItemModal={setDeleteItemModal} listOfStrongholds={listOfStrongholds} setListOfStrongholds={setListOfStrongholds}/>
