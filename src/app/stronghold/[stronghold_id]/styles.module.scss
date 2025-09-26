@@ -2,23 +2,28 @@
 
 .main{
     color: white;
+    @include mainPage;
     width: full;
     height: $page-height;
     display: flex;
     justify-content: center;
     align-items: center;
+    // background-color: antiquewhite;
 
     .strongholdSheetContainer{
-        width: 90%;
+        // background-color: blue;
+        width: 100%;
         height: 90%;
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
 
         .strongholdSheet{
-            width: 75%;
+            width: 73%;
             height: full;
             display: flex;
             flex-direction: column;
+            // background-color: red;
 
             .strongholdOverview{
                 width: full;
@@ -34,12 +39,13 @@
             }
 
             .strongholdStats{
+                // background-color: yellow;
                 width: full;
                 height: 20%;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                justify-content: space-evenly;
+                justify-content: space-between;
 
                 .featuresContainer{
                     height: 100%;
@@ -48,24 +54,24 @@
                     font-size: large;
                     display: flex;
                     flex-direction: row;
-                    justify-content: space-around;
+                    justify-content: space-between;
                     align-items: center;
+                    // background-color: antiquewhite;
 
                     .features{
                         height: 80%;
-                        width: 40%;
+                        width: 48%;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         justify-content: space-evenly;
                         @include cardContainer;
                     }
-
                 }
 
                 .numericalStats{
                     height: 80%;
-                    width: 30%;
+                    width: 32.5%;
                     display: flex;
                     flex-direction: row;
                     justify-content: space-around;
@@ -100,6 +106,10 @@
                                 transform: rotate(-45deg);
                             }
                         }
+
+                        .statName{
+                            font-size: 0.8rem;
+                        }
                     }
 
                 }
@@ -108,21 +118,21 @@
             .strongholdAssets{
                 width: full;
                 height: 65%;
-                border: 1px solid purple;
+                // border: 1px solid purple;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-evenly;
+                justify-content: space-between;
 
                 .strongholdTreasury{
                     height: 100%;
-                    width: 30%;
-                    background-color: white;
+                    width: 32.5%;
+                    // background-color: white;
                     @include cardContainer;
                 }
 
                 .strongholdMenu{
                     height: 100%;
-                    width: 60%;
+                    width: 65%;
                     @include cardContainer;
 
                     .strongholdMenuButtons{
@@ -162,7 +172,6 @@
                                 margin-left: 1rem;
                             }
                         }
-
 
                         .activeButton{
                             background-color: darkgray;

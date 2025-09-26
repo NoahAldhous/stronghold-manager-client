@@ -16,7 +16,7 @@
     .title{
         font-weight: 400;
         text-shadow: $textShadow;
-        padding-left: 4rem;
+        padding-left: $half-column-width;
     }
 
     .buttonContainer{

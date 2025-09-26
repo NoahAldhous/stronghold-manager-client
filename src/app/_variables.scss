@@ -5,6 +5,10 @@ $navbar-height: 10vh;
 // Page height
 $page-height: 90vh;
 
+//1/12th column width
+$column-width: 8.33vw;
+$half-column-width: $column-width / 2;
+
 //Colours
 $background : #5a5f72;
 $dark: #292929;
@@ -38,6 +42,7 @@ $bottomBorder: 2px solid $selected;
     .cardHeader{
         position: absolute;
         top: 0;
+        left: 0;
         width: 100%;
         height: 1.75rem;
         font-weight: 500;
@@ -53,5 +58,9 @@ $bottomBorder: 2px solid $selected;
 }
 @mixin cardSection{
     border-bottom: $bottomBorder;
+}
+
+@mixin mainPage{
+    padding: 0 $half-column-width;
 }
 

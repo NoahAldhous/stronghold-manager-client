@@ -157,7 +157,7 @@ export default function Page({
                     <div>{stronghold.stronghold_size}</div>
                   </div>
                 </div>
-                <p>size</p>
+                <p className={styles.statName}>size</p>
               </div>
               <div className={styles.statContainer}>
                 <div className={styles.strongholdStatNumber}>
@@ -170,7 +170,7 @@ export default function Page({
                     </div>
                   </div>
                 </div>
-                <p>fort bonus</p>
+                <p className={styles.statName}>fort bonus</p>
               </div>
               <div className={styles.statContainer}>
                 <div className={styles.strongholdStatNumber}>
@@ -178,7 +178,7 @@ export default function Page({
                     <div>{stronghold.stats.toughness}</div>
                   </div>
                 </div>
-                <p>toughness</p>
+                <p className={styles.statName}>toughness</p>
               </div>
             </section>
             <section className={styles.featuresContainer}>
