@@ -35,6 +35,14 @@ export default function Page() {
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    if (listOfStrongholds.length === 0) {
+      setNoStrongholds(true);
+    } else {
+      setNoStrongholds(false)
+    }
+  }, [listOfStrongholds]);
+
   async function fetchStrongholdsByUserId() {
     setLoading(true)
 
@@ -74,9 +82,12 @@ export default function Page() {
             <p>you have no strongholds! boo!</p>
             <Link href="/create">Create your first stronghold</Link>
           </div>
-          ) : (
+          ) : ( 
+          <>
+            <section className={styles.listText}>
+              <p>your strongholds</p>
+            </section>
             <div className={styles.list}>
-            <p>your strongholds</p>
               <div className={styles.cardContainer}>
                 {listOfStrongholds.map((item, index) => {
                   return (
@@ -85,11 +96,11 @@ export default function Page() {
                   )
                 })}
               </div>
-              <br/>
-              <section className={styles.createButtonContainer}>
-                <Link className={styles.createButton} href="/create">Create a new stronghold</Link>
-              </section>
-          </div>
+            </div>
+            <section className={styles.createButtonContainer}>
+              <Link className={styles.createButton} href="/create">Create a new stronghold</Link>
+            </section>
+          </>
           )
       }
         {/* {noStrongholds && !loading ? (
