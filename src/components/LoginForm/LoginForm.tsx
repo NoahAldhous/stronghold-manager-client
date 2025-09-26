@@ -34,9 +34,7 @@ export default function LoginForm() {
     password: "",
   });
 
-  //TODO: add an error message pop up if log in fails
   const [error, setError] = useState<string | null>(null);
-  //TODO: add animated 'logging you in' message whilst loading is true for user assurance
   const [loading, setLoading] = useState(false);
 
   //get auth login function from AuthContext
@@ -80,6 +78,7 @@ export default function LoginForm() {
 
   //uses spread operator to only change the email value
   function handleLoginEmailChange(e: { target: { value: string } }) {
+    setError(null);
     setLoginDetails({
       ...loginDetails,
       email: e.target.value,
@@ -89,6 +88,7 @@ export default function LoginForm() {
   async function handleSignupSubmit(e) {
     //prevent browser from reloading page
     e.preventDefault()
+    setError(null);
     setLoading(true)
 
     //Read the form data
@@ -126,6 +126,7 @@ export default function LoginForm() {
 
   //uses spread operator to only change the password value
   function handleLoginPasswordChange(e: { target: { value: string } }) {
+    setError(null);
     setLoginDetails({
       ...loginDetails,
       password: e.target.value,
@@ -134,6 +135,7 @@ export default function LoginForm() {
 
   //uses spread operator to only change the email value
   function handleSignupUserNameChange(e: { target: { value: string } }) {
+    setError(null);
     setUserCredentials({
     ...userCredentials,
     name: e.target.value,
@@ -142,6 +144,7 @@ export default function LoginForm() {
 
 //uses spread operator to only change the email value
 function handleSignupEmailChange(e: { target: { value: string } }) {
+  setError(null);
     setUserCredentials({
     ...userCredentials,
     email: e.target.value,
@@ -150,6 +153,7 @@ function handleSignupEmailChange(e: { target: { value: string } }) {
 
 //uses spread operator to only change the password value
 function handleSignupPasswordChange(e: { target: { value: string } }) {
+    setError(null);
     setUserCredentials({
     ...userCredentials,
     password: e.target.value,
@@ -182,7 +186,7 @@ function handleSignupPasswordChange(e: { target: { value: string } }) {
                   value={loginDetails.password}
                   onChange={handleLoginPasswordChange}
                 />
-            <button type="submit">Log In</button>
+            <button className={styles.button} type="submit">Log In</button>
           </form> :
           <form className={styles.formBody} method="post" onSubmit={handleSignupSubmit}>
             <input
@@ -212,12 +216,16 @@ function handleSignupPasswordChange(e: { target: { value: string } }) {
               value={userCredentials.password}
               onChange={handleSignupPasswordChange}
             />
-            <button type="submit">Sign Up</button>
+            <button className={styles.button} type="submit">Sign Up</button>
           </form>
       }
+      { !loading ? <section className={styles.errorContainer}>
+        <p className={styles.errorMessage}>{error}</p>
+      </section> :
+      null}
       <section className={styles.signupText}>
         <p>{loginOrSignup == "login" ? "New to these lands?" : "Already have an account?"}</p>
-        <button onClick={() => setLoginOrSignup(loginOrSignup == "login" ? "signup" : "login")}>{loginOrSignup == "login" ? "Sign Up" : "Login"}</button>
+        <button className={styles.button} onClick={() => {setLoginOrSignup(loginOrSignup == "login" ? "signup" : "login"), setError(null)}}>{loginOrSignup == "login" ? "Sign Up" : "Login"}</button>
       </section>
     </div>
   );

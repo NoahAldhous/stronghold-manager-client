@@ -1,18 +1,25 @@
 @use "../../../app/variables" as *;
 
 .loadingIcon {
+    margin-top: 3rem;
     width: 64px;
+    width: 128px;
     height: 44px;
+    height: 88px;
     position: relative;
     border: 5px solid $selected;
+    border: 10px solid $selected;
     border-radius: 8px;
   }
   .loadingIcon::before {
     content: '';
     position: absolute;
     border: 5px solid $selected;
+    border: 10px solid $selected;
     width: 32px;
+    width: 64px;
     height: 28px;
+    height: 56px;
     border-radius: 50% 50% 0 0;
     left: 50%;
     top: 0;
@@ -26,10 +33,13 @@
     left: 50%;
     top: 50%;
     width: 8px;
+    width: 16px;
     height: 8px;
+    height: 16px;
     border-radius: 50%;
     background-color: $selected;
     box-shadow: 16px 0 $selected, -16px 0 $selected;
+    box-shadow: 32px 0 $selected, -32px 0 $selected;
     animation: flash 0.5s ease-out infinite alternate;
   }
   
@@ -37,13 +47,16 @@
     0% {
       background-color: $highlight;
       box-shadow: 16px 0 $highlight, -16px 0 $selected;
+      box-shadow: 32px 0 $highlight, -32px 0 $selected;
     }
     50% {
       background-color: $selected;;
       box-shadow: 16px 0 $highlight, -16px 0 $highlight;
+      box-shadow: 32px 0 $highlight, -32px 0 $highlight;
     }
     100% {
       background-color: $highlight;
       box-shadow: 16px 0 $selected, -16px 0 $highlight;
+      box-shadow: 32px 0 $selected, -32px 0 $highlight;
     }
   }

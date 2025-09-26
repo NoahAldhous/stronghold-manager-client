@@ -15,7 +15,6 @@
         height: 20%;
         display: flex;
         align-items: center;
-        // background-color: blue;
     }
 
     .loadingContainer{
@@ -29,18 +28,40 @@
 
     .formBody{
         width:100%;
-        height:60%;
+        height:50%;
         // background-color: green;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-bottom: $bottomBorder;
+        // border-bottom: $bottomBorder;
+        position: relative;
 
         .formInput{
-            width: 35%;
-            height: 12.5%;
+            width: 75%;
+            height: 15%;
             margin: 0.5rem;
+            font-size: large;
+            padding: 0 0 0 1rem;
+        }
+
+        .button{
+            width: 25%;
+            height: 2.5rem;
+        }
+
+    }
+    
+    .errorContainer{
+        width: 100%;
+        height: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: $bottomBorder;
+
+        .errorMessage{
+            color:rgb(146, 47, 47);
         }
     }
 
@@ -49,8 +70,14 @@
         height: 20%;
         // background-color: yellow;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .button{
+            height: 30%;
+            width: 25%;
+            cursor: pointer;
+        }
     }
 }
