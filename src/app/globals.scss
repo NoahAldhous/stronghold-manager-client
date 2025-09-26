@@ -18,6 +18,8 @@
     ::-webkit-scrollbar-thumb {
       background: $selected;
     }
+
+    font-family: inherit;
   }
   
   html,
@@ -37,4 +39,26 @@
     color: $text;  // remove from here
     overflow-x: hidden;
     background-color: $background; 
+  }
+
+  input{
+    padding: 0.2rem;
+    border: 1px solid $background;
+  }
+
+  input:focus{
+    border: 1px solid $dark;
+  }
+
+  button{
+    padding: 0.175rem;
+    border: 1px solid $selected;
+    background-color: $highlight;
+    color: $text;
+  }
+
+  button:hover{
+    cursor: pointer;
+    background-color: $selected;
+    border: 1px solid $text;
   }

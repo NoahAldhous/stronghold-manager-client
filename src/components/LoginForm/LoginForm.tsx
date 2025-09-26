@@ -3,25 +3,47 @@ import { useState } from "react";
 import { useAuth } from "contexts/AuthContext";
 import styles from "./styles.module.scss";
 import Link from "next/link";
+import LoadingLock from "components/LoadingSkeleton/LoadingLock/LoadingLock";
+
+type userCredentialsType = {
+  name: string | undefined;
+  email: string | undefined;
+  password: string | undefined;
+}
+
+type loginDetailsType = {
+  email: string | undefined;
+  password: string | undefined;
+}
 
 export default function LoginForm() {
+
+  //switch between login or signup
+  const [loginOrSignup, setLoginOrSignup] = useState("login");
+
+  //state object for sign up form
+  const [userCredentials, setUserCredentials] = useState<userCredentialsType>({
+    name: "",
+    email: "",
+    password: ""
+  })
+
   //create state object for login details
-  const [loginDetails, setLoginDetails] = useState({
+  const [loginDetails, setLoginDetails] = useState<loginDetailsType>({
     email: "",
     password: "",
   });
 
-  //TODO: add an error message pop up in log in fails
+  //TODO: add an error message pop up if log in fails
   const [error, setError] = useState<string | null>(null);
   //TODO: add animated 'logging you in' message whilst loading is true for user assurance
   const [loading, setLoading] = useState(false);
-  const [showLoginForm, setShowLoginForm] = useState(true)
 
-  //get context + auth functions from AuthContext
-  const { userName, isLoggedIn, userId, role, login, logout} = useAuth();
+  //get auth login function from AuthContext
+  const { login } = useAuth();
 
   //triggered on click of login button
-  async function handleSubmit(e) {
+  async function handleLoginSubmit(e) {
     //prevent browser from reloading page
     e.preventDefault();
     setError(null);
@@ -57,48 +79,146 @@ export default function LoginForm() {
   }
 
   //uses spread operator to only change the email value
-  function handleEmailChange(e: { target: { value: string } }) {
+  function handleLoginEmailChange(e: { target: { value: string } }) {
     setLoginDetails({
       ...loginDetails,
       email: e.target.value,
     });
   }
 
+  async function handleSignupSubmit(e) {
+    //prevent browser from reloading page
+    e.preventDefault()
+    setLoading(true)
+
+    //Read the form data
+    const form = e.target;
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/register`,{
+            method: form.method,
+            headers: {
+                "Content-Type": "application/json",                    
+            },
+            body:JSON.stringify(userCredentials)
+        });
+        // if response does not return 200 status
+        if (!res.ok) {
+            if (res.status == 409){
+                throw new Error("Email already in use")
+            } else {
+                throw new Error("Something went wrong")
+            }
+        }
+
+        //if sign up is a success, will return access token
+        const data = await res.json();
+
+        //and log in the user, updating context and storing token in local storage
+        login(data.access_token)
+        
+    } catch (err) {
+        setError(err.message)
+    } finally {
+        setLoading(false)
+    }
+}
+
   //uses spread operator to only change the password value
-  function handlePasswordChange(e: { target: { value: string } }) {
+  function handleLoginPasswordChange(e: { target: { value: string } }) {
     setLoginDetails({
       ...loginDetails,
       password: e.target.value,
     });
   }
 
+  //uses spread operator to only change the email value
+  function handleSignupUserNameChange(e: { target: { value: string } }) {
+    setUserCredentials({
+    ...userCredentials,
+    name: e.target.value,
+    });
+}
+
+//uses spread operator to only change the email value
+function handleSignupEmailChange(e: { target: { value: string } }) {
+    setUserCredentials({
+    ...userCredentials,
+    email: e.target.value,
+    });
+}
+
+//uses spread operator to only change the password value
+function handleSignupPasswordChange(e: { target: { value: string } }) {
+    setUserCredentials({
+    ...userCredentials,
+    password: e.target.value,
+    });
+}
+
   return (
     <div className={styles.formContainer}>
-      <form className={styles.loginForm} method="post" onSubmit={handleSubmit}>
-        <h3 className={styles.cardHeader}>Welcome to Stronghold Manager!</h3>
-        <p>Enter your details to log in</p>
-          <label>
+      <p className={styles.loginText}>{loginOrSignup == "login" ? "Enter your details to log in" : "Create a free account"}</p>
+      {loading == true ? <section className={styles.loadingContainer}>
+          <LoadingLock/>
+        </section>:
+        loginOrSignup == "login" ?
+          <form className={styles.formBody} method="post" onSubmit={handleLoginSubmit}>
+                <input
+                  className={styles.formInput}
+                  required
+                  type="email"
+                  name="email"
+                  placeholder={"email"}
+                  value={loginDetails.email}
+                  onChange={handleLoginEmailChange}
+                />
+                <input
+                  className={styles.formInput}
+                  required
+                  type="password"
+                  name="password"
+                  placeholder="password"
+                  value={loginDetails.password}
+                  onChange={handleLoginPasswordChange}
+                />
+            <button type="submit">Log In</button>
+          </form> :
+          <form className={styles.formBody} method="post" onSubmit={handleSignupSubmit}>
             <input
+              className={styles.formInput}
+              required
+              type="text"
+              name="name"
+              placeholder="username"
+              value={userCredentials.name}
+              onChange={handleSignupUserNameChange}
+            />
+            <input
+              className={styles.formInput}
+              required
               type="email"
               name="email"
-              placeholder={"email"}
-              value={loginDetails.email}
-              onChange={handleEmailChange}
+              placeholder="email"
+              value={userCredentials.email}
+              onChange={handleSignupEmailChange}
             />
-          </label>
-          <label>
             <input
+              className={styles.formInput}
+              required
               type="password"
               name="password"
               placeholder="password"
-              value={loginDetails.password}
-              onChange={handlePasswordChange}
+              value={userCredentials.password}
+              onChange={handleSignupPasswordChange}
             />
-          </label>
-        <button type="submit">Log In</button>
-      </form>
-      <p>First time?</p>
-      <Link href = "/register">Sign Up</Link>
+            <button type="submit">Sign Up</button>
+          </form>
+      }
+      <section className={styles.signupText}>
+        <p>{loginOrSignup == "login" ? "New to these lands?" : "Already have an account?"}</p>
+        <button onClick={() => setLoginOrSignup(loginOrSignup == "login" ? "signup" : "login")}>{loginOrSignup == "login" ? "Sign Up" : "Login"}</button>
+      </section>
     </div>
   );
 }

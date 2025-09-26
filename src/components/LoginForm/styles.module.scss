@@ -5,18 +5,52 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    // background-color: red;
 
-    .loginForm {
-        width: 40%;
+    .loginText{
+        @include cardSection;
+        width: 100%;
+        height: 20%;
+        display: flex;
+        align-items: center;
+        // background-color: blue;
+    }
+
+    .loadingContainer{
+        width: 100%;
         height: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: $bottomBorder;
+    }
+
+    .formBody{
+        width:100%;
+        height:60%;
+        // background-color: green;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        @include cardContainer;
-        box-shadow: $boxShadow;
+        border-bottom: $bottomBorder;
 
+        .formInput{
+            width: 35%;
+            height: 12.5%;
+            margin: 0.5rem;
+        }
+    }
+
+    .signupText{
+        width: 100%;
+        height: 20%;
+        // background-color: yellow;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
     }
 }
