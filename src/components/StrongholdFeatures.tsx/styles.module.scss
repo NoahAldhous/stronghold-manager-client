@@ -1,0 +1,24 @@
+@use "../../app/variables" as *;
+
+.featuresContainer{
+    height: 100%;
+    width: 100%;
+    // background-color: pink;
+
+    .textItem{
+        width: 100%;
+        border-bottom: $bottomBorder;
+        padding: 1rem 0;
+
+        .itemName{
+            text-transform: capitalize;
+            font-size: medium;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .itemInfo{
+            font-size: small;
+        }
+    }
+}

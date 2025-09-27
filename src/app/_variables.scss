@@ -10,11 +10,16 @@ $column-width: 8.33vw;
 $half-column-width: $column-width / 2;
 
 //Colours
-$background : #5a5f72;
+// $background : #5a5f72;
+// $background : #4e4553;
+$background: rgb(84, 84, 84);
 $dark: #292929;
-$mid : #cbcfdd;
+// $mid : #cbcfdd;
+$mid : #cdcbca;
 $highlight : #dedede;
-$selected : #B0B0B0;
+$offwhite : #f4f4f4;
+// $selected : #B0B0B0;
+$selected : rgb(148, 147, 147);
 $text : #0E131B;
 
 //Shadow

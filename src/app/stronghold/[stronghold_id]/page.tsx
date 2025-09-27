@@ -3,6 +3,7 @@ import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { act, use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
+import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
 
 export default function Page({
   params,
@@ -27,11 +28,7 @@ export default function Page({
       {
         title: "",
         description: "",
-      },
-      {
-        title: "",
-        description: "",
-      },
+      }
     ],
     stats: {
       morale_bonus: 0,
@@ -66,7 +63,7 @@ export default function Page({
         "stronghold actions",
         "demesne effects",
         `${stronghold.stronghold_type} features`,
-        "class feature improvment",
+        "class feature improvement",
       ],
     },
     {
@@ -264,7 +261,14 @@ export default function Page({
                 </section>
               </section>
               <section className={styles.strongholdMenuText}>
-                <p></p>
+                <StrongholdFeatures 
+                  activeButton={activeButton}
+                  strongholdActions={stronghold.class.stronghold_actions}
+                  demesneEffects={stronghold.class.demesne_effects}
+                  typeFeatures={stronghold.features}
+                  classFeatureImprovement={stronghold.class.class_feature_improvement}
+                  strongholdType={stronghold.stronghold_type}
+                />
               </section>
             </section>
           </section>
