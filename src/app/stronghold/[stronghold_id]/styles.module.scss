@@ -19,7 +19,7 @@
         justify-content: space-between;
 
         .strongholdSheet{
-            width: 73%;
+            width: 78%;
             height: full;
             display: flex;
             flex-direction: column;
@@ -195,7 +195,7 @@
         }
 
         .contextualPanel{
-            width: 25%;
+            width: 20%;
             height: full;
             // background-color: aliceblue;
             @include cardContainer;
