@@ -30,7 +30,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/components/CreateItemModal"  ],
   "exclude": [
     "node_modules"
   ]

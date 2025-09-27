@@ -1,4 +1,7 @@
+"use client";
+
 import NavBar from "components/NavBar/NavBar"
+import { useState } from "react";
 import { AuthProvider } from "contexts/AuthContext"
 import {IBM_Plex_Mono} from "next/font/google"
 import "./globals.scss";
@@ -11,12 +14,15 @@ export default function RootLayout({
 }: {
     children:React.ReactNode
 }) {
+
+    const[screenEffect, setScreenEffect] = useState(true);
+
     return (
         <html lang="en">
             <body className={plexMono.className}>
                 <AuthProvider>
-                    <ScreenEffect/>
-                    <NavBar/>
+                    { screenEffect ? <ScreenEffect/> : null}
+                    <NavBar screenEffect={screenEffect} setScreenEffect={setScreenEffect}/>
                     {children}
                 </AuthProvider>
             </body>

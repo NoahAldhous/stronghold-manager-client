@@ -16,6 +16,7 @@
         align-items: center;
         justify-content: center;
         @include cardContainer;
+        box-shadow: $boxShadow;
 
         .loadingContainer{
             width: 60%;

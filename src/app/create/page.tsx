@@ -1,10 +1,11 @@
 "use client";
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./styles.module.scss";
-import CreateItemModal from "components/CreateItemModal.tsx/CreateItemModal";
+import CreateItemModal from "components/CreateItemModal/CreateItemModal";
+import StrongholdCreator from "components/StrongholdCreator/StrongholdCreator";
 
 export default function Page() {
   const router = useRouter();
@@ -196,7 +197,8 @@ export default function Page() {
   return (
     <main className={styles.main}>
       <section className={styles.container}>
-        <div className={styles.form}>
+        <StrongholdCreator/>
+        {/* <div className={styles.form}>
           <div className={styles.header}>
             <p className={styles.headerText}>Create a Stronghold</p>
           </div>
@@ -315,7 +317,7 @@ export default function Page() {
                   </section>
               : null
             ))}
-        </div>
+        </div> */}
       </section>
       {displayModal ? (
         <CreateItemModal loading={loading} strongholdId={strongholdId}/>
