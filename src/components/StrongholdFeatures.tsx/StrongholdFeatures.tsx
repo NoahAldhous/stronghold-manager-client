@@ -43,21 +43,21 @@ export default function StrongholdFeatures({
             case "stronghold":
                 switch(activeButton.subCategory){
                     case "stronghold actions":
-                        return (strongholdActions.map((action) =>
-                            <div className={styles.textItem}>
+                        return (strongholdActions.map((action, index) =>
+                            <div key={index} className={styles.textItem}>
                                 <p className={styles.itemName}>{action.name}</p>
                                 <p className={styles.itemInfo}>{action.description}</p>
                             </div>
                         ))
                     case "demesne effects":
-                        return (demesneEffects.map((effect) =>
-                            <div className={styles.textItem}>
+                        return (demesneEffects.map((effect, index) =>
+                            <div key={index} className={styles.textItem}>
                                 <p className={styles.itemInfo}>{effect.description}</p>
                             </div>
                         ))
                     case `${strongholdType} features`:
-                        return (typeFeatures.map((feature) =>
-                            <div className={styles.textItem}>
+                        return (typeFeatures.map((feature, index) =>
+                            <div key={index} className={styles.textItem}>
                                 <p className={styles.itemName}>{feature.title}</p>
                                 <p className={styles.itemInfo}>{feature.description}</p>
                             </div>
@@ -76,9 +76,8 @@ export default function StrongholdFeatures({
                 return <p>artisans</p>;
             case "followers":
                 return <p>followers</p>;
-
             default:
-                return <p>nothing!</p>
+                return <p>nothing selected!</p>
         }
     }
 

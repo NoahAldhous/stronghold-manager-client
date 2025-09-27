@@ -36,12 +36,13 @@ export default function DeleteItemModal({deleteItemModal, setDeleteItemModal, li
     return(
         <main className={styles.modalBackground}>
             <section className={styles.modalMenu}>
+                <section className={styles.cardHeader}>delete stronghold</section>
                 <section className={styles.modalTextContainer}>
                     <p className={styles.modalText}>Are you sure you want to permanently delete this stronghold?</p>
                 </section>
                 <section className={styles.modalButtonContainer}>
                     <button className={styles.modalButton} onClick={handleCancel}>cancel</button>
-                    <button className={styles.modalButton} onClick={handleDelete}>delete</button>
+                    <button className={`${styles.modalButton} ${styles.deleteButton}`} onClick={handleDelete}>delete</button>
                 </section>
             </section>
         </main>

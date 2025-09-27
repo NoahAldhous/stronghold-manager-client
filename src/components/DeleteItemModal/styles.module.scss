@@ -1,10 +1,12 @@
+@use "../../app/variables" as *;
+
 .modalBackground{
     width: 100dvw;
     height: 100dvh;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 3;
     background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
@@ -12,30 +14,46 @@
 
     .modalMenu{
         width: 50%;
-        height: 40%;
-        background-color: lightslategray;
-        opacity: 100%;
+        height: 40%;;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
+        @include cardContainer;
 
         .modalTextContainer{
-            font-size: x-large;
+            font-size: large;
+            border-bottom: $bottomBorder;
+            width: 100%;
+            height: 35%;
+            display: flex;
+            align-items: center;
         }
 
         .modalButtonContainer{
-            width: 80%;
+            width: 100%;
+            height: 65%;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
+            align-items: center;
 
             .modalButton{
-                font-size: large;
-                padding: 5px;
-                border-radius: 10px;
-                border: none;
+                font-size: medium;
+                padding: 1rem;
                 cursor: pointer;
+                text-transform: capitalize;
+            }
+
+            .deleteButton{
+                border: 1px solid $warning;
+                color: $warning;
+
+            }
+            .deleteButton:hover{
+                color: $offwhite;
+                background-color: $warning;
+                border: 1px solid $offwhite;
             }
         }
     }
