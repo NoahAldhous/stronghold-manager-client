@@ -60,6 +60,7 @@ export default function Page({
     {
       category: "stronghold",
       subCategories: [
+        "all",
         "stronghold actions",
         "demesne effects",
         `${stronghold.stronghold_type} features`,

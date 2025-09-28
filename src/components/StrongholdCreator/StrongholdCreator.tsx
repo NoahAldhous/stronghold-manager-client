@@ -34,6 +34,7 @@ export default function StrongholdCreator(){
     const [strongholdTypes, setStrongholdTypes] = useState([
         {
           type_name: "",
+          type_description:"",
           id: 0,
         },
     ]);
@@ -351,6 +352,44 @@ export default function StrongholdCreator(){
         };
     };
 
+    function renderInfoCard(){
+        switch(progress){
+            case 1:
+                        return <div className={styles.infoCard}>
+                            <p className={styles.type}>the {userStronghold.stronghold_type}</p>
+                            {strongholdTypes.map((item) =>
+                                item.type_name == userStronghold.stronghold_type ?
+                                <p className={styles.summary}>
+                                    {item.type_description}
+                                </p> 
+                                : null
+                            )}
+                            <div>
+                                <div>
+                                    <p>Toughness</p>
+                                    <p></p>
+                                </div>
+                                <div>
+                                    <p>Morale Bonus</p>
+                                    <p></p>
+                                </div>
+                                <div>
+                                    <p>Size</p>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+            case 2:
+                return <div>2</div>;
+            case 3: 
+                return <div>3</div>;
+            case 4:
+                return <div>4</div>;
+            default:
+                return <div>default</div>;
+        };
+    }
+
     // USE EFFECTS
 
     //redirect user to login/signup page if not logged in
@@ -405,7 +444,10 @@ export default function StrongholdCreator(){
             </section>
         </section>
         <section className={styles.card}>
-        <section className={styles.cardHeader}>{userStronghold.stronghold_type}</section>
+            <section className={styles.cardHeader}>information</section>
+            <section className={styles.cardBody}>
+                {renderInfoCard()}
+            </section>
         </section>
         {displayModal ? (
         <CreateItemModal loading={loading} strongholdId={strongholdId}/>

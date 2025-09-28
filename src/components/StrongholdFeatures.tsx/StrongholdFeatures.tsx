@@ -46,7 +46,7 @@ export default function StrongholdFeatures({
                 switch(activeButton.subCategory){
                     case "stronghold actions":
                         return <>
-                            <p className={styles.rulesText}>{`On initiative count 20 (losing initiative ties, the ${characterClass} can take a stronghold action with one of the following effects. They must be in the same hex or province as their stronghold and cannot use the same effect again until after a short or long rest.`}</p>
+                            <p className={styles.rulesText}>{`On initiative count 20 (losing initiative ties), the ${characterClass} can take a stronghold action with one of the following effects. They must be in the same hex or province as their stronghold and cannot use the same effect again until after a short or long rest.`}</p>
                             {strongholdActions.map((action, index) =>
                                 <div key={index} className={styles.textItem}>
                                     <p className={styles.itemName}>{action.name}</p>
