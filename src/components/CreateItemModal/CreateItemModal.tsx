@@ -1,4 +1,5 @@
 "use client";
+import LoadingBar from "components/LoadingUI/LoadingBar/LoadingBar";
 import styles from "./styles.module.scss";
 import Link from "next/link";
 
@@ -7,13 +8,22 @@ export default function CreateItemModal({loading, strongholdId}){
     return(
         <main className={styles.modalBackground}>
             <div className={styles.modalMenu}>
-                {loading ? <div>loading...</div> :
-                <div>
-                    <p>Success! Your stronghold has been created</p>
-                    <Link href="/">Back to dashboard</Link>
-                    <Link href={`/stronghold/${strongholdId}`}>
-                        Go to my Stronghold
-                    </Link>
+                <div className={styles.cardHeader}>
+                    {loading ? "creating stronghold"
+                    : "stronghold created"}
+                </div>
+                {loading ? <div className={styles.loading}>
+                    <p>Loading...</p>
+                    <LoadingBar colour="dark"/>
+                </div> :
+                <div className={styles.success}>
+                    <p className={styles.text}>Success! Your stronghold has been created.</p>
+                    <section className={styles.buttonContainer}>
+                        <Link className={styles.button} href="/">Back to dashboard</Link>
+                        <Link className={styles.button} href={`/stronghold/${strongholdId}`}>
+                            Go to my Stronghold
+                        </Link>
+                    </section>
                 </div>
                 }
             </div>

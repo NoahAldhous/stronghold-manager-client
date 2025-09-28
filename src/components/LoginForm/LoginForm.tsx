@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "contexts/AuthContext";
 import styles from "./styles.module.scss";
 import Link from "next/link";
-import LoadingLock from "components/LoadingSkeleton/LoadingLock/LoadingLock";
+import LoadingLock from "components/LoadingUI/LoadingLock/LoadingLock";
 
 type userCredentialsType = {
   name: string | undefined;

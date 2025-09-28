@@ -1,3 +1,5 @@
+@use "../../app/variables" as *;
+
 .modalBackground{
     width: 100dvw;
     height: 100dvh;
@@ -13,10 +15,57 @@
     .modalMenu{
         height: 40%;
         width: 50%;
-        background-color: azure;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        @include cardContainer;
+
+        .loading{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .success{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .text{
+                width: 100%;
+                height: 35%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+    
+            .buttonContainer{
+                width: 100%;
+                height: 35%;
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+    
+                .button{
+                    width: 30%;
+                    padding: 0.5rem;
+                    text-decoration: none;
+                    border: 1px solid $selected;
+                    background-color: $highlight;
+                    color: $text;
+                    display: flex;
+                    justify-content: center;
+                }
+        
+                .button:hover{
+                    color: $offwhite;
+                    background-color: $selected;
+                    border: 1px solid $text;
+                }
+            }
+        }
+
     }
 }
