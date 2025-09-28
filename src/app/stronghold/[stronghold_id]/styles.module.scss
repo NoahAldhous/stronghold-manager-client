@@ -31,11 +31,13 @@
 
                 .strongholdName{
                     font-size: xx-large;
+                    text-shadow: $textShadow;
                 }
 
                 .strongholdInfo{
                     font-size: larger;
                     text-transform: capitalize;
+                    text-shadow: $textShadow;
                 }
             }
 
@@ -67,6 +69,7 @@
                         align-items: center;
                         justify-content: space-evenly;
                         @include cardContainer;
+                        box-shadow: $boxShadow;
                     }
                 }
 
@@ -78,6 +81,7 @@
                     justify-content: space-around;
                     align-items: center;
                     @include cardContainer;
+                    box-shadow: $boxShadow;
 
                     .statContainer{
                         display: flex;
@@ -129,12 +133,14 @@
                     width: 32.5%;
                     // background-color: white;
                     @include cardContainer;
+                    box-shadow: $boxShadow;
                 }
 
                 .strongholdMenu{
                     height: 100%;
                     width: 65%;
                     @include cardContainer;
+                    box-shadow: $boxShadow;
 
                     .strongholdMenuButtons{
                         width: 100%;
@@ -199,6 +205,7 @@
             height: full;
             // background-color: aliceblue;
             @include cardContainer;
+            box-shadow: $boxShadow;
         }
     }
 
