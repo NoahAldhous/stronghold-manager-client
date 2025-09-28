@@ -8,15 +8,21 @@
     margin: 0;
 
     ::-webkit-scrollbar {
-      width: 1rem;
+      width: 0.75rem;
+
     }
 
     ::-webkit-scrollbar-track {
-      background: $mid;
+      background: $highlight;
+      border: 1px solid $highlight;
+
     }
 
     ::-webkit-scrollbar-thumb {
       background: $selected;
+      border-width: 0px 1px; 
+      border-style: solid;
+      border-color: $highlight;
     }
 
     font-family: inherit;
