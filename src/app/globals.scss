@@ -63,3 +63,10 @@
     border: 1px solid $text;
     color: $offwhite;
   }
+
+  button:disabled{
+    border: 1px solid $selected-transparent;
+    background-color: $highlight-transparent;
+    color: $text-transparent;
+    pointer-events: none;
+  }
