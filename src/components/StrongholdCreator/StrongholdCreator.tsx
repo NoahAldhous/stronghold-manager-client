@@ -239,7 +239,7 @@ export default function StrongholdCreator(){
                 return <div className={styles.content}>
                     <div className={styles.textContainer}>
                         <p className={styles.text}>
-                            This determines you stronghold&apos;s stats, size and cost, as well as it&apos;s core features.
+                            This determines your stronghold&apos;s stats, size and cost, as well as it&apos;s core features.
                         </p>
                     </div>
                     <div className={styles.buttonContainer}>
