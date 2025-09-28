@@ -206,6 +206,20 @@
             // background-color: aliceblue;
             @include cardContainer;
             box-shadow: $boxShadow;
+
+            .infoTitle{
+                font-size: medium;
+                width: 100%;
+                border-bottom: $bottomBorder;
+                text-transform: capitalize;
+                padding: 0.5rem 0;
+            }
+
+            .info{
+                font-size: small;
+                padding: 0.5rem 0;
+                border-bottom: $bottomBorder;
+            }
         }
     }
 

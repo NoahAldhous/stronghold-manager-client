@@ -268,6 +268,7 @@ export default function Page({
                   typeFeatures={stronghold.features}
                   classFeatureImprovement={stronghold.class.class_feature_improvement}
                   strongholdType={stronghold.stronghold_type}
+                  characterClass={stronghold.class.name}
                 />
               </section>
             </section>
@@ -277,8 +278,8 @@ export default function Page({
           <div className={styles.cardHeader}>
             contextual information
           </div>
-          <h3>{contextualInfo.title}</h3>
-          <p>{contextualInfo.description}</p>
+          <p className={styles.infoTitle}>{contextualInfo.title}</p>
+          <p className={styles.info}>{contextualInfo.description}</p>
         </section>
       </section>
     </main>

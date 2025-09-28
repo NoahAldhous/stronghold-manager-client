@@ -21,7 +21,8 @@ type StrongholdFeaturesType = {
         description: string,
         restriction: string
     },
-    strongholdType: string
+    strongholdType: string,
+    characterClass: string;
 }
 
 export default function StrongholdFeatures({
@@ -30,7 +31,8 @@ export default function StrongholdFeatures({
     demesneEffects,
     typeFeatures,
     classFeatureImprovement,
-    strongholdType
+    strongholdType,
+    characterClass
     }:StrongholdFeaturesType){
 
     //pass prop activeButton from parent
@@ -43,18 +45,24 @@ export default function StrongholdFeatures({
             case "stronghold":
                 switch(activeButton.subCategory){
                     case "stronghold actions":
-                        return (strongholdActions.map((action, index) =>
-                            <div key={index} className={styles.textItem}>
-                                <p className={styles.itemName}>{action.name}</p>
-                                <p className={styles.itemInfo}>{action.description}</p>
-                            </div>
-                        ))
+                        return <>
+                            <p className={styles.rulesText}>{`On initiative count 20 (losing initiative ties, the ${characterClass} can take a stronghold action with one of the following effects. They must be in the same hex or province as their stronghold and cannot use the same effect again until after a short or long rest.`}</p>
+                            {strongholdActions.map((action, index) =>
+                                <div key={index} className={styles.textItem}>
+                                    <p className={styles.itemName}>{action.name}</p>
+                                    <p className={styles.itemInfo}>{action.description}</p>
+                                </div>
+                            )}
+                        </>
                     case "demesne effects":
-                        return (demesneEffects.map((effect, index) =>
-                            <div key={index} className={styles.textItem}>
-                                <p className={styles.itemInfo}>{effect.description}</p>
-                            </div>
-                        ))
+                        return <>
+                            <p className={styles.rulesText}>{`The ${characterClass}'s stronghold creates one or more of the following effects at the GM's discretion.`}</p>
+                            {demesneEffects.map((effect, index) =>
+                                <div key={index} className={styles.textItem}>
+                                    <p className={styles.itemInfo}>{effect.description}</p>
+                                </div>
+                            )}
+                        </>
                     case `${strongholdType} features`:
                         return (typeFeatures.map((feature, index) =>
                             <div key={index} className={styles.textItem}>
@@ -68,7 +76,6 @@ export default function StrongholdFeatures({
                             <p className={styles.itemInfo}>{classFeatureImprovement.description}</p>
                             <p className={styles.itemInfo}>{classFeatureImprovement.restriction}</p>
                         </div>
-
                 }
             case "units":
                 return <p>units</p>;
