@@ -273,7 +273,7 @@ export default function StrongholdCreator(){
                     </div>
                     <div className={styles.buttonContainer}>
                         <p className={styles.extraText}>
-                            The ruler's class. Every stronghold improves a class's signature feature.
+                            The ruler&apos;s class. Every stronghold improves a class&apos;s signature feature.
                         </p>
                         <div className={styles.classButtonsList}>
                             {strongholdClasses.map((item) => {
