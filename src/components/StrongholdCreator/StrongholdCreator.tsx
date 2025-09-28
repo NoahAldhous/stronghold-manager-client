@@ -227,7 +227,7 @@ export default function StrongholdCreator(){
             case 2:
                 return <p className={styles.introText}>choose your ruler</p>;
             case 3:
-                return <p className={styles.introText}>set your stronghold's level</p>;
+                return <p className={styles.introText}>set your stronghold&apos;s level</p>;
             case 4:
                 return <p className={styles.introText}>give it a name</p>
         }
@@ -239,7 +239,7 @@ export default function StrongholdCreator(){
                 return <div className={styles.content}>
                     <div className={styles.textContainer}>
                         <p className={styles.text}>
-                            This determines you stronghold's stats, size and cost, as well as it's core features.
+                            This determines you stronghold&apos;s stats, size and cost, as well as it&apos;s core features.
                         </p>
                     </div>
                     <div className={styles.buttonContainer}>
