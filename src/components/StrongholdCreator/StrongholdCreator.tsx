@@ -39,6 +39,31 @@ export default function StrongholdCreator(){
         },
     ]);
 
+    const [typeFeatures, setTypeFeatures] = useState([
+        {
+            featureDescription: "",
+            featureName: "",
+            id: 0,
+            typeId: 0,
+            typeName: ""
+        }
+    ])
+
+    const [typeStats, setTypeStats] = useState({stats: {
+        keep: {
+            level1: {
+            costToBuild: 0,
+            costToUpgrade: 0,
+            fortificationBonus: 0,
+            size: 0,
+            level:0,
+            timeToBuild: 0,
+            timeToUpgrade: 0,
+            toughness: 0
+            }
+        }
+    }})
+
     //user options to be fetched from database
     const [strongholdClasses, setStrongholdClasses] = useState([{
         id: 0,
@@ -185,10 +210,48 @@ export default function StrongholdCreator(){
         }
     };
 
+    async function fetchStrongholdTypeFeatures(){
+        try {
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/strongholds/types/features`
+            );
+
+            if(!res.ok) {
+                throw new Error("Could not fetch data");
+            }
+
+            const data = await res.json();
+            setTypeFeatures(data.data);
+        } catch (err) {
+            console.log(err.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function fetchStrongholdTypeStats(){
+        try {
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/strongholds/types/stats`
+            );
+
+            if(!res.ok) {
+                throw new Error("Could not fetch data");
+            }
+
+            const data = await res.json();
+            setTypeStats(data.data[0])
+        } catch (err) {
+            console.log(err.message);
+        } finally {
+            setLoading(false)
+        }
+    }
+
     async function handleSubmit() {
         setLoading(true);
         setDisplayModal(true);
-    
+  
         try {
           const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/strongholds/create`,
@@ -357,32 +420,70 @@ export default function StrongholdCreator(){
             case 1:
                         return <div className={styles.infoCard}>
                             <p className={styles.type}>the {userStronghold.stronghold_type}</p>
-                            {strongholdTypes.map((item) =>
+                            {strongholdTypes.map((item, index) =>
                                 item.type_name == userStronghold.stronghold_type ?
-                                <p className={styles.summary}>
+                                <p key={index} className={styles.summary}>
                                     {item.type_description}
                                 </p> 
                                 : null
                             )}
-                            <div>
-                                <div>
-                                    <p>Toughness</p>
-                                    <p></p>
-                                </div>
-                                <div>
-                                    <p>Morale Bonus</p>
-                                    <p></p>
-                                </div>
-                                <div>
+                            <div className={styles.statsContainer}>
+                                <p className={styles.containerTitle}>stats</p>
+                                <div className={styles.stat}>
                                     <p>Size</p>
-                                    <p></p>
+                                    <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `d${typeStats.stats[userStronghold.stronghold_type]?.level1?.size}`}</p>
                                 </div>
+                                <div className={styles.stat}>
+                                    <p>Toughness</p>
+                                    <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `${typeStats.stats[userStronghold.stronghold_type]?.level1?.toughness}`}</p>
+                                </div>
+                                <div className={styles.stat}>
+                                    <p>Unit Morale Bonus</p>
+                                    <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `+${typeStats.stats[userStronghold.stronghold_type]?.level1?.fortificationBonus}/Level`}</p>
+                                </div>
+                            </div>
+                            <div className={styles.featuresContainer}>
+                                <p className={styles.containerTitle}>features</p>
+                                {typeFeatures.map((item,index) =>
+                                    item.typeName == userStronghold.stronghold_type ?
+                                        <div key={index} className={styles.feature}>
+                                            <p className={styles.name}>{item.featureName}</p>
+                                            <p className={styles.description}>{item.featureDescription}</p>
+                                        </div> 
+                                        : null
+                                    )}
                             </div>
                         </div>
             case 2:
                 return <div>2</div>;
             case 3: 
-                return <div>3</div>;
+                return <div className={styles.infoCard}>
+                    <p className={styles.summary}>Let the party know how much time and gold it will take</p>
+                    <div className={styles.levelStatsContainer}>
+                                <p className={styles.containerTitle}>stats</p>
+                                <div className={styles.levelStat}>
+                                    <p>Size</p>
+                                    <div className={styles.numberContainer}>
+                                        <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `d${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.size}`}</p>
+                                        <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.size - typeStats.stats[userStronghold.stronghold_type]?.level1?.size}` }</p>
+                                </div>
+                                    </div>
+                                <div className={styles.levelStat}>
+                                    <p>Toughness</p>
+                                    <div className={styles.numberContainer}>
+                                        <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.toughness}`}</p>
+                                        <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.toughness - typeStats.stats[userStronghold.stronghold_type]?.level1?.toughness}` }</p>
+                                    </div>
+                                </div>
+                                <div className={styles.levelStat}>
+                                    <p>Unit Morale Bonus</p>
+                                    <div className={styles.numberContainer}>
+                                        <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.fortificationBonus}`}</p>
+                                        <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.fortificationBonus - typeStats.stats[userStronghold.stronghold_type]?.level1?.fortificationBonus}` }</p>
+                                    </div>
+                                </div>
+                            </div>
+                </div>;
             case 4:
                 return <div>4</div>;
             default:
@@ -399,6 +500,8 @@ export default function StrongholdCreator(){
         } else {
         fetchStrongholdTypes();
         fetchStrongholdClasses();
+        fetchStrongholdTypeStats();
+        fetchStrongholdTypeFeatures();
         }
     }, [isLoggedIn]);
 

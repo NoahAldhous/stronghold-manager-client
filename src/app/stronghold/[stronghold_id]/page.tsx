@@ -56,6 +56,7 @@ export default function Page({
       ],
     },
   });
+
   const strongholdMenuButtons = [
     {
       category: "stronghold",
@@ -86,6 +87,7 @@ export default function Page({
       ],
     },
   ];
+  
   const [contextualInfo, setContextualInfo] = useState({
     title: "",
     description: "",
