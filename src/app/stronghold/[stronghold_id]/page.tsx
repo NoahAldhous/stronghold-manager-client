@@ -182,9 +182,9 @@ export default function Page({
               </div>
             </section>
             <section className={styles.featuresContainer}>
-              <section className={styles.features}>
+              <section className={`${styles.features} ${styles.benefits}`}>
                 <div className={styles.cardHeader}>
-                  {stronghold.stronghold_type} features
+                  {stronghold.stronghold_type} benefits
                 </div>
                 {stronghold.features.map((item, index) => {
                   return (
