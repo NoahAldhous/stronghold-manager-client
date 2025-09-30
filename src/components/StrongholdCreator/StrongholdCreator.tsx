@@ -30,6 +30,15 @@ export default function StrongholdCreator(){
     //create loading UI when queries are being made /data is being fetched
     const [loading, setLoading] = useState(false);
 
+    //acquisition type. TODO: update API and add this to userStronghold
+    const [activeAcquisitionType, setActiveAcquisitionType] = useState({
+        type:"built",
+        displayName:"built from scratch",
+        description:"You have raised this stronghold from the ground up. It is built in your vision, may it serve you well.",
+        multiplierText:"Standard time and build costs.",
+        multiplier: 1
+    });
+
     //user options to be fetched from database
     const [strongholdTypes, setStrongholdTypes] = useState([
         {
@@ -103,21 +112,24 @@ export default function StrongholdCreator(){
     const levels = [1, 2, 3, 4, 5];
     const acquisitionTypes = [
         {
-            name: "built",
-            displayName: "built from scratch",
-            description: "",
+            type:"built",
+            displayName:"built from scratch",
+            description:"You have raised this stronghold from the ground up. It is built in your vision, may it serve you well.",
+            multiplierText:"Standard time and build costs.",
             multiplier: 1
         },
         {
-            name: "repaired",
-            displayName: "repaired a ruin",
-            description: "",
+            type:"repaired",
+            displayName:"repaired a ruin",
+            description:"You have claimed an old ruined stronghold. A bit of work and it will good as new!",
+            multiplierText:"Time and build costs are halved.",
             multiplier: 0.5
         },
         {
-            name: "bestowed",
-            displayName: "bestowed upon",
-            description: "",
+            type:"bestowed",
+            displayName:"bestowed upon",
+            description:"You were gifted this stronghold from a powerful figure, such as a noble, monarch, or a wealthy relative.",
+            multiplierText:"No build costs. Available immediately.",
             multiplier: 0
         }
     ]
@@ -381,8 +393,9 @@ export default function StrongholdCreator(){
                         {acquisitionTypes.map((item, index) => {
                             return (
                                 <button
+                                    onClick={() => setActiveAcquisitionType(item)}
                                     key={index}
-                                    className={`${styles.button} ${styles.acquisitionButton}`}    
+                                    className={`${styles.button} ${styles.acquisitionButton} ${item.type == activeAcquisitionType.type ? styles.activeButton : ""}`}    
                                 >
                                     {item.displayName}
                                 </button>
@@ -419,14 +432,16 @@ export default function StrongholdCreator(){
         switch(progress){
             case 1:
                         return <div className={styles.infoCard}>
-                            <p className={styles.type}>the {userStronghold.stronghold_type}</p>
-                            {strongholdTypes.map((item, index) =>
-                                item.type_name == userStronghold.stronghold_type ?
-                                <p key={index} className={styles.summary}>
-                                    {item.type_description}
-                                </p> 
-                                : null
-                            )}
+                            <div className={styles.titleContainer}>
+                                <p className={styles.title}>the {userStronghold.stronghold_type}</p>
+                                {strongholdTypes.map((item, index) =>
+                                    item.type_name == userStronghold.stronghold_type ?
+                                    <p key={index} className={styles.summary}>
+                                        {item.type_description}
+                                    </p> 
+                                    : null
+                                )}
+                            </div>
                             <div className={styles.statsContainer}>
                                 <p className={styles.containerTitle}>stats</p>
                                 <div className={styles.stat}>
@@ -455,34 +470,100 @@ export default function StrongholdCreator(){
                             </div>
                         </div>
             case 2:
-                return <div>2</div>;
+                return <div className={styles.infoCard}>
+                    {strongholdClasses.map((item, index) => item.name === userStronghold.stronghold_class ? 
+                        <div key={index} className={styles.titleContainer}>
+                            <div className={styles.title}>The {item.name}'s {item.strongholdName}</div>
+                            <div className={styles.summary}>{item.strongholdDescription}</div>
+                        </div>
+                         : null)}
+                        <div className={styles.classFeaturesContainer}>
+                            {strongholdClasses.map((item,index) => 
+                                item.name == userStronghold.stronghold_class ?
+                                <div className={styles.innerContainer} key={index}>
+                                    <section className={styles.section}>
+                                        <div className={styles.sectionHeader}>class feature improvement</div>
+                                        <div className={styles.subHeader}>{item.featureImprovement.name}</div>
+                                        <div className={styles.text}>{item.featureImprovement.description}</div>
+                                        <div className={styles.text}>{item.featureImprovement.restriction}</div>
+                                        <br/>
+                                    </section>
+                                    <section className={styles.section}>
+                                        <div className={styles.sectionHeader}>demesne effects</div>
+                                        {item.demesneEffects.map((effect,index) =>
+                                            <div className={styles.subSection} key={index}>
+                                                <div className={styles.text}>{effect.description}</div>
+                                                <br/>
+                                            </div>
+                                        )}
+                                    </section>
+                                    <section className={styles.section}>
+                                        <div className={styles.sectionHeader}>stronghold actions</div>
+                                        
+                                        {item.strongholdActions.map((action,index) =>
+                                            <div className={styles.subSection} key={index}>
+                                                <div className={styles.subHeader}>{action.name}</div>
+                                                <div className={styles.text}>{action.description}</div>
+                                                <br/>
+                                            </div>
+                                        )}
+                                    </section>
+                                </div>
+                                : null
+                            )}
+                        </div>
+                </div>;
             case 3: 
                 return <div className={styles.infoCard}>
-                    <p className={styles.summary}>Let the party know how much time and gold it will take</p>
-                    <div className={styles.levelStatsContainer}>
-                                <p className={styles.containerTitle}>stats</p>
-                                <div className={styles.levelStat}>
-                                    <p>Size</p>
-                                    <div className={styles.numberContainer}>
-                                        <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `d${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.size}`}</p>
-                                        <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.size - typeStats.stats[userStronghold.stronghold_type]?.level1?.size}` }</p>
-                                </div>
-                                    </div>
-                                <div className={styles.levelStat}>
-                                    <p>Toughness</p>
-                                    <div className={styles.numberContainer}>
-                                        <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.toughness}`}</p>
-                                        <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.toughness - typeStats.stats[userStronghold.stronghold_type]?.level1?.toughness}` }</p>
-                                    </div>
-                                </div>
-                                <div className={styles.levelStat}>
-                                    <p>Unit Morale Bonus</p>
-                                    <div className={styles.numberContainer}>
-                                        <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.fortificationBonus}`}</p>
-                                        <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.fortificationBonus - typeStats.stats[userStronghold.stronghold_type]?.level1?.fortificationBonus}` }</p>
-                                    </div>
-                                </div>
+                    <div className={styles.titleContainer}>
+                        <p className={styles.summary}>Let the party know how much time and gold it will take</p>
+                    </div>
+                    <section className={styles.levelStatsContainer}>
+                        <p className={styles.containerTitle}>stats</p>
+                        <div className={styles.levelStat}>
+                            <p>Size</p>
+                            <div className={styles.numberContainer}>
+                                <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `d${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.size}`}</p>
+                                <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.size - typeStats.stats[userStronghold.stronghold_type]?.level1?.size}` }</p>
+                        </div>
                             </div>
+                        <div className={styles.levelStat}>
+                            <p>Toughness</p>
+                            <div className={styles.numberContainer}>
+                                <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.toughness}`}</p>
+                                <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.toughness - typeStats.stats[userStronghold.stronghold_type]?.level1?.toughness}` }</p>
+                            </div>
+                        </div>
+                        <div className={styles.levelStat}>
+                            <p>Unit Morale Bonus</p>
+                            <div className={styles.numberContainer}>
+                                <p>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? "-" : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.fortificationBonus}`}</p>
+                                <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `+${typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.fortificationBonus - typeStats.stats[userStronghold.stronghold_type]?.level1?.fortificationBonus}` }</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section className={styles.acquisitionContainer}>
+                        <p className={styles.containerTitle}>Acquisition: {activeAcquisitionType.displayName}</p>
+                        <p className={styles.acquisitionText}>{activeAcquisitionType.description}</p>
+                        <p className={styles.acquisitionText}>{activeAcquisitionType.multiplierText}</p>
+                    </section>
+                    <section className={styles.constructionContainer}>
+                        <p className={styles.containerTitle}>construction costs</p>
+                        <div className={styles.levelStat}>
+                            <p>Cost To Build</p>
+                            <div className={styles.numberContainer}>
+                                <p>{typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.costToBuild * activeAcquisitionType.multiplier} gp</p>
+                                <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `x${activeAcquisitionType.multiplier}` }</p>
+                            </div>
+                        </div>
+                        <div className={styles.levelStat}>
+                            <p>Time to Build</p>
+                            <div className={styles.numberContainer}>
+                                <p>{typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.timeToBuild * activeAcquisitionType.multiplier} days</p>
+                                <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `x${activeAcquisitionType.multiplier}` }</p>
+                            </div>
+                        </div>
+                    </section>
                 </div>;
             case 4:
                 return <div>4</div>;

@@ -26,6 +26,7 @@
         .introText {
           text-transform: capitalize;
           font-size: x-large;
+          font-weight: 500;
         }
       }
       .cardContent {
@@ -181,25 +182,33 @@
         width: 100%;
         height: 100%;
 
-        .type {
-          height: 10%;
+        .titleContainer {
+          width: 100%;
+          min-height: 15%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          border-bottom: $bottomBorder;
+          padding: 0.5rem 0;
+        }
+
+        .title {
+          height: 50%;
           width: 100%;
           padding: 0.5rem 0 0;
           text-transform: capitalize;
           font-size: x-large;
           font-weight: 500;
-          // border-bottom: $bottomBorder;
           display: flex;
           align-items: center;
         }
 
         .summary {
-          height: 5%;
+          height: 50%;
           width: 100%;
           font-size: small;
           display: flex;
           align-items: center;
-          border-bottom: $bottomBorder;
           font-style: italic;
         }
 
@@ -247,6 +256,38 @@
           }
         }
 
+        .classFeaturesContainer {
+          width: 100%;
+          max-height: 78%;
+
+          overflow-y: auto;
+
+          .section {
+            width: 100%;
+            border-bottom: $bottomBorder;
+            padding: 1rem 0 0 0;
+
+            .sectionHeader {
+              font-size: larger;
+              font-weight: 500;
+              text-transform: capitalize;
+              margin-bottom: 0.5rem;
+            }
+            .subHeader {
+              text-transform: capitalize;
+              font-size: large;
+              font-weight: 500;
+            }
+            .subSection {
+              width: 100%;
+
+              .text {
+                font-size: medium;
+              }
+            }
+          }
+        }
+
         .containerTitle {
           font-size: larger;
           text-transform: capitalize;
@@ -256,7 +297,7 @@
           align-items: center;
           width: 100%;
         }
-      }
+    }
 
       .levelStatsContainer {
         width: 100%;
@@ -266,25 +307,55 @@
         justify-content: space-around;
         border-bottom: $bottomBorder;
 
-        .levelStat {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          font-size: large;
+    }
 
-          .numberContainer{
-            width: 50%;
-            display: flex;
-            justify-content: flex-end;
+    .acquisitionContainer {
+      width: 100%;
+      height: 30%;
+      flex-direction: column;
+      display: flex;
+      justify-content: flex-start;
+      border-bottom: $bottomBorder;
+      padding: 0.5rem 0 0;
 
-            .bonus{
-                color: $selected;
-                font-weight: 400;
-                margin-left: 0.5rem;
-            }
-          }
+      .acquisitionText{
+        width: 100%;
+        padding: 0.5rem 0 ;
+        // background-color: blue;
+        // height: fill;
+        // display: flex;
+        // align-items: center;
+      }
+    }
+
+    .constructionContainer{
+      padding: 0.5rem 0 0;
+        width: 100%;
+        height: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        border-bottom: $bottomBorder;
+        // background-color: blue;
+    }
+    .levelStat {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: large;
+
+      .numberContainer {
+        width: 50%;
+        display: flex;
+        justify-content: flex-end;
+
+        .bonus {
+          color: $selected;
+          font-weight: 400;
+          margin-left: 0.5rem;
         }
       }
+    }
     }
   }
 }

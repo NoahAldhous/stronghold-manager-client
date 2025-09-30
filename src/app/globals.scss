@@ -32,7 +32,6 @@
   body {
     max-width: 100dvw;
     overflow-x: hidden;
-    
   }
   
   html {
@@ -45,6 +44,11 @@
     color: $text;  // remove from here
     overflow-x: hidden;
     background-color: $background; 
+  }
+
+  main{
+    max-width: 1920px;
+    // justify-self: center;
   }
 
   input{

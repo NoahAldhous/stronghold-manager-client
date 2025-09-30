@@ -20,11 +20,11 @@ export default function Page(){
         }
     },[isLoggedIn])
 
-    return <section className={styles.loginPage}>
+    return <main className={styles.loginPage}>
         <section className={styles.formContainer}>
             <h3 className={styles.cardHeader}>Welcome to Stronghold Manager!</h3>
             <LoginForm/>
         </section>
         {/* <SignUpForm/> */}
-    </section>
+    </main>
 }
