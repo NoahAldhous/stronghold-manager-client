@@ -1,0 +1,54 @@
+@use "../../../app/variables" as *;
+
+.loadingCardContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    bottom:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1.75rem;
+    background-color: $background;
+
+    .loadingCardHeader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1.75rem;
+        opacity: 50%;
+        background: linear-gradient(
+          to right,
+          $highlight 8%,
+          $offwhite 18%,
+          $highlight 33%
+        );
+        background-size: 1000px 100%;
+        animation: shimmer 1.5s infinite linear forwards;
+    }
+
+    .loadingCardBody {
+        background: linear-gradient(
+          to right,
+          $mid 8%,
+          $highlight 18%,
+          $mid 33%
+        );
+        background-size: 1000px 100%;
+        animation: shimmer 1.5s infinite linear forwards;
+        height: 100%;
+        width: 100%;
+        opacity: 50%;
+      }
+}
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }

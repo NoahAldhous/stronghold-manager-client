@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
+import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 
 export default function Page({
   params,
@@ -14,7 +15,7 @@ export default function Page({
   const [loading, setLoading] = useState(false);
   const [activeButton, setActiveButton] = useState({
     category: "stronghold",
-    subCategory: "all"
+    subCategory: "all",
   });
   const [stronghold, setStronghold] = useState({
     id: 0,
@@ -28,7 +29,7 @@ export default function Page({
       {
         title: "",
         description: "",
-      }
+      },
     ],
     stats: {
       morale_bonus: 0,
@@ -87,7 +88,7 @@ export default function Page({
       ],
     },
   ];
-  
+
   const [contextualInfo, setContextualInfo] = useState({
     title: "",
     description: "",
@@ -131,163 +132,223 @@ export default function Page({
     <main className={styles.main}>
       <section className={styles.strongholdSheetContainer}>
         <section className={styles.strongholdSheet}>
-          <section className={styles.strongholdOverview}>
-            <p className={styles.strongholdName}>
-              {stronghold.stronghold_name}
-            </p>
-            <section className={styles.strongholdInfo}>
-              <p>
-                {stronghold.owner_name}<span className={styles.lowerCase}>&apos;s</span> Level{" "}
-                {stronghold.stronghold_level} {stronghold.stronghold_type}
-              </p>
-              <p>
-                {stronghold.class.name}<span className={styles.lowerCase}>&apos;s</span>{" "}
-                {stronghold.class.stronghold_name}
-              </p>
+          {loading ? (
+            <section className={styles.strongholdOverview}>
+              <div className={styles.loadingName}></div>
+              <div className={styles.loadingInfo}></div>
+              <div className={styles.loadingInfo}></div>
             </section>
-          </section>
-          <section className={styles.strongholdStats}>
-            <section className={styles.numericalStats}>
-              <section className={styles.cardHeader}>
-                stats
+          ) : (
+            <section className={styles.strongholdOverview}>
+              <p className={styles.strongholdName}>
+                {stronghold.stronghold_name}
+              </p>
+              <section className={styles.strongholdInfo}>
+                <p>
+                  {stronghold.owner_name}
+                  <span className={styles.lowerCase}>&apos;s</span> Level{" "}
+                  {stronghold.stronghold_level} {stronghold.stronghold_type}
+                </p>
+                <p>
+                  {stronghold.class.name}
+                  <span className={styles.lowerCase}>&apos;s</span>{" "}
+                  {stronghold.class.stronghold_name}
+                </p>
               </section>
-              <div className={styles.statContainer}>
-                <div className={styles.strongholdStatNumber}>
-                  <div className={styles.statNumberText}>
-                    <div>{stronghold.stronghold_size}</div>
-                  </div>
-                </div>
-                <p className={styles.statName}>size</p>
-              </div>
-              <div className={styles.statContainer}>
-                <div className={styles.strongholdStatNumber}>
-                  <div className={styles.statNumberText}>
-                    <div>
-                      +
-                      {stronghold.stats.morale_bonus
-                        ? stronghold.stats.morale_bonus
-                        : 0}
+            </section>
+          )}
+          <section className={styles.strongholdStats}>
+            {loading ? (
+              <section className={styles.numericalStats}>
+                <LoadingCard />
+              </section>
+            ) : (
+              <section className={styles.numericalStats}>
+                <section className={styles.cardHeader}>stats</section>
+                <div className={styles.statContainer}>
+                  <div className={styles.strongholdStatNumber}>
+                    <div className={styles.statNumberText}>
+                      <div>{stronghold.stronghold_size}</div>
                     </div>
                   </div>
+                  <p className={styles.statName}>size</p>
                 </div>
-                <p className={styles.statName}>fort bonus</p>
-              </div>
-              <div className={styles.statContainer}>
-                <div className={styles.strongholdStatNumber}>
-                  <div className={styles.statNumberText}>
-                    <div>{stronghold.stats.toughness}</div>
+                <div className={styles.statContainer}>
+                  <div className={styles.strongholdStatNumber}>
+                    <div className={styles.statNumberText}>
+                      <div>
+                        +
+                        {stronghold.stats.morale_bonus
+                          ? stronghold.stats.morale_bonus
+                          : 0}
+                      </div>
+                    </div>
                   </div>
+                  <p className={styles.statName}>fort bonus</p>
                 </div>
-                <p className={styles.statName}>toughness</p>
-              </div>
-            </section>
+                <div className={styles.statContainer}>
+                  <div className={styles.strongholdStatNumber}>
+                    <div className={styles.statNumberText}>
+                      <div>{stronghold.stats.toughness}</div>
+                    </div>
+                  </div>
+                  <p className={styles.statName}>toughness</p>
+                </div>
+              </section>
+            )}
             <section className={styles.featuresContainer}>
-              <section className={`${styles.features} ${styles.benefits}`}>
-                <div className={styles.cardHeader}>
-                  {stronghold.stronghold_type} benefits
-                </div>
-                {stronghold.features.map((item, index) => {
-                  return (
-                    <button
-                      className={styles.featureButton}
-                      onClick={() =>
-                        setContextualInfo({
-                          title: item.title,
-                          description: item.description,
-                        })
-                      }
-                      key={index}
-                    >
-                      {item.title}
-                    </button>
-                  );
-                })}
-              </section>
-              <section className={styles.features}>
-                <div className={styles.cardHeader}>
-                  class feature improvement
-                </div>
-                <button
-                  className={styles.featureButton}
-                  onClick={() =>
-                    setContextualInfo({
-                      title: stronghold.class.class_feature_improvement.name,
-                      description: `${stronghold.class.class_feature_improvement.description} ${stronghold.class.class_feature_improvement.restriction}`,
-                    })
-                  }
-                >
-                  {stronghold.class.class_feature_improvement.name}
-                </button>
-                <section className={styles.usesContainer}>
-                  <p>Uses:</p> {Array.from({ length: stronghold.stronghold_level }).map((_, index) => (
-                    <div className={styles.diamond} key={index}/>
-                  ))}
+              {loading ? (
+                <section className={`${styles.features} ${styles.benefits}`}>
+                  <LoadingCard />
                 </section>
-              </section>
+              ) : (
+                <section className={`${styles.features} ${styles.benefits}`}>
+                  <div className={styles.cardHeader}>
+                    {stronghold.stronghold_type} benefits
+                  </div>
+                  {stronghold.features.map((item, index) => {
+                    return (
+                      <button
+                        className={styles.featureButton}
+                        onClick={() =>
+                          setContextualInfo({
+                            title: item.title,
+                            description: item.description,
+                          })
+                        }
+                        key={index}
+                      >
+                        {item.title}
+                      </button>
+                    );
+                  })}
+                </section>
+              )}
+              {loading ? (
+                <section className={styles.features}>
+                  <LoadingCard />
+                </section>
+              ) : (
+                <section className={styles.features}>
+                  <div className={styles.cardHeader}>
+                    class feature improvement
+                  </div>
+                  <button
+                    className={styles.featureButton}
+                    onClick={() =>
+                      setContextualInfo({
+                        title: stronghold.class.class_feature_improvement.name,
+                        description: `${stronghold.class.class_feature_improvement.description} ${stronghold.class.class_feature_improvement.restriction}`,
+                      })
+                    }
+                  >
+                    {stronghold.class.class_feature_improvement.name}
+                  </button>
+                  <section className={styles.usesContainer}>
+                    <p>Uses:</p>{" "}
+                    {Array.from({ length: stronghold.stronghold_level }).map(
+                      (_, index) => (
+                        <div className={styles.diamond} key={index} />
+                      )
+                    )}
+                  </section>
+                </section>
+              )}
             </section>
           </section>
           <section className={styles.strongholdAssets}>
-            <section className={styles.strongholdTreasury}>
-              <div className={styles.cardHeader}>
-                treasury
-              </div>
-            </section>
-            <section className={styles.strongholdMenu}>
-              <section className={styles.cardHeader}>
-                stronghold features
+            {loading ? (
+              <section className={styles.strongholdTreasury}>
+                <LoadingCard />
               </section>
-              <section className={styles.strongholdMenuButtons}>
-                <section className={styles.menuCategories}>
-                  {strongholdMenuButtons.map((item) => (
-                    <button
-                      onClick={() => setActiveButton({category: item.category, subCategory:item.subCategories[0]})}
-                      key={item.category}
-                      className={`${styles.categoryButton} ${
-                        item.category == activeButton.category ? styles.activeButton : ""
-                      }`}
-                    >
-                      {item.category}
-                    </button>
-                  ))}
+            ) : (
+              <section className={styles.strongholdTreasury}>
+                <div className={styles.cardHeader}>treasury</div>
+              </section>
+            )}
+            {loading ? (
+              <section className={styles.strongholdMenu}>
+                <LoadingCard />
+              </section>
+            ) : (
+              <section className={styles.strongholdMenu}>
+                <section className={styles.cardHeader}>
+                  stronghold features
                 </section>
-                <section className={styles.menuSubCategories}>
-                  {strongholdMenuButtons.map((item) =>
-                    item.category == activeButton.category
-                      ? item.subCategories.map((subCategory) => (
-                          <button 
-                            key={subCategory}
-                            onClick={() => setActiveButton({...activeButton, subCategory: subCategory})}
-                            className={`${styles.subCategoryButton} ${
-                            subCategory == activeButton.subCategory ? styles.activeButton : ""
-                          }`}>
-                            {subCategory}
-                          </button>
-                        ))
-                      : null
-                  )}
+                <section className={styles.strongholdMenuButtons}>
+                  <section className={styles.menuCategories}>
+                    {strongholdMenuButtons.map((item) => (
+                      <button
+                        onClick={() =>
+                          setActiveButton({
+                            category: item.category,
+                            subCategory: item.subCategories[0],
+                          })
+                        }
+                        key={item.category}
+                        className={`${styles.categoryButton} ${
+                          item.category == activeButton.category
+                            ? styles.activeButton
+                            : ""
+                        }`}
+                      >
+                        {item.category}
+                      </button>
+                    ))}
+                  </section>
+                  <section className={styles.menuSubCategories}>
+                    {strongholdMenuButtons.map((item) =>
+                      item.category == activeButton.category
+                        ? item.subCategories.map((subCategory) => (
+                            <button
+                              key={subCategory}
+                              onClick={() =>
+                                setActiveButton({
+                                  ...activeButton,
+                                  subCategory: subCategory,
+                                })
+                              }
+                              className={`${styles.subCategoryButton} ${
+                                subCategory == activeButton.subCategory
+                                  ? styles.activeButton
+                                  : ""
+                              }`}
+                            >
+                              {subCategory}
+                            </button>
+                          ))
+                        : null
+                    )}
+                  </section>
+                </section>
+                <section className={styles.strongholdMenuText}>
+                  <StrongholdFeatures
+                    activeButton={activeButton}
+                    strongholdActions={stronghold.class.stronghold_actions}
+                    demesneEffects={stronghold.class.demesne_effects}
+                    typeFeatures={stronghold.features}
+                    classFeatureImprovement={
+                      stronghold.class.class_feature_improvement
+                    }
+                    strongholdType={stronghold.stronghold_type}
+                    characterClass={stronghold.class.name}
+                  />
                 </section>
               </section>
-              <section className={styles.strongholdMenuText}>
-                <StrongholdFeatures 
-                  activeButton={activeButton}
-                  strongholdActions={stronghold.class.stronghold_actions}
-                  demesneEffects={stronghold.class.demesne_effects}
-                  typeFeatures={stronghold.features}
-                  classFeatureImprovement={stronghold.class.class_feature_improvement}
-                  strongholdType={stronghold.stronghold_type}
-                  characterClass={stronghold.class.name}
-                />
-              </section>
-            </section>
+            )}
           </section>
         </section>
-        <section className={styles.contextualPanel}>
-          <div className={styles.cardHeader}>
-            contextual information
-          </div>
-          <p className={styles.infoTitle}>{contextualInfo.title}</p>
-          <p className={styles.info}>{contextualInfo.description}</p>
-        </section>
+        {loading ? (
+          <section className={styles.contextualPanel}>
+            <LoadingCard />
+          </section>
+        ) : (
+          <section className={styles.contextualPanel}>
+            <div className={styles.cardHeader}>contextual information</div>
+            <p className={styles.infoTitle}>{contextualInfo.title}</p>
+            <p className={styles.info}>{contextualInfo.description}</p>
+          </section>
+        )}
       </section>
     </main>
   );
