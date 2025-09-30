@@ -12,7 +12,7 @@ type StrongholdFeaturesType = {
     demesneEffects: {
         description: string
     }[],
-    typeFeatures: {
+    typeBenefits: {
         title: string,
         description: string
     }[],
@@ -29,7 +29,7 @@ export default function StrongholdFeatures({
     activeButton, 
     strongholdActions,
     demesneEffects,
-    typeFeatures,
+    typeBenefits,
     classFeatureImprovement,
     strongholdType,
     characterClass
@@ -61,8 +61,8 @@ export default function StrongholdFeatures({
                                     <p className={styles.itemInfo}>{effect.description}</p>
                                 </div>
                             )}
-                            <p className={styles.rulesHeader}>{strongholdType} features</p>
-                            { typeFeatures.map((feature, index) =>
+                            <p className={styles.rulesHeader}>{strongholdType} benefits</p>
+                            { typeBenefits.map((feature, index) =>
                                 <div key={index} className={styles.textItem}>
                                     <p className={styles.itemName}>{feature.title}</p>
                                     <p className={styles.itemInfo}>{feature.description}</p>
@@ -94,8 +94,8 @@ export default function StrongholdFeatures({
                                 </div>
                             )}
                         </>
-                    case `${strongholdType} features`:
-                        return (typeFeatures.map((feature, index) =>
+                    case `${strongholdType} benefits`:
+                        return (typeBenefits.map((feature, index) =>
                             <div key={index} className={styles.textItem}>
                                 <p className={styles.itemName}>{feature.title}</p>
                                 <p className={styles.itemInfo}>{feature.description}</p>

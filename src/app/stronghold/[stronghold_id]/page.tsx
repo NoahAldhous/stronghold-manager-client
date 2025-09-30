@@ -65,7 +65,7 @@ export default function Page({
         "all",
         "stronghold actions",
         "demesne effects",
-        `${stronghold.stronghold_type} features`,
+        `${stronghold.stronghold_type} benefits`,
         "class feature improvement",
       ],
     },
@@ -326,7 +326,7 @@ export default function Page({
                     activeButton={activeButton}
                     strongholdActions={stronghold.class.stronghold_actions}
                     demesneEffects={stronghold.class.demesne_effects}
-                    typeFeatures={stronghold.features}
+                    typeBenefits={stronghold.features}
                     classFeatureImprovement={
                       stronghold.class.class_feature_improvement
                     }
