@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { act, use, useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
 
@@ -137,11 +137,11 @@ export default function Page({
             </p>
             <section className={styles.strongholdInfo}>
               <p>
-                {stronghold.owner_name}&apos;s Level{" "}
+                {stronghold.owner_name}<span className={styles.lowerCase}>&apos;s</span> Level{" "}
                 {stronghold.stronghold_level} {stronghold.stronghold_type}
               </p>
               <p>
-                {stronghold.class.name}&apos;s{" "}
+                {stronghold.class.name}<span className={styles.lowerCase}>&apos;s</span>{" "}
                 {stronghold.class.stronghold_name}
               </p>
             </section>

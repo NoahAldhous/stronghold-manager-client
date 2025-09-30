@@ -1,0 +1,18 @@
+@use "../../app/variables" as *;
+
+.tooltip {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    bottom: 105%;
+    left: 0%;
+    background-color: $highlight;
+    border: 1px solid $warning;
+    color: $warning;
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.visible {
+    visibility: visible;
+  }

@@ -38,6 +38,10 @@
                     font-size: larger;
                     text-transform: capitalize;
                     text-shadow: $textShadow;
+
+                    .lowerCase{
+                        text-transform: lowercase;
+                    }
                 }
             }
 

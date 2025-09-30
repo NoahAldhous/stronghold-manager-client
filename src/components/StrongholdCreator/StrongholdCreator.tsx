@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "contexts/AuthContext";
 import CreateItemModal from "components/CreateItemModal/CreateItemModal";
+import Tooltip from "components/Tooltip/Tooltip";
 
 export default function StrongholdCreator(){
 
@@ -17,6 +18,9 @@ export default function StrongholdCreator(){
 
     //isFormComplete
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+
+    //is the create button being hovered, used for showing tooltip
+    const [hovered, setHovered] = useState(false); 
 
     //used to progress through the stages of the stronghold creator menu
     const [progress, setProgress] = useState(1);
@@ -616,14 +620,21 @@ export default function StrongholdCreator(){
                         <div className={`${styles.progressIcon} ${progress >= 3 ? styles.progressMark : ""}`}></div>
                         <div className={`${styles.progressIcon} ${progress >= 4 ? styles.progressMark : ""}`}></div>
                     </section>
-                    <button 
-                        className={`${styles.button} ${isButtonDisabled ? styles.disabledButton : ""}`} 
-                        onClick={progress == 4 ? handleSubmit : incrementProgress}
-                        disabled={isButtonDisabled}
+                    <span
+                        className={styles.createButtonContainer}
+                        onMouseEnter={isButtonDisabled ? () => setHovered(true) : () =>  setHovered(false)}
+                        onMouseLeave={() => setHovered(false)}
                     >
-                        <span className={styles.tooltipText}>Some fields are missing</span>
-                        {progress == 4 ? "create" : "next"}
-                    </button>
+                        <button 
+                            className={`${styles.createButton} ${isButtonDisabled ? styles.disabledButton : ""}`} 
+                            onClick={progress == 4 ? handleSubmit : incrementProgress}
+                            disabled={isButtonDisabled}
+
+                        >
+                            <Tooltip visible={hovered}>Some fields are missing</Tooltip>
+                            {progress == 4 ? "create" : "next"}
+                        </button>
+                    </span>
                 </section>
             </section>
         </section>

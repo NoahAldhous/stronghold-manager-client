@@ -18,9 +18,12 @@
 
     .textItem{
         width: 100%;
-        border-bottom: $bottomBorder;
         padding: 0.75rem 0;
-
+       
+        &:last-child{
+            border-bottom: $bottomBorder;
+        }
+        
         .itemName{
             text-transform: capitalize;
             font-size: medium;

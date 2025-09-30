@@ -128,33 +128,49 @@
         align-items: center;
         justify-content: space-between;
 
+        .createButtonContainer{
+          width: 30%;
+
+          .createButton{
+            width: 100%;
+            padding: 0.5rem;
+            position: relative;
+          }
+        }
+
         .button {
           width: 30%;
           padding: 0.5rem;
           position: relative;
 
-          .tooltipText {
-            visibility: hidden;
-            position: absolute;
-            z-index: 1;
-            bottom: 105%;
-            left: 0%;
-            background-color: $highlight;
-            border: 1px solid $warning;
-            color: $warning;
-            width: 100%;
-            padding: 0.5rem;
-          }
+          // .tooltipText {
+          //   visibility: hidden;
+          //   position: absolute;
+          //   z-index: 1;
+          //   bottom: 105%;
+          //   left: 0%;
+          //   background-color: $highlight;
+          //   border: 1px solid $warning;
+          //   color: $warning;
+          //   width: 100%;
+          //   padding: 0.5rem;
+          // }
         }
 
         .disabledButton {
           pointer-events: all;
           cursor: not-allowed;
+
+          // &:hover :global(.tooltip) {
+          //   visibility: visible;
+          //   opacity: 1;
+          // }
         }
 
-        .disabledButton:hover .tooltipText {
-          visibility: visible;
-        }
+        // .disabledButton:hover .tooltipText {
+        //   visibility: visible;
+          
+        // }
 
         .progressBar {
           width: 25%;
