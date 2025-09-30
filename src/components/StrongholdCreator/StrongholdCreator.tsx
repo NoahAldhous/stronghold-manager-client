@@ -477,7 +477,7 @@ export default function StrongholdCreator(){
                 return <div className={styles.infoCard}>
                     {strongholdClasses.map((item, index) => item.name === userStronghold.stronghold_class ? 
                         <div key={index} className={styles.titleContainer}>
-                            <div className={styles.title}>The {item.name}'s {item.strongholdName}</div>
+                            <div className={styles.title}>The {item.name}&apos;s {item.strongholdName}</div>
                             <div className={styles.summary}>{item.strongholdDescription}</div>
                         </div>
                          : null)}
