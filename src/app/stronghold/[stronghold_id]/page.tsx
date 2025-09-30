@@ -14,7 +14,7 @@ export default function Page({
   const [loading, setLoading] = useState(false);
   const [activeButton, setActiveButton] = useState({
     category: "stronghold",
-    subCategory: "stronghold actions"
+    subCategory: "all"
   });
   const [stronghold, setStronghold] = useState({
     id: 0,
@@ -189,6 +189,7 @@ export default function Page({
                 {stronghold.features.map((item, index) => {
                   return (
                     <button
+                      className={styles.featureButton}
                       onClick={() =>
                         setContextualInfo({
                           title: item.title,
@@ -204,9 +205,10 @@ export default function Page({
               </section>
               <section className={styles.features}>
                 <div className={styles.cardHeader}>
-                  class improvement
+                  class feature improvement
                 </div>
                 <button
+                  className={styles.featureButton}
                   onClick={() =>
                     setContextualInfo({
                       title: stronghold.class.class_feature_improvement.name,
@@ -214,11 +216,13 @@ export default function Page({
                     })
                   }
                 >
-                  Class Feature Improvement
+                  {stronghold.class.class_feature_improvement.name}
                 </button>
-                class abilities <br />
-                uses <br />
-                take extended rest <br />
+                <section className={styles.usesContainer}>
+                  <p>Uses:</p> {Array.from({ length: stronghold.stronghold_level }).map((_, index) => (
+                    <div className={styles.diamond} key={index}/>
+                  ))}
+                </section>
               </section>
             </section>
           </section>

@@ -44,6 +44,37 @@ export default function StrongholdFeatures({
         switch(activeButton.category) {
             case "stronghold":
                 switch(activeButton.subCategory){
+                    case "all":
+                        return <>
+                            <p className={styles.rulesHeader}>stronghold actions</p>
+                            <p className={styles.rulesText}>{`On initiative count 20 (losing initiative ties), the ${characterClass} can take a stronghold action with one of the following effects. They must be in the same hex or province as their stronghold and cannot use the same effect again until after a short or long rest.`}</p>
+                            {strongholdActions.map((action, index) =>
+                                <div key={index} className={styles.textItem}>
+                                    <p className={styles.itemName}>{action.name}</p>
+                                    <p className={styles.itemInfo}>{action.description}</p>
+                                </div>
+                            )}
+                            <p className={styles.rulesHeader}>demesne effects</p>
+                            <p className={styles.rulesText}>{`The ${characterClass}'s stronghold creates one or more of the following effects at the GM's discretion.`}</p>
+                            {demesneEffects.map((effect, index) =>
+                                <div key={index} className={styles.textItem}>
+                                    <p className={styles.itemInfo}>{effect.description}</p>
+                                </div>
+                            )}
+                            <p className={styles.rulesHeader}>{strongholdType} features</p>
+                            { typeFeatures.map((feature, index) =>
+                                <div key={index} className={styles.textItem}>
+                                    <p className={styles.itemName}>{feature.title}</p>
+                                    <p className={styles.itemInfo}>{feature.description}</p>
+                                </div>
+                            )}
+                            <p className={styles.rulesHeader}>class feature improvement</p>
+                            <div className={styles.textItem}>
+                            <p className={styles.itemName}>{classFeatureImprovement.name}</p>
+                            <p className={styles.itemInfo}>{classFeatureImprovement.description}</p>
+                            <p className={styles.itemInfo}>{classFeatureImprovement.restriction}</p>
+                        </div>
+                        </>
                     case "stronghold actions":
                         return <>
                             <p className={styles.rulesText}>{`On initiative count 20 (losing initiative ties), the ${characterClass} can take a stronghold action with one of the following effects. They must be in the same hex or province as their stronghold and cannot use the same effect again until after a short or long rest.`}</p>

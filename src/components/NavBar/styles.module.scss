@@ -9,22 +9,47 @@
     align-items: center;
     background-color: $highlight;
     border-bottom: 2px solid $dark;
+    padding: 0 $half-column-width;
     // border: 1;
     // border-style: dotted;
 
     .title{
         font-weight: 400;
-        text-shadow: $textShadow;
-        padding-left: $half-column-width;
+        text-shadow: $textShadow;   
     }
 
     .buttonContainer{
-        width: 50%;
+        width: 35%;
         // border: 1;
         // border-style: dashed;
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: space-between;
         align-items: center;
+
+        .button{
+            text-transform: capitalize;
+            padding: 0.5rem;
+            min-width: 25%;
+            font-size: medium;
+        }
+
+        .link{  
+            border: 1px solid $selected;
+            background-color: $highlight;
+            color: $text;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            font-style: normal;
+
+
+            &:hover{
+                cursor: pointer;
+                background-color: $selected;
+                border: 1px solid $text;
+                color: $offwhite;
+              }
+        }
     }
 }

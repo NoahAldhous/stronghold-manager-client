@@ -12,9 +12,9 @@ export default function NavBar({setScreenEffect, screenEffect}){
         <div className={styles.navbar}>
             <h1 className={styles.title}>Stronghold Manager</h1>
             <section className={styles.buttonContainer}>
-                <Link href="/">Home</Link>
-                <button onClick={() => {setScreenEffect(!screenEffect)}}>Toggle Screen Effect</button>
-                <button onClick={logout}>Log Out</button>
+                <Link className={`${styles.button} ${styles.link}`}  href="/">Home</Link>
+                <button className={styles.button} onClick={() => {setScreenEffect(!screenEffect)}}>Toggle Screen Effect</button>
+                <button className={styles.button} onClick={logout}>Log Out</button>
             </section>
         </div>
     )

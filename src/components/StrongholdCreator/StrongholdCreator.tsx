@@ -462,7 +462,7 @@ export default function StrongholdCreator(){
                                 </div>
                             </div>
                             <div className={styles.featuresContainer}>
-                                <p className={styles.containerTitle}>features</p>
+                                <p className={styles.containerTitle}>benefits</p>
                                 {typeFeatures.map((item,index) =>
                                     item.typeName == userStronghold.stronghold_type ?
                                         <div key={index} className={styles.feature}>
@@ -555,14 +555,14 @@ export default function StrongholdCreator(){
                         <p className={styles.containerTitle}>construction costs</p>
                         <div className={styles.levelStat}>
                             <p>Cost To Build</p>
-                            <div className={styles.numberContainer}>
+                            <div className={`${styles.costContainer} ${styles.costToBuild}`}>
                                 <p>{typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.costToBuild * activeAcquisitionType.multiplier} gp</p>
                                 <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `x${activeAcquisitionType.multiplier}` }</p>
                             </div>
                         </div>
                         <div className={styles.levelStat}>
                             <p>Time to Build</p>
-                            <div className={styles.numberContainer}>
+                            <div className={styles.costContainer}>
                                 <p>{typeStats.stats[userStronghold.stronghold_type]?.[`level${userStronghold.stronghold_level}`]?.timeToBuild * activeAcquisitionType.multiplier} days</p>
                                 <p className={styles.bonus}>{userStronghold.stronghold_type == "establishment" || userStronghold.stronghold_type == "castle" ? null : `x${activeAcquisitionType.multiplier}` }</p>
                             </div>

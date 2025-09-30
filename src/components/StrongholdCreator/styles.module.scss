@@ -128,10 +128,10 @@
         align-items: center;
         justify-content: space-between;
 
-        .createButtonContainer{
+        .createButtonContainer {
           width: 30%;
 
-          .createButton{
+          .createButton {
             width: 100%;
             padding: 0.5rem;
             position: relative;
@@ -142,35 +142,12 @@
           width: 30%;
           padding: 0.5rem;
           position: relative;
-
-          // .tooltipText {
-          //   visibility: hidden;
-          //   position: absolute;
-          //   z-index: 1;
-          //   bottom: 105%;
-          //   left: 0%;
-          //   background-color: $highlight;
-          //   border: 1px solid $warning;
-          //   color: $warning;
-          //   width: 100%;
-          //   padding: 0.5rem;
-          // }
         }
 
         .disabledButton {
           pointer-events: all;
           cursor: not-allowed;
-
-          // &:hover :global(.tooltip) {
-          //   visibility: visible;
-          //   opacity: 1;
-          // }
         }
-
-        // .disabledButton:hover .tooltipText {
-        //   visibility: visible;
-          
-        // }
 
         .progressBar {
           width: 25%;
@@ -313,7 +290,7 @@
           align-items: center;
           width: 100%;
         }
-    }
+      }
 
       .levelStatsContainer {
         width: 100%;
@@ -322,30 +299,29 @@
         flex-direction: column;
         justify-content: space-around;
         border-bottom: $bottomBorder;
-
-    }
-
-    .acquisitionContainer {
-      width: 100%;
-      height: 30%;
-      flex-direction: column;
-      display: flex;
-      justify-content: flex-start;
-      border-bottom: $bottomBorder;
-      padding: 0.5rem 0 0;
-
-      .acquisitionText{
-        width: 100%;
-        padding: 0.5rem 0 ;
-        // background-color: blue;
-        // height: fill;
-        // display: flex;
-        // align-items: center;
       }
-    }
 
-    .constructionContainer{
-      padding: 0.5rem 0 0;
+      .acquisitionContainer {
+        width: 100%;
+        height: 30%;
+        flex-direction: column;
+        display: flex;
+        justify-content: flex-start;
+        border-bottom: $bottomBorder;
+        padding: 0.5rem 0 0;
+
+        .acquisitionText {
+          width: 100%;
+          padding: 0.5rem 0;
+          // background-color: blue;
+          // height: fill;
+          // display: flex;
+          // align-items: center;
+        }
+      }
+
+      .constructionContainer {
+        padding: 0.5rem 0 0;
         width: 100%;
         height: 30%;
         display: flex;
@@ -353,25 +329,39 @@
         justify-content: flex-start;
         border-bottom: $bottomBorder;
         // background-color: blue;
-    }
-    .levelStat {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      font-size: large;
-
-      .numberContainer {
-        width: 50%;
+      }
+      .levelStat {
+        width: 100%;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: center;
+        // padding: 0.25rem 0;
+        font-size: large;
 
+        .costContainer{
+          width: 50%;
+          display: flex;
+          justify-content: flex-end;
+          padding: 0.5rem 0;
+
+        }
+        .costToBuild{
+          margin-top: 0.5rem;
+        }
+        
+
+        .numberContainer {
+          width: 50%;
+          display: flex;
+          justify-content: flex-end;
+
+        }
         .bonus {
           color: $selected;
           font-weight: 400;
           margin-left: 0.5rem;
         }
       }
-    }
     }
   }
 }
