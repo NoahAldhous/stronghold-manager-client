@@ -55,7 +55,7 @@ export default function SignUpForm(){
             const data = await res.json();
 
             //and log in the user, updating context and storing token in local storage
-            login(data.access_token)
+            login(data.access_token, data.refresh_token)
             
         } catch (err) {
             setError(err.message)
