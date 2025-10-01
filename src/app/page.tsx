@@ -28,12 +28,10 @@ export default function Page() {
 
   //redirect user to login/signup page if not logged in
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    } else {
+    if (userId) {
       fetchStrongholdsByUserId();
     }
-  }, [isLoggedIn]);
+  }, [userId]);
 
   useEffect(() => {
     if (listOfStrongholds.length === 0) {

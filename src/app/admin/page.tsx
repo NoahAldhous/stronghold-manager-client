@@ -8,11 +8,9 @@ import { useAuthFetch } from "auth/authFetch";
 
 export default function Page(){
 
-    const { role, isLoggedIn } = useAuth()
+    const { role } = useAuth()
 
     const authFetch = useAuthFetch();
-
-    const router = useRouter();
 
     const [loading, setLoading] = useState(false)
 
@@ -43,12 +41,10 @@ export default function Page(){
     }
 
     useEffect(() => {
-        if (!isLoggedIn) {
-          router.push("/login");
-        } else {
+        if (role == "admin") {
           fetchUsers();
         }
-      }, [isLoggedIn]);
+      }, [role]);
 
     return <main>
         <div>hello world</div>
