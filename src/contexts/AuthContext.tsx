@@ -7,16 +7,18 @@ type TokenPayloadType = {
     sub: string;
     role: string;
     user_name: string;
+    expiration: number;
 }
 
 //Define shape of auth context
 type AuthContextType = {
     isLoggedIn: boolean;
-    token: string | null;
+    accessToken: string | null;
+    refreshToken: string | null;
     userId: string | null;
     role: string | null;
     userName: string | null;
-    login: (newToken: string) => void;
+    login: (accessToken: string, refreshToken: string) => void;
     logout: () => void;
 };
 
@@ -25,44 +27,51 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 //Create AuthProvider component
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [token, setToken] = useState<string | null>(null);
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+    const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
     //Decode and derive values from token
     let decodedToken: TokenPayloadType | null = null;
-    if (token) {
+    if (accessToken) {
         try {
-            decodedToken = jwtDecode<TokenPayloadType>(token); 
+            decodedToken = jwtDecode<TokenPayloadType>(accessToken); 
         } catch (err) {
             console.error("Invalid token", err)
         }
     }
 
     //Derive logged in state from if token exists or not
-    const isLoggedIn = !!token
+    const isLoggedIn = !!accessToken
     const userId = decodedToken?.sub || null;
     const role = decodedToken?.role || null;
     const userName = decodedToken?.user_name || null;
 
     //On mount, try to restore session from localStorage
     useEffect(() => {
-        const savedToken = localStorage.getItem("token")
-        if (savedToken) setToken(savedToken)
+        const savedAccess = localStorage.getItem("accessToken");
+        const savedRefresh = localStorage.getItem("refreshToken");
+        if (savedAccess) setAccessToken(savedAccess);
+        if (savedRefresh) setRefreshToken(savedRefresh);
     }, []);
 
     //Login function
-    function login(newToken:string) {
-        setToken(newToken)
-        localStorage.setItem("token", newToken)
+    function login(newAccess:string, newRefresh:string) {
+        setAccessToken(newAccess);
+        setRefreshToken(newRefresh);
+        localStorage.setItem("accessToken", newAccess);
+        localStorage.setItem("refreshToken", newRefresh);
     };
 
     //Logout function
     function logout() {
-        setToken(null);
-        localStorage.removeItem("token")
+        setAccessToken(null);
+        setRefreshToken(null);
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("refreshToken")
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, token, userId, role, userName, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, accessToken, refreshToken, userId, role, userName, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

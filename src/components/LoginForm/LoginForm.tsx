@@ -67,7 +67,7 @@ export default function LoginForm() {
       const data = await res.json();
 
       //and login in the user, setting context and storing the token in local storage
-      login(data.access_token);
+      login(data.access_token, data.refresh_token);
   
     } catch (err) {
       setError(err.message)
@@ -115,7 +115,7 @@ export default function LoginForm() {
         const data = await res.json();
 
         //and log in the user, updating context and storing token in local storage
-        login(data.access_token)
+        login(data.access_token, data.refresh_token)
         
     } catch (err) {
         setError(err.message)

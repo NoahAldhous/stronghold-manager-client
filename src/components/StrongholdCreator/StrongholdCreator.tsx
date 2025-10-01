@@ -9,7 +9,7 @@ import Tooltip from "components/Tooltip/Tooltip";
 
 export default function StrongholdCreator(){
 
-    const { isLoggedIn, logout, userId, userName } = useAuth();
+    const { userId} = useAuth();
 
     // STATE DECLARATION
 
@@ -578,17 +578,14 @@ export default function StrongholdCreator(){
 
     // USE EFFECTS
 
-    //redirect user to login/signup page if not logged in
     useEffect(() => {
-        if (!isLoggedIn) {
-        router.push("/login");
-        } else {
+        if (userId) {
         fetchStrongholdTypes();
         fetchStrongholdClasses();
         fetchStrongholdTypeStats();
         fetchStrongholdTypeFeatures();
         }
-    }, [isLoggedIn]);
+    }, [userId]);
 
     useEffect(() => {
         if(progress == 4){
