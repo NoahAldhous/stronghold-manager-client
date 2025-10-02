@@ -51,46 +51,6 @@ export default function Page({
       }[]
     }
   } | null>(null)
-  // const [stronghold, setStronghold] = useState({
-    // id: 0,
-    // owner_name: "",
-    // stronghold_level: 0,
-    // stronghold_name: "",
-    // stronghold_size: "",
-    // stronghold_type: "",
-    // upgrade_cost: 0,
-    // features: [
-    //   {
-    //     title: "",
-    //     description: "",
-    //   },
-    // ],
-    // stats: {
-    //   morale_bonus: 0,
-    //   toughness: 0,
-    // },
-    // class: {
-    //   name: "",
-    //   stronghold_name: "",
-    //   description: "",
-    //   class_feature_improvement: {
-    //     description: "",
-    //     name: "",
-    //     restriction: "",
-    //   },
-    //   demesne_effects: [
-    //     {
-    //       description: "",
-    //     },
-    //   ],
-    //   stronghold_actions: [
-    //     {
-    //       name: "",
-    //       description: "",
-    //     },
-    //   ],
-    // },
-  // });
 
   const strongholdMenuButtons = [
     {
@@ -169,7 +129,7 @@ export default function Page({
     <main className={styles.main}>
       <section className={styles.strongholdSheetContainer}>
         <section className={styles.strongholdSheet}>
-          {loading && !stronghold ? (
+          {loading || !stronghold ? (
             <section className={styles.strongholdOverview}>
               <div className={styles.loadingName}></div>
               <div className={styles.loadingInfo}></div>
@@ -195,7 +155,7 @@ export default function Page({
             </section>
           )}
           <section className={styles.strongholdStats}>
-            {loading ? (
+            {loading || !stronghold ? (
               <section className={styles.numericalStats}>
                 <LoadingCard />
               </section>
@@ -234,7 +194,7 @@ export default function Page({
               </section>
             )}
             <section className={styles.featuresContainer}>
-              {loading ? (
+              {loading || !stronghold ? (
                 <section className={`${styles.features} ${styles.benefits}`}>
                   <LoadingCard />
                 </section>
@@ -261,7 +221,7 @@ export default function Page({
                   })}
                 </section>
               )}
-              {loading ? (
+              {loading || !stronghold ? (
                 <section className={styles.features}>
                   <LoadingCard />
                 </section>
@@ -294,7 +254,7 @@ export default function Page({
             </section>
           </section>
           <section className={styles.strongholdAssets}>
-            {loading ? (
+            {loading || !stronghold ? (
               <section className={styles.strongholdTreasury}>
                 <LoadingCard />
               </section>
@@ -303,7 +263,7 @@ export default function Page({
                 <div className={styles.cardHeader}>treasury</div>
               </section>
             )}
-            {loading ? (
+            {loading || !stronghold ? (
               <section className={styles.strongholdMenu}>
                 <LoadingCard />
               </section>
@@ -375,7 +335,7 @@ export default function Page({
             )}
           </section>
         </section>
-        {loading ? (
+        {loading || !stronghold ? (
           <section className={styles.contextualPanel}>
             <LoadingCard />
           </section>
