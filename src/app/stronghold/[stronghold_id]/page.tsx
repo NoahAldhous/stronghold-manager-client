@@ -17,46 +17,80 @@ export default function Page({
     category: "stronghold",
     subCategory: "all",
   });
-  const [stronghold, setStronghold] = useState({
-    id: 0,
-    owner_name: "",
-    stronghold_level: 0,
-    stronghold_name: "",
-    stronghold_size: "",
-    stronghold_type: "",
-    upgrade_cost: 0,
-    features: [
-      {
-        title: "",
-        description: "",
-      },
-    ],
+  const [stronghold, setStronghold] = useState<{
+    id: number,
+    owner_name: string,
+    stronghold_level: number,
+    stronghold_name: string,
+    stronghold_size: number,
+    stronghold_type: string,
+    upgrade_cost: number,
+    features: {
+      title: string,
+      description: string
+    }[],
     stats: {
-      morale_bonus: 0,
-      toughness: 0,
+      morale_bonus: number,
+      toughness: number
     },
     class: {
-      name: "",
-      stronghold_name: "",
-      description: "",
+      name: string,
+      stronghold_name: string, 
+      description: string,
       class_feature_improvement: {
-        description: "",
-        name: "",
-        restriction: "",
+        description: string,
+        name: string,
+        restriction: string
       },
-      demesne_effects: [
-        {
-          description: "",
-        },
-      ],
-      stronghold_actions: [
-        {
-          name: "",
-          description: "",
-        },
-      ],
-    },
-  });
+      demesne_effects: {
+        description: string
+      }[],
+      stronghold_actions: {
+        name: string,
+        description: string
+      }[]
+    }
+  } | null>(null)
+  // const [stronghold, setStronghold] = useState({
+    // id: 0,
+    // owner_name: "",
+    // stronghold_level: 0,
+    // stronghold_name: "",
+    // stronghold_size: "",
+    // stronghold_type: "",
+    // upgrade_cost: 0,
+    // features: [
+    //   {
+    //     title: "",
+    //     description: "",
+    //   },
+    // ],
+    // stats: {
+    //   morale_bonus: 0,
+    //   toughness: 0,
+    // },
+    // class: {
+    //   name: "",
+    //   stronghold_name: "",
+    //   description: "",
+    //   class_feature_improvement: {
+    //     description: "",
+    //     name: "",
+    //     restriction: "",
+    //   },
+    //   demesne_effects: [
+    //     {
+    //       description: "",
+    //     },
+    //   ],
+    //   stronghold_actions: [
+    //     {
+    //       name: "",
+    //       description: "",
+    //     },
+    //   ],
+    // },
+  // });
 
   const strongholdMenuButtons = [
     {
@@ -65,7 +99,7 @@ export default function Page({
         "all",
         "stronghold actions",
         "demesne effects",
-        `${stronghold.stronghold_type} benefits`,
+        `${stronghold?.stronghold_type} benefits`,
         "class feature improvement",
       ],
     },
@@ -89,13 +123,16 @@ export default function Page({
     },
   ];
 
-  const [contextualInfo, setContextualInfo] = useState({
-    title: "",
-    description: "",
+  const [contextualInfo, setContextualInfo] = useState<{
+    title: string | null,
+    description: string | null
+  }>({
+    title: null,
+    description: null,
   });
 
   const router = useRouter();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, userId } = useAuth();
 
   //redirect user to login/signup page if not logged in
   useEffect(() => {
@@ -132,7 +169,7 @@ export default function Page({
     <main className={styles.main}>
       <section className={styles.strongholdSheetContainer}>
         <section className={styles.strongholdSheet}>
-          {loading ? (
+          {loading && !stronghold ? (
             <section className={styles.strongholdOverview}>
               <div className={styles.loadingName}></div>
               <div className={styles.loadingInfo}></div>
@@ -141,18 +178,18 @@ export default function Page({
           ) : (
             <section className={styles.strongholdOverview}>
               <p className={styles.strongholdName}>
-                {stronghold.stronghold_name}
+                {stronghold?.stronghold_name}
               </p>
               <section className={styles.strongholdInfo}>
                 <p>
-                  {stronghold.owner_name}
+                  {stronghold?.owner_name}
                   <span className={styles.lowerCase}>&apos;s</span> Level{" "}
-                  {stronghold.stronghold_level} {stronghold.stronghold_type}
+                  {stronghold?.stronghold_level} {stronghold?.stronghold_type}
                 </p>
                 <p>
-                  {stronghold.class.name}
+                  {stronghold?.class.name}
                   <span className={styles.lowerCase}>&apos;s</span>{" "}
-                  {stronghold.class.stronghold_name}
+                  {stronghold?.class.stronghold_name}
                 </p>
               </section>
             </section>
@@ -168,7 +205,7 @@ export default function Page({
                 <div className={styles.statContainer}>
                   <div className={styles.strongholdStatNumber}>
                     <div className={styles.statNumberText}>
-                      <div>{stronghold.stronghold_size}</div>
+                      <div>{stronghold?.stronghold_size}</div>
                     </div>
                   </div>
                   <p className={styles.statName}>size</p>
@@ -178,8 +215,8 @@ export default function Page({
                     <div className={styles.statNumberText}>
                       <div>
                         +
-                        {stronghold.stats.morale_bonus
-                          ? stronghold.stats.morale_bonus
+                        {stronghold?.stats?.morale_bonus
+                          ? stronghold?.stats?.morale_bonus
                           : 0}
                       </div>
                     </div>
@@ -189,7 +226,7 @@ export default function Page({
                 <div className={styles.statContainer}>
                   <div className={styles.strongholdStatNumber}>
                     <div className={styles.statNumberText}>
-                      <div>{stronghold.stats.toughness}</div>
+                      <div>{stronghold?.stats?.toughness}</div>
                     </div>
                   </div>
                   <p className={styles.statName}>toughness</p>
@@ -204,9 +241,9 @@ export default function Page({
               ) : (
                 <section className={`${styles.features} ${styles.benefits}`}>
                   <div className={styles.cardHeader}>
-                    {stronghold.stronghold_type} benefits
+                    {stronghold?.stronghold_type} benefits
                   </div>
-                  {stronghold.features.map((item, index) => {
+                  {stronghold?.features.map((item, index) => {
                     return (
                       <button
                         className={styles.featureButton}
@@ -237,16 +274,16 @@ export default function Page({
                     className={styles.featureButton}
                     onClick={() =>
                       setContextualInfo({
-                        title: stronghold.class.class_feature_improvement.name,
-                        description: `${stronghold.class.class_feature_improvement.description} ${stronghold.class.class_feature_improvement.restriction}`,
+                        title: stronghold?.class?.class_feature_improvement?.name ?? null,
+                        description: `${stronghold?.class?.class_feature_improvement?.description ?? ""} ${stronghold?.class?.class_feature_improvement?.restriction ?? ""}`,
                       })
                     }
                   >
-                    {stronghold.class.class_feature_improvement.name}
+                    {stronghold?.class.class_feature_improvement.name}
                   </button>
                   <section className={styles.usesContainer}>
                     <p>Uses:</p>{" "}
-                    {Array.from({ length: stronghold.stronghold_level }).map(
+                    {Array.from({ length: stronghold?.stronghold_level ?? 0 }).map(
                       (_, index) => (
                         <div className={styles.diamond} key={index} />
                       )
@@ -324,14 +361,14 @@ export default function Page({
                 <section className={styles.strongholdMenuText}>
                   <StrongholdFeatures
                     activeButton={activeButton}
-                    strongholdActions={stronghold.class.stronghold_actions}
-                    demesneEffects={stronghold.class.demesne_effects}
-                    typeBenefits={stronghold.features}
+                    strongholdActions={stronghold?.class.stronghold_actions ?? null}
+                    demesneEffects={stronghold?.class.demesne_effects ?? null}
+                    typeBenefits={stronghold?.features ?? null}
                     classFeatureImprovement={
-                      stronghold.class.class_feature_improvement
+                      stronghold?.class?.class_feature_improvement ?? null
                     }
-                    strongholdType={stronghold.stronghold_type}
-                    characterClass={stronghold.class.name}
+                    strongholdType={stronghold?.stronghold_type ?? null}
+                    characterClass={stronghold?.class.name ?? null}
                   />
                 </section>
               </section>

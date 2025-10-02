@@ -8,21 +8,21 @@ type StrongholdFeaturesType = {
     strongholdActions: {
         name: string,
         description: string
-    }[],
+    }[] | null,
     demesneEffects: {
         description: string
-    }[],
+    }[] | null,
     typeBenefits: {
         title: string,
         description: string
-    }[],
+    }[] | null,
     classFeatureImprovement: {
         name: string,
         description: string,
         restriction: string
-    },
-    strongholdType: string,
-    characterClass: string;
+    } | null,
+    strongholdType: string | null,
+    characterClass: string | null;
 }
 
 export default function StrongholdFeatures({
@@ -48,7 +48,7 @@ export default function StrongholdFeatures({
                         return <>
                             <p className={styles.rulesHeader}>stronghold actions</p>
                             <p className={styles.rulesText}>{`On initiative count 20 (losing initiative ties), the ${characterClass} can take a stronghold action with one of the following effects. They must be in the same hex or province as their stronghold and cannot use the same effect again until after a short or long rest.`}</p>
-                            {strongholdActions.map((action, index) =>
+                            {strongholdActions?.map((action, index) =>
                                 <div key={index} className={styles.textItem}>
                                     <p className={styles.itemName}>{action.name}</p>
                                     <p className={styles.itemInfo}>{action.description}</p>
@@ -56,13 +56,13 @@ export default function StrongholdFeatures({
                             )}
                             <p className={styles.rulesHeader}>demesne effects</p>
                             <p className={styles.rulesText}>{`The ${characterClass}'s stronghold creates one or more of the following effects at the GM's discretion.`}</p>
-                            {demesneEffects.map((effect, index) =>
+                            {demesneEffects?.map((effect, index) =>
                                 <div key={index} className={styles.textItem}>
                                     <p className={styles.itemInfo}>{effect.description}</p>
                                 </div>
                             )}
                             <p className={styles.rulesHeader}>{strongholdType} benefits</p>
-                            { typeBenefits.map((feature, index) =>
+                            { typeBenefits?.map((feature, index) =>
                                 <div key={index} className={styles.textItem}>
                                     <p className={styles.itemName}>{feature.title}</p>
                                     <p className={styles.itemInfo}>{feature.description}</p>
@@ -70,15 +70,15 @@ export default function StrongholdFeatures({
                             )}
                             <p className={styles.rulesHeader}>class feature improvement</p>
                             <div className={styles.textItem}>
-                            <p className={styles.itemName}>{classFeatureImprovement.name}</p>
-                            <p className={styles.itemInfo}>{classFeatureImprovement.description}</p>
-                            <p className={styles.itemInfo}>{classFeatureImprovement.restriction}</p>
+                            <p className={styles.itemName}>{classFeatureImprovement?.name}</p>
+                            <p className={styles.itemInfo}>{classFeatureImprovement?.description}</p>
+                            <p className={styles.itemInfo}>{classFeatureImprovement?.restriction}</p>
                         </div>
                         </>
                     case "stronghold actions":
                         return <>
                             <p className={styles.rulesText}>{`On initiative count 20 (losing initiative ties), the ${characterClass} can take a stronghold action with one of the following effects. They must be in the same hex or province as their stronghold and cannot use the same effect again until after a short or long rest.`}</p>
-                            {strongholdActions.map((action, index) =>
+                            {strongholdActions?.map((action, index) =>
                                 <div key={index} className={styles.textItem}>
                                     <p className={styles.itemName}>{action.name}</p>
                                     <p className={styles.itemInfo}>{action.description}</p>
@@ -88,14 +88,14 @@ export default function StrongholdFeatures({
                     case "demesne effects":
                         return <>
                             <p className={styles.rulesText}>{`The ${characterClass}'s stronghold creates one or more of the following effects at the GM's discretion.`}</p>
-                            {demesneEffects.map((effect, index) =>
+                            {demesneEffects?.map((effect, index) =>
                                 <div key={index} className={styles.textItem}>
                                     <p className={styles.itemInfo}>{effect.description}</p>
                                 </div>
                             )}
                         </>
                     case `${strongholdType} benefits`:
-                        return (typeBenefits.map((feature, index) =>
+                        return (typeBenefits?.map((feature, index) =>
                             <div key={index} className={styles.textItem}>
                                 <p className={styles.itemName}>{feature.title}</p>
                                 <p className={styles.itemInfo}>{feature.description}</p>
@@ -103,9 +103,9 @@ export default function StrongholdFeatures({
                         ))
                     case "class feature improvement":
                         return <div className={styles.textItem}>
-                            <p className={styles.itemName}>{classFeatureImprovement.name}</p>
-                            <p className={styles.itemInfo}>{classFeatureImprovement.description}</p>
-                            <p className={styles.itemInfo}>{classFeatureImprovement.restriction}</p>
+                            <p className={styles.itemName}>{classFeatureImprovement?.name}</p>
+                            <p className={styles.itemInfo}>{classFeatureImprovement?.description}</p>
+                            <p className={styles.itemInfo}>{classFeatureImprovement?.restriction}</p>
                         </div>
                 }
             case "units":

@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 export default function AuthWatcher(){
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, loading } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
 
@@ -13,6 +13,7 @@ export default function AuthWatcher(){
     const publicRoutes = ["/login"];
 
     useEffect(() => {
+        if (loading) return;
         //only redirect user if user is not logged in and not on a public page
         if (!isLoggedIn && !publicRoutes.includes(pathname ?? "")) {
             router.push("/login");

@@ -18,6 +18,7 @@ type AuthContextType = {
     userId: string | null;
     role: string | null;
     userName: string | null;
+    loading: boolean;
     login: (accessToken: string, refreshToken: string) => void;
     logout: () => void;
 };
@@ -29,6 +30,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const [refreshToken, setRefreshToken] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     //Decode and derive values from token
     let decodedToken: TokenPayloadType | null = null;
@@ -50,8 +52,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const savedAccess = localStorage.getItem("accessToken");
         const savedRefresh = localStorage.getItem("refreshToken");
+        
         if (savedAccess) setAccessToken(savedAccess);
         if (savedRefresh) setRefreshToken(savedRefresh);
+
+        setLoading(false);
     }, []);
 
     //Login function
@@ -71,7 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, accessToken, refreshToken, userId, role, userName, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, accessToken, refreshToken, userId, role, userName, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
