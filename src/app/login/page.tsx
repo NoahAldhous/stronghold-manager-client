@@ -1,6 +1,5 @@
 "use client"
 import LoginForm from "components/LoginForm/LoginForm"
-import SignUpForm from "components/SignUpForm/SignUpForm"
 import styles from "./styles.module.scss"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
