@@ -1,9 +1,7 @@
 "use client"
 
 import { useAuth } from "contexts/AuthContext";
-import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuthFetch } from "auth/authFetch";
 
 export default function Page(){
@@ -48,6 +46,7 @@ export default function Page(){
 
     return <main>
         <div>hello world</div>
+        <button onClick={() => authFetch(`${process.env.NEXT_PUBLIC_API_URL}/users/`)}>fetch</button>
         {role == "admin" ?
             users.map((item, index) =>
                 <div key={index}>

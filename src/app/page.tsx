@@ -1,29 +1,29 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "contexts/AuthContext";
 import Link from "next/link";
 import styles from "./styles.module.scss";
 import StrongholdCard from "components/StrongholdCard/StrongholdCard";
 import DeleteItemModal from "components/DeleteItemModal/DeleteItemModal";
+import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
-  const [noStrongholds, setNoStrongholds] = useState(true);
+  const [noStrongholds, setNoStrongholds] = useState< boolean | undefined >(undefined);
   const [deleteItemModal, setDeleteItemModal] = useState({
     isVisible: false,
     strongholdId: 0
   })
-  const [listOfStrongholds, setListOfStrongholds] = useState([{
-    id: 0,
-    name: "",
-    ownerName:"",
-    level:0,
-    type:"",
-    ownerClass: "",
-    classStrongholdName: ""
-  },])
-  const router = useRouter();
+  const [listOfStrongholds, setListOfStrongholds] = useState<{
+    id: number,
+    name: string,
+    ownerName: string,
+    level: number,
+    type: string,
+    ownerClass: string,
+    classStrongholdName: string
+  }[] | null>(null)
+
   const { isLoggedIn, logout, userId, userName } = useAuth();
 
   //redirect user to login/signup page if not logged in
@@ -34,7 +34,7 @@ export default function Page() {
   }, [userId]);
 
   useEffect(() => {
-    if (listOfStrongholds.length === 0) {
+    if (listOfStrongholds?.length === 0) {
       setNoStrongholds(true);
     } else {
       setNoStrongholds(false)
@@ -43,6 +43,7 @@ export default function Page() {
 
   async function fetchStrongholdsByUserId() {
     setLoading(true)
+    setNoStrongholds(undefined)
 
     try {
     const res = await fetch(
@@ -69,16 +70,18 @@ export default function Page() {
   //TODO: break this up into components
   return (
     <main className={styles.main}>
+      {/* <button onClick={() => setLoading(!loading)}>toggle load</button> */}
+      <h3>{userId} {userName}</h3>
       <section className={styles.strongholdsContainer}>
         <div className={styles.cardHeader}>Welcome, {userName}!</div>
-        {loading ?
+        {loading || (!listOfStrongholds && !noStrongholds) ?
           <section className={styles.loadingContainer}>
-            <span className={styles.loader}></span>
+            <LoadingCard/>
           </section>
           : noStrongholds ? (
-            <div>
-            <p>you have no strongholds! boo!</p>
-            <Link href="/create">Create your first stronghold</Link>
+            <div className={styles.noStrongholdsContainer}>
+            <p>You have no strongholds!</p>
+            <Link className={styles.createButton} href="/create">Create your first stronghold</Link>
           </div>
           ) : ( 
           <>
@@ -87,7 +90,7 @@ export default function Page() {
             </section>
             <div className={styles.list}>
               <div className={styles.cardContainer}>
-                {listOfStrongholds.map((item, index) => {
+                {listOfStrongholds?.map((item, index) => {
                   return (
                     <StrongholdCard key={index} stronghold={item} setDeleteItemModal={setDeleteItemModal}/>
                     // <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link>

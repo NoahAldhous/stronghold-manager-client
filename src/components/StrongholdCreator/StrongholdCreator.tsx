@@ -425,6 +425,19 @@ export default function StrongholdCreator(){
                     </div>
                     <div className={styles.buttonContainer}>
                         <p className={styles.extraText}>You can edit all of these details later. Create your stronghold and enjoy!</p>
+                        <span
+                            className={styles.createButtonContainer}
+                            onMouseEnter={isButtonDisabled ? () => setHovered(true) : () =>  setHovered(false)}
+                            onMouseLeave={() => setHovered(false)}
+                        >
+                            <button 
+                                className={`${styles.createButton}`} 
+                                onClick={() => handleSubmit()}
+                                disabled={isButtonDisabled}>
+                                    <Tooltip visible={hovered}>Some fields are missing</Tooltip>
+                                    Create
+                            </button>
+                        </span>
                     </div>
                 </div>
             default:
@@ -617,21 +630,16 @@ export default function StrongholdCreator(){
                         <div className={`${styles.progressIcon} ${progress >= 3 ? styles.progressMark : ""}`}></div>
                         <div className={`${styles.progressIcon} ${progress >= 4 ? styles.progressMark : ""}`}></div>
                     </section>
-                    <span
-                        className={styles.createButtonContainer}
-                        onMouseEnter={isButtonDisabled ? () => setHovered(true) : () =>  setHovered(false)}
-                        onMouseLeave={() => setHovered(false)}
-                    >
+                    
                         <button 
-                            className={`${styles.createButton} ${isButtonDisabled ? styles.disabledButton : ""}`} 
+                            className={`${styles.button} ${isButtonDisabled ? styles.disabledButton : ""}`} 
                             onClick={progress == 4 ? handleSubmit : incrementProgress}
-                            disabled={isButtonDisabled}
+                            disabled={progress == 4 ? true : false}
 
                         >
-                            <Tooltip visible={hovered}>Some fields are missing</Tooltip>
-                            {progress == 4 ? "create" : "next"}
+                            next
                         </button>
-                    </span>
+
                 </section>
             </section>
         </section>

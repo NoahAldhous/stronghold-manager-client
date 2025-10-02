@@ -70,6 +70,22 @@ $bottomBorder: 2px solid $selected;
     linear-gradient(transparent, transparent 3px, rgba(0,0,0,.07) 4px);
 }
 
+//Button styling
+@mixin button {
+    border: 1px solid $selected;
+    background-color: $highlight;
+    color: $text;
+    padding: 0.5rem;
+    text-decoration: none;
+
+    &:hover{
+        cursor: pointer;
+        background-color: $selected;
+        border: 1px solid $text;
+        color: $offwhite;
+    }
+}
+
 //Card Container
 @mixin cardContainer{
     border: 2px solid $highlight;
