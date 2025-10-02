@@ -31,7 +31,9 @@ export default function Page({
     }[],
     stats: {
       morale_bonus: number,
-      toughness: number
+      toughness: number,
+      size: number,
+      casualties: number
     },
     class: {
       name: string,
@@ -40,7 +42,8 @@ export default function Page({
       class_feature_improvement: {
         description: string,
         name: string,
-        restriction: string
+        restriction: string,
+        uses: number
       },
       demesne_effects: {
         description: string
@@ -165,7 +168,7 @@ export default function Page({
                 <div className={styles.statContainer}>
                   <div className={styles.strongholdStatNumber}>
                     <div className={styles.statNumberText}>
-                      <div>{stronghold?.stronghold_size}</div>
+                      <div>{(stronghold?.stats.size) - (stronghold?.stats.casualties)}/{stronghold?.stats?.size}</div>
                     </div>
                   </div>
                   <p className={styles.statName}>size</p>

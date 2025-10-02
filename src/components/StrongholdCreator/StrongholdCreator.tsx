@@ -805,7 +805,6 @@ export default function StrongholdCreator() {
 
   return (
     <div className={styles.container}>
-      <button onClick={() => setLoading(!loading)}>loading</button>
       {loading ? (
         <section className={styles.card}>
           <LoadingCard />
