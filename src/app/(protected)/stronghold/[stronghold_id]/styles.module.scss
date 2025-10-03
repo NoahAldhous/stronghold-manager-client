@@ -9,6 +9,12 @@
     justify-content: center;
     align-items: center;
 
+    @include screen("small"){
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
     .adminLoadingButton{
         position: absolute;
         top: 5rem;
@@ -22,7 +28,15 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        // background-color: aliceblue;
         @include screen("small"){
+            flex-direction: column;
+            min-height: 90dvh;
+            min-width: 90dvw;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        @include screen("medium"){
             flex-direction: column;
         }
 
@@ -33,20 +47,27 @@
             flex-direction: column;
             @include screen("small"){
                 width: 100%;
+                justify-content: flex-start;
+                align-items: center;
             }
-
+            @include screen("medium"){
+                width: 100%;
+                height: 100%;
+            }
 
             .strongholdOverview{
                 width: full;
                 height: 15%;
                 @include screen("small"){
-                    // background-color: red;
                     width: full;
                     height: 6%;
                     position: relative;
                     display: flex;
                     flex-direction: column;
                     justify-content: space-evenly;
+                }
+                @include screen("medium"){
+                    height: 10%;
                 }
 
                 .loadingName{
@@ -138,6 +159,11 @@
                 justify-content: space-between;
                 @include screen("small"){
                     flex-direction: column;
+                    width: 100%;
+                    height: 20%;
+                }
+                @include screen("medium"){
+                    height: 15%;
                 }
 
                 .featuresContainer{
@@ -149,7 +175,7 @@
                     flex-direction: row;
                     justify-content: space-between;
                     align-items: center;
-                    background-color: antiquewhite;
+                    // background-color: antiquewhite;
                     @include screen("small"){
                         width: 100%;
                         flex-direction: column;
@@ -210,6 +236,9 @@
                         @include screen("small"){
                             flex-direction: column;
                         }
+                        @include screen("medium"){
+                            flex-direction: column;
+                        }
                     }
                 }
 
@@ -238,7 +267,8 @@
                         // background-color: green;
 
                         .strongholdStatNumber{
-                            height: 50%;
+                            // height: 50%;
+                            width: 65%;
                             aspect-ratio: 1/1;
                             display: flex;
                             flex-direction: column;
@@ -249,8 +279,12 @@
                             border: 2px solid $selected;
                             transform: rotate(45deg);
 
+                            @include screen("medium"){
+                               width: 65%;
+                            }
+
                             @include screen("small"){
-                                height: 40%;
+                                width: 45%;
                             }
     
                             .statNumberText{
@@ -259,11 +293,23 @@
                                 justify-content: center;
                                 align-items: center;
                                 transform: rotate(-45deg);
+
+                                @include screen("small"){
+                                    font-size: smaller;
+                                }
+
+                                @include screen("medium"){
+                                    font-size: small;
+                                }
                             }
                         }
 
                         .statName{
                             font-size: 0.7rem;
+
+                            @include screen("medium"){
+                                font-size: xx-small;
+                            }
                         }
                     }
 
@@ -278,12 +324,32 @@
                 flex-direction: row;
                 justify-content: space-between;
 
+                @include screen("medium"){
+                    flex-direction: column;
+                    height: 75%;
+                    width: 100%;
+                }
+
+                @include screen("small"){
+                    flex-direction: column-reverse;
+                }
+
                 .strongholdTreasury{
                     height: 100%;
                     width: 32.5%;
                     // background-color: white;
                     @include cardContainer;
                     box-shadow: $boxShadow;
+
+                    @include screen("medium"){
+                        height: 25%;
+                        width: 100%;
+                    }
+
+                    @include screen("small"){
+                        width: 100%;
+                        min-height: 50%;
+                    }
                 }
 
                 .strongholdMenu{
@@ -292,13 +358,23 @@
                     @include cardContainer;
                     box-shadow: $boxShadow;
 
+                    @include screen("medium"){
+                        width: 100%;
+                        height: 72.5%;
+                    }
+
+                    @include screen("small"){
+                        width: 100%;
+                        min-height: 50%;
+                    }
+
                     .strongholdMenuButtons{
                         width: 100%;
                         height: 25%;
                         display: flex;
                         flex-direction: column;
                         border-bottom: $bottomBorder;
-                        
+
                         .menuCategories{
                             width: 100%;
                             height: 50%;
@@ -311,6 +387,12 @@
                                 width: 22%;
                                 height: 75%;  
                                 text-transform: capitalize; 
+
+                                @include screen("small"){
+                                    font-size: xx-small;
+                                    padding: 0.1rem 0;
+                                    height: 50%;
+                                }
                             }
                         }
 
@@ -321,6 +403,10 @@
                             flex-direction: row;
                             justify-content: flex-start;
                             align-items: center;
+                            @include screen("small"){
+                                flex-wrap: wrap;
+                                justify-content: space-around;
+                            }
 
                             .subCategoryButton{
                                 // width: 17%;
@@ -330,6 +416,13 @@
                                 font-size: x-small;
                                 margin-right: 0.5rem;
                                 text-transform: capitalize;
+
+                                @include screen("small"){
+                                    font-size: xx-small;
+                                    min-width: 15%;
+                                    padding: 0.2rem;
+                                    height: 40%;
+                                }
                             }
                         }
 
@@ -351,11 +444,21 @@
         }
 
         .contextualPanel{
+            @include desktop-only;
             width: 20%;
             height: full;
             // background-color: aliceblue;
             @include cardContainer;
             box-shadow: $boxShadow;
+
+            @include screen("small"){
+                width: 100%;
+                height: full;
+            }
+
+            @include screen("medium"){
+                display: none;
+            }
 
             .infoTitle{
                 font-size: medium;
