@@ -3,10 +3,15 @@
 import Link from "next/link";
 import styles from "./styles.module.scss"
 import { useAuth } from "contexts/AuthContext";
+import ScreenEffect from "components/ScreenEffect/ScreenEffect";
+import { useState } from "react";
 
-export default function NavBar({setScreenEffect, screenEffect}){
+export default function NavBar(){
 
     const { role, logout } = useAuth();
+
+    const[screenEffect, setScreenEffect] = useState(true);
+
 
     return (
         <div className={styles.navbar}>
@@ -16,6 +21,7 @@ export default function NavBar({setScreenEffect, screenEffect}){
                 <button className={styles.button} onClick={() => {setScreenEffect(!screenEffect)}}>Toggle Screen Effect</button>
                 <button className={styles.button} onClick={logout}>Log Out</button>
                 {role == "admin" ? <Link className={`${styles.button} ${styles.link}`} href="/admin">admin</Link> : null}
+                { screenEffect ? <ScreenEffect/> : null}
             </section>
         </div>
     )
