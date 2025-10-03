@@ -70,8 +70,6 @@ export default function Page() {
   //TODO: break this up into components
   return (
     <main className={styles.main}>
-      {/* <button onClick={() => setLoading(!loading)}>toggle load</button> */}
-      <h3>{userId} {userName}</h3>
       <section className={styles.strongholdsContainer}>
         <div className={styles.cardHeader}>Welcome, {userName}!</div>
         {loading || (!listOfStrongholds && !noStrongholds) ?
