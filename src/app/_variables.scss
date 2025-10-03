@@ -9,17 +9,19 @@ $page-height: 90vh;
 $column-width: 8.33vw;
 $half-column-width: $column-width / 2;
 
+//Screen sizes
+$max-small-screen-width: 700px;
+$min-medium-screen-width: $max-small-screen-width + 1px;
+$max-medium-screen-width: 1169px;
+$min-big-screen-width: $max-medium-screen-width + 1px;
+
 //Colours
-// $background : #5a5f72;
-// $background : #4e4553;
 $background: rgb(84, 84, 84);
 $dark: #292929;
-// $mid : #cbcfdd;
 $mid : #cdcbca;
 $highlight : #dedede;
 $highlight-transparent : #dedede79;
 $offwhite : #f4f4f4;
-// $selected : #B0B0B0;
 $selected : rgb(148, 147, 147);
 $selected-transparent : rgba(148, 147, 147, 0.5);
 $text : #0E131B;
@@ -62,6 +64,29 @@ $textShadow: 3px 3px 0 rgba($text, .3);
 
 //Bottom Border
 $bottomBorder: 2px solid $selected;
+
+//MIXINS
+
+//Hide desktop content
+@mixin mobile-only {
+    @media (min-width: $min-medium-screen-width) { display: none; }
+}
+    
+//Hide mobile content
+@mixin desktop-only {
+    @media (max-width: $max-small-screen-width) { display: none; }
+} 
+
+//Include if screen is this size
+@mixin screen($size) {
+    @if $size == "small" {
+        @media (max-width: $max-small-screen-width) { @content; }
+    } @else if $size == "medium" {
+        @media (min-width: $min-medium-screen-width) and (max-width: $max-medium-screen-width) { @content; }
+    } @else if $size == "large" {
+        @media (min-width: ($max-medium-screen-width + 1px)) { @content; }
+    }
+}
 
 //Background Texture
 @mixin pixelBackground {

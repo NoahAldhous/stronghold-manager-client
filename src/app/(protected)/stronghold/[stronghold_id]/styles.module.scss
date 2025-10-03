@@ -22,17 +22,32 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        @include screen("small"){
+            flex-direction: column;
+        }
 
         .strongholdSheet{
             width: 78%;
             height: full;
             display: flex;
             flex-direction: column;
+            @include screen("small"){
+                width: 100%;
+            }
 
 
             .strongholdOverview{
                 width: full;
                 height: 15%;
+                @include screen("small"){
+                    // background-color: red;
+                    width: full;
+                    height: 6%;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-evenly;
+                }
 
                 .loadingName{
                     height: 45%;
@@ -68,6 +83,10 @@
                 .strongholdName{
                     font-size: xx-large;
                     text-shadow: $textShadow;
+
+                    @include screen("small"){
+                        font-size: x-large;
+                    }
                 }
 
                 .strongholdInfo{
@@ -78,10 +97,20 @@
                     display:flex;
                     justify-content: space-between;
                     align-items: center;
+                    @include screen("small"){
+                        font-size: medium;
+                        flex-direction: column;
+                        justify-content: space-around;
+                        align-items: flex-start;
+                    }
 
                     .restButton{
                         padding: 0.5rem;
                         text-transform: capitalize;
+                        @include screen("small"){
+                            font-size: xx-small;
+                            padding: 0.3rem;
+                        }
                     }
 
                     .lowerCase{
@@ -107,6 +136,9 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
+                @include screen("small"){
+                    flex-direction: column;
+                }
 
                 .featuresContainer{
                     height: 100%;
@@ -117,7 +149,12 @@
                     flex-direction: row;
                     justify-content: space-between;
                     align-items: center;
-                    // background-color: antiquewhite;
+                    background-color: antiquewhite;
+                    @include screen("small"){
+                        width: 100%;
+                        flex-direction: column;
+                        justify-content: space-evenly;
+                    }
 
                     .features{
                         height: 80%;
@@ -128,6 +165,11 @@
                         justify-content: space-evenly;
                         @include cardContainer;
                         box-shadow: $boxShadow;
+
+                        @include screen("small"){
+                            height: 45%;
+                            width: 100%;
+                        }
 
                         .featureButton{
                             padding: 0.5rem;
@@ -165,6 +207,9 @@
                     }
                     .benefits{
                         flex-direction: row;
+                        @include screen("small"){
+                            flex-direction: column;
+                        }
                     }
                 }
 
@@ -177,6 +222,11 @@
                     align-items: center;
                     @include cardContainer;
                     box-shadow: $boxShadow;
+                    @include screen("small"){
+                        // flex-direction: column;
+                        width: 100%;
+                        height: 45%;
+                    }
 
                     .statContainer{
                         display: flex;
@@ -198,6 +248,10 @@
                             background-color: $highlight;
                             border: 2px solid $selected;
                             transform: rotate(45deg);
+
+                            @include screen("small"){
+                                height: 40%;
+                            }
     
                             .statNumberText{
                                 display: flex;

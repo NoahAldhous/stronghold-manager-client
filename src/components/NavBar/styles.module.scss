@@ -15,10 +15,15 @@
 
     .title{
         font-weight: 400;
-        text-shadow: $textShadow;   
+        text-shadow: $textShadow;  
+        
+        @include screen("small"){
+            font-size: medium;
+        }
     }
 
     .buttonContainer{
+        @include desktop-only;
         width: 50%;
         // border: 1;
         // border-style: dashed;
@@ -33,6 +38,7 @@
             min-width: 20%;
             font-size: medium;
             margin-left: 0.5rem;
+
         }
 
         .link{  

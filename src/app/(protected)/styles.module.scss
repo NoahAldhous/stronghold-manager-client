@@ -17,6 +17,14 @@
         justify-content: center;
         @include cardContainer;
         box-shadow: $boxShadow;
+        @include screen("medium"){
+            width: 60%;
+            height: 70%;
+        }
+        @include screen("small"){
+            width: 95%;
+            height: 85%;
+        }
 
         .loadingContainer{
             width: 60%;
