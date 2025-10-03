@@ -16,6 +16,15 @@
         align-items: center;
         @include cardContainer;
         box-shadow: $boxShadow;
+
+        @include screen("medium"){
+            width: 70%;
+            height: 65%;
+        }
+
+        @include screen("small"){
+            width: 95%;
+        }
     }
 
 }

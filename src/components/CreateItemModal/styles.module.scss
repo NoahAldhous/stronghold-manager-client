@@ -17,6 +17,14 @@
         width: 50%;
         @include cardContainer;
 
+        @include screen("medium"){
+            width: 75%;
+        }
+
+        @include screen("small"){
+            width: 95%;
+        }
+
         .loading{
             width: 100%;
             height: 100%;
@@ -57,6 +65,16 @@
                     color: $text;
                     display: flex;
                     justify-content: center;
+
+                    @include screen("medium"){
+                        width: 40%;
+                    }
+
+                    @include screen("small"){
+                        width: 45%;
+                        font-size: x-small;
+                        padding: 0.5rem;
+                    }
                 }
         
                 .button:hover{

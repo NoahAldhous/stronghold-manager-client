@@ -21,6 +21,14 @@
         justify-content: space-evenly;
         @include cardContainer;
 
+        @include screen("medium"){
+            width: 75%;
+        }
+
+        @include screen("small"){
+            width: 95%;
+        }
+
         .modalTextContainer{
             font-size: large;
             border-bottom: $bottomBorder;
