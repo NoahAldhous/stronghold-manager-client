@@ -106,6 +106,23 @@ export default function Page({
     }
   }, [isLoggedIn]);
 
+  //decrease number of class feature improvement uses
+  function updateUses(uses : number){
+
+    if (stronghold){
+      setStronghold({
+        ...stronghold, 
+        class:{
+          ...stronghold?.class,
+          class_feature_improvement: {
+            ...stronghold?.class?.class_feature_improvement,
+            uses: uses
+          }
+        }
+      }
+    )};
+  };
+
   async function fetchStrongholdById() {
     setLoading(true);
 
@@ -128,6 +145,37 @@ export default function Page({
     }
   }
 
+  async function updateClassFeatureImprovementUses(uses: number){
+
+    if (stronghold && uses >= 0 && stronghold.class.class_feature_improvement.uses !== uses) {
+      console.log("updating number...")
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/strongholds/class_feature_improvement_uses/${stronghold?.id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              uses: uses
+            })
+          }
+        )
+  
+        if(!res.ok) {
+          throw new Error("The application encountered an error trying to update this value")
+        } 
+        const data = await res.json()
+        console.log(data.message)
+      } catch (err) {
+        console.log(err.message)
+      } finally{
+        updateUses(uses);
+      };
+    };
+  };
+
   return (
     <main className={styles.main}>
       <section className={styles.strongholdSheetContainer}>
@@ -144,16 +192,19 @@ export default function Page({
                 {stronghold?.stronghold_name}
               </p>
               <section className={styles.strongholdInfo}>
-                <p>
-                  {stronghold?.owner_name}
-                  <span className={styles.lowerCase}>&apos;s</span> Level{" "}
-                  {stronghold?.stronghold_level} {stronghold?.stronghold_type}
-                </p>
-                <p>
-                  {stronghold?.class.name}
-                  <span className={styles.lowerCase}>&apos;s</span>{" "}
-                  {stronghold?.class.stronghold_name}
-                </p>
+                <div>
+                  <p>
+                    {stronghold?.owner_name}
+                    <span className={styles.lowerCase}>&apos;s</span> Level{" "}
+                    {stronghold?.stronghold_level} {stronghold?.stronghold_type}
+                  </p>
+                  <p>
+                    {stronghold?.class.name}
+                    <span className={styles.lowerCase}>&apos;s</span>{" "}
+                    {stronghold?.class.stronghold_name}
+                  </p>
+                </div>
+                <button className={styles.restButton} onClick={() => updateClassFeatureImprovementUses(stronghold?.stronghold_level)}>take extended rest</button>
               </section>
             </section>
           )}
@@ -248,9 +299,10 @@ export default function Page({
                     <p>Uses:</p>{" "}
                     {Array.from({ length: stronghold?.stronghold_level ?? 0 }).map(
                       (_, index) => (
-                        <div className={styles.diamond} key={index} />
+                        <div className={`${styles.diamond} ${(index+1 <= stronghold.class.class_feature_improvement.uses ? styles.activeDiamond : "")}`} key={index} />
                       )
                     )}
+                    <button onClick={() => updateClassFeatureImprovementUses(stronghold?.class?.class_feature_improvement?.uses -1)} className={styles.useButton}>Use</button>
                   </section>
                 </section>
               )}
