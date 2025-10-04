@@ -1,5 +1,4 @@
 import NavBar from "components/NavBar/NavBar"
-import { useState } from "react";
 import { AuthProvider } from "contexts/AuthContext"
 import {IBM_Plex_Mono} from "next/font/google"
 import type { Metadata } from "next";

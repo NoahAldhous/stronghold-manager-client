@@ -17,22 +17,28 @@ export default function StrongholdCreator() {
   const router = useRouter();
 
   //isFormComplete
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
   //is the create button being hovered, used for showing tooltip
-  const [hovered, setHovered] = useState(false);
+  const [hovered, setHovered] = useState<boolean>(false);
 
   //used to progress through the stages of the stronghold creator menu
-  const [progress, setProgress] = useState(1);
+  const [progress, setProgress] = useState<number>(1);
 
   //displays the modal when the created stronghold is being sent to database
-  const [displayModal, setDisplayModal] = useState(false);
+  const [displayModal, setDisplayModal] = useState<boolean>(false);
 
   //receive the newly created stronghold's id for navigation to the stronghold page
-  const [strongholdId, setStrongholdId] = useState(0);
+  const [strongholdId, setStrongholdId] = useState<number>(0);
 
   //create loading UI when queries are being made /data is being fetched
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // create loading UI on the create item modal as the item is being sent to DB
+  const [sendingData, setSendingData] = useState<boolean>(false);
+
+  // sets to true only when all fetch requests have been completed, allowing the elements to display.
+  const [allDataFetched, setAllDataFetched] = useState<boolean>(false);
 
   //acquisition type. TODO: update API and add this to userStronghold
   const [activeAcquisitionType, setActiveAcquisitionType] = useState({
@@ -45,66 +51,59 @@ export default function StrongholdCreator() {
   });
 
   //user options to be fetched from database
-  const [strongholdTypes, setStrongholdTypes] = useState([
-    {
-      type_name: "",
-      type_description: "",
-      id: 0,
-    },
-  ]);
+  const [strongholdTypes, setStrongholdTypes] = useState<{
+    type_name: string,
+    type_description: string,
+    id: number
+  }[] | null>(null);
 
-  const [typeFeatures, setTypeFeatures] = useState([
-    {
-      featureDescription: "",
-      featureName: "",
-      id: 0,
-      typeId: 0,
-      typeName: "",
-    },
-  ]);
+  const [typeFeatures, setTypeFeatures] = useState<{
+    featureDescription: string,
+    featureName: string,
+    id: number,
+    typeId: number,
+    typeName: string
+  }[] | null>(null);
 
-  const [typeStats, setTypeStats] = useState({
-    stats: {
-      keep: {
-        level1: {
-          costToBuild: 0,
-          costToUpgrade: 0,
-          fortificationBonus: 0,
-          size: 0,
-          level: 0,
-          timeToBuild: 0,
-          timeToUpgrade: 0,
-          toughness: 0,
-        },
-      },
-    },
-  });
+  const [typeStats, setTypeStats] = useState<{
+    stats: 
+      Record<
+        "tower" | "keep" | "temple" | "establishment" | "castle",
+        Record<
+          "level1" | "level2" | "level3" | "level4" | "level5",
+          {
+            costToBuild: number,
+            costToUpgrade: number,
+            fortificationBonus: number,
+            size: number, 
+            level: number,
+            timeToBuild: number,
+            timeToUpgrade: number,
+            toughness: number
+          }
+        >
+      >    
+  } | null>(null);
 
   //user options to be fetched from database
-  const [strongholdClasses, setStrongholdClasses] = useState([
-    {
-      id: 0,
-      name: "",
-      strongholdDescription: "",
-      strongholdName: "",
-      demesneEffects: [
-        {
-          description: "",
-        },
-      ],
-      featureImprovement: {
-        name: "",
-        description: "",
-        restriction: "",
-      },
-      strongholdActions: [
-        {
-          name: "",
-          description: "",
-        },
-      ],
+  const [strongholdClasses, setStrongholdClasses] = useState<{
+    id: number,
+    name: string,
+    strongholdDescription: string,
+    strongholdName: string,
+    demesneEffects: {
+      description: string
+    }[],
+    featureImprovement: {
+      name: string,
+      description: string,
+      restriction: string
     },
-  ]);
+    strongholdActions: {
+      name: string,
+      description: string
+    }[]
+  }[] | null>(null);
 
   //user stronghold options which will be sent to database
   const [userStronghold, setUserStronghold] = useState({
@@ -195,6 +194,8 @@ export default function StrongholdCreator() {
   //DATA FETCHING
 
   async function fetchStrongholdTypes() {
+    setLoading(true);
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/strongholds/types`
@@ -215,6 +216,8 @@ export default function StrongholdCreator() {
   }
 
   async function fetchStrongholdClasses() {
+    setLoading(true);
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/strongholds/classes/list`
@@ -235,6 +238,8 @@ export default function StrongholdCreator() {
   }
 
   async function fetchStrongholdTypeFeatures() {
+    setLoading(true);
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/strongholds/types/features`
@@ -254,6 +259,8 @@ export default function StrongholdCreator() {
   }
 
   async function fetchStrongholdTypeStats() {
+    setLoading(true);
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/strongholds/types/stats`
@@ -273,7 +280,7 @@ export default function StrongholdCreator() {
   }
 
   async function handleSubmit() {
-    setLoading(true);
+    setSendingData(true);
     setDisplayModal(true);
 
     try {
@@ -302,7 +309,7 @@ export default function StrongholdCreator() {
     } catch (err) {
       console.log(err.message);
     } finally {
-      setLoading(false);
+      setSendingData(false);
     }
   }
 
@@ -335,7 +342,7 @@ export default function StrongholdCreator() {
               </p>
             </div>
             <div className={styles.buttonContainer}>
-              {strongholdTypes.map((item) => {
+              {strongholdTypes?.map((item) => {
                 return (
                   <button
                     onClick={() => handleStrongholdTypeChange(item.type_name)}
@@ -375,7 +382,7 @@ export default function StrongholdCreator() {
                 signature feature.
               </p>
               <div className={styles.classButtonsList}>
-                {strongholdClasses.map((item) => {
+                {strongholdClasses?.map((item) => {
                   return (
                     <button
                       onClick={() => handleStrongholdClassChange(item.name)}
@@ -496,7 +503,7 @@ export default function StrongholdCreator() {
               <p className={styles.title}>
                 the {userStronghold.stronghold_type}
               </p>
-              {strongholdTypes.map((item, index) =>
+              {strongholdTypes?.map((item, index) =>
                 item.type_name == userStronghold.stronghold_type ? (
                   <p key={index} className={styles.summary}>
                     {item.type_description}
@@ -513,7 +520,7 @@ export default function StrongholdCreator() {
                   userStronghold.stronghold_type == "castle"
                     ? "-"
                     : `d${
-                        typeStats.stats[userStronghold.stronghold_type]?.level1
+                        typeStats?.stats[userStronghold.stronghold_type]?.level1
                           ?.size
                       }`}
                 </p>
@@ -525,7 +532,7 @@ export default function StrongholdCreator() {
                   userStronghold.stronghold_type == "castle"
                     ? "-"
                     : `${
-                        typeStats.stats[userStronghold.stronghold_type]?.level1
+                        typeStats?.stats[userStronghold.stronghold_type]?.level1
                           ?.toughness
                       }`}
                 </p>
@@ -537,7 +544,7 @@ export default function StrongholdCreator() {
                   userStronghold.stronghold_type == "castle"
                     ? "-"
                     : `+${
-                        typeStats.stats[userStronghold.stronghold_type]?.level1
+                        typeStats?.stats[userStronghold.stronghold_type]?.level1
                           ?.fortificationBonus
                       }/Level`}
                 </p>
@@ -545,7 +552,7 @@ export default function StrongholdCreator() {
             </div>
             <div className={styles.featuresContainer}>
               <p className={styles.containerTitle}>benefits</p>
-              {typeFeatures.map((item, index) =>
+              {typeFeatures?.map((item, index) =>
                 item.typeName == userStronghold.stronghold_type ? (
                   <div key={index} className={styles.feature}>
                     <p className={styles.name}>{item.featureName}</p>
@@ -561,7 +568,7 @@ export default function StrongholdCreator() {
       case 2:
         return (
           <div className={styles.infoCard}>
-            {strongholdClasses.map((item, index) =>
+            {strongholdClasses?.map((item, index) =>
               item.name === userStronghold.stronghold_class ? (
                 <div key={index} className={styles.titleContainer}>
                   <div className={styles.title}>
@@ -574,7 +581,7 @@ export default function StrongholdCreator() {
               ) : null
             )}
             <div className={styles.classFeaturesContainer}>
-              {strongholdClasses.map((item, index) =>
+              {strongholdClasses?.map((item, index) =>
                 item.name == userStronghold.stronghold_class ? (
                   <div className={styles.innerContainer} key={index}>
                     <section className={styles.section}>
@@ -644,7 +651,7 @@ export default function StrongholdCreator() {
                     userStronghold.stronghold_type == "castle"
                       ? "-"
                       : `d${
-                          typeStats.stats[userStronghold.stronghold_type]?.[
+                          typeStats?.stats[userStronghold.stronghold_type]?.[
                             `level${userStronghold.stronghold_level}`
                           ]?.size
                         }`}
@@ -654,10 +661,10 @@ export default function StrongholdCreator() {
                     userStronghold.stronghold_type == "castle"
                       ? null
                       : `+${
-                          typeStats.stats[userStronghold.stronghold_type]?.[
+                          typeStats?.stats[userStronghold.stronghold_type]?.[
                             `level${userStronghold.stronghold_level}`
                           ]?.size -
-                          typeStats.stats[userStronghold.stronghold_type]
+                          typeStats?.stats[userStronghold.stronghold_type]
                             ?.level1?.size
                         }`}
                   </p>
@@ -671,7 +678,7 @@ export default function StrongholdCreator() {
                     userStronghold.stronghold_type == "castle"
                       ? "-"
                       : `${
-                          typeStats.stats[userStronghold.stronghold_type]?.[
+                          typeStats?.stats[userStronghold.stronghold_type]?.[
                             `level${userStronghold.stronghold_level}`
                           ]?.toughness
                         }`}
@@ -681,10 +688,10 @@ export default function StrongholdCreator() {
                     userStronghold.stronghold_type == "castle"
                       ? null
                       : `+${
-                          typeStats.stats[userStronghold.stronghold_type]?.[
+                          typeStats?.stats[userStronghold.stronghold_type]?.[
                             `level${userStronghold.stronghold_level}`
                           ]?.toughness -
-                          typeStats.stats[userStronghold.stronghold_type]
+                          typeStats?.stats[userStronghold.stronghold_type]
                             ?.level1?.toughness
                         }`}
                   </p>
@@ -698,7 +705,7 @@ export default function StrongholdCreator() {
                     userStronghold.stronghold_type == "castle"
                       ? "-"
                       : `+${
-                          typeStats.stats[userStronghold.stronghold_type]?.[
+                          typeStats?.stats[userStronghold.stronghold_type]?.[
                             `level${userStronghold.stronghold_level}`
                           ]?.fortificationBonus
                         }`}
@@ -708,10 +715,10 @@ export default function StrongholdCreator() {
                     userStronghold.stronghold_type == "castle"
                       ? null
                       : `+${
-                          typeStats.stats[userStronghold.stronghold_type]?.[
+                          typeStats?.stats[userStronghold.stronghold_type]?.[
                             `level${userStronghold.stronghold_level}`
                           ]?.fortificationBonus -
-                          typeStats.stats[userStronghold.stronghold_type]
+                          typeStats?.stats[userStronghold.stronghold_type]
                             ?.level1?.fortificationBonus
                         }`}
                   </p>
@@ -737,7 +744,7 @@ export default function StrongholdCreator() {
                   className={`${styles.costContainer} ${styles.costToBuild}`}
                 >
                   <p>
-                    {typeStats.stats[userStronghold.stronghold_type]?.[
+                    {typeStats?.stats[userStronghold.stronghold_type]?.[
                       `level${userStronghold.stronghold_level}`
                     ]?.costToBuild * activeAcquisitionType.multiplier}{" "}
                     gp
@@ -754,7 +761,7 @@ export default function StrongholdCreator() {
                 <p>Time to Build</p>
                 <div className={styles.costContainer}>
                   <p>
-                    {typeStats.stats[userStronghold.stronghold_type]?.[
+                    {typeStats?.stats[userStronghold.stronghold_type]?.[
                       `level${userStronghold.stronghold_level}`
                     ]?.timeToBuild * activeAcquisitionType.multiplier}{" "}
                     days
@@ -789,6 +796,17 @@ export default function StrongholdCreator() {
   }, [userId]);
 
   useEffect(() => {
+    if (
+      strongholdTypes
+      && strongholdClasses
+      && typeFeatures
+      && typeStats
+    ){
+      setAllDataFetched(true);
+    }
+  },[strongholdTypes, strongholdClasses, typeFeatures, typeStats]);
+
+  useEffect(() => {
     if (progress == 4) {
       if (
         userStronghold.owner_name !== "" &&
@@ -805,7 +823,7 @@ export default function StrongholdCreator() {
 
   return (
     <div className={styles.container}>
-      {loading ? (
+      {loading || !allDataFetched ? (
         <section className={styles.card}>
           <LoadingCard />
         </section>
@@ -858,7 +876,7 @@ export default function StrongholdCreator() {
           </section>
         </section>
       )}
-      {loading ? (
+      {loading || !allDataFetched ? (
         <section className={styles.card}>
           <LoadingCard />
         </section>
@@ -869,7 +887,7 @@ export default function StrongholdCreator() {
         </section>
       )}
       {displayModal ? (
-        <CreateItemModal loading={loading} strongholdId={strongholdId} />
+        <CreateItemModal sendingData={sendingData} strongholdId={strongholdId} />
       ) : null}
     </div>
   );

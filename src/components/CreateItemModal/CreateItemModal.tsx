@@ -3,16 +3,16 @@ import LoadingBar from "components/LoadingUI/LoadingBar/LoadingBar";
 import styles from "./styles.module.scss";
 import Link from "next/link";
 
-export default function CreateItemModal({loading, strongholdId}){
+export default function CreateItemModal({sendingData, strongholdId}){
 
     return(
         <main className={styles.modalBackground}>
             <div className={styles.modalMenu}>
                 <div className={styles.cardHeader}>
-                    {loading ? "creating stronghold"
+                    {sendingData ? "creating stronghold"
                     : "stronghold created"}
                 </div>
-                {loading ? <div className={styles.loading}>
+                {sendingData ? <div className={styles.loading}>
                     <p>Loading...</p>
                     <LoadingBar colour="dark"/>
                 </div> :
