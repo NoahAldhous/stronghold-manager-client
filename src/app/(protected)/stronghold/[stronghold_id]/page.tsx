@@ -5,6 +5,7 @@ import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
+import UpgradeStrongholdModal from "components/Modal/UpgradeStrongholdModal/UpgradeStrongholdModal";
 
 export default function Page({
   params,
@@ -85,6 +86,8 @@ export default function Page({
       ],
     },
   ];
+
+  const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
   const [contextualInfo, setContextualInfo] = useState<{
     title: string | null,
@@ -204,7 +207,13 @@ export default function Page({
                     {stronghold?.class.stronghold_name}
                   </p>
                 </div>
-                <button className={styles.restButton} onClick={() => updateClassFeatureImprovementUses(stronghold?.stronghold_level)}>take extended rest</button>
+                <section className={styles.upgradeContainer}>
+                  <button className={styles.restButton} onClick={() => updateClassFeatureImprovementUses(stronghold?.stronghold_level)}>take extended rest</button>
+                  <div className={styles.upgradeInfo}>
+                    <p className={styles.upgradeText}>Cost to Upgrade: {stronghold.upgrade_cost}gp</p>
+                    <button onClick={() => setUpgradeModal(true)}>Upgrade</button>
+                  </div>
+                </section>
               </section>
             </section>
           )}
@@ -407,6 +416,7 @@ export default function Page({
             <p className={styles.info}>{contextualInfo.description}</p>
           </section>
         )}
+      <UpgradeStrongholdModal stronghold={stronghold} setStronghold={setStronghold} level={stronghold?.stronghold_level} visible={upgradeModal} setVisible={setUpgradeModal}/>
       </section>
     </main>
   );

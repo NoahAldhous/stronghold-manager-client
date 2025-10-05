@@ -125,14 +125,35 @@
                         align-items: flex-start;
                     }
 
-                    .restButton{
-                        padding: 0.5rem;
-                        text-transform: capitalize;
-                        @include screen("small"){
-                            font-size: xx-small;
-                            padding: 0.3rem;
+                    .upgradeContainer{
+                        width: 25%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-end;
+                        justify-content: center;
+
+                        .upgradeInfo{
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+
+                            .upgradeText{
+                                font-size: small;
+                            }
+                        }
+
+                        .restButton{
+                            padding: 0.5rem;
+                            text-transform: capitalize;
+                            @include screen("small"){
+                                font-size: xx-small;
+                                padding: 0.3rem;
+                            }
                         }
                     }
+
 
                     .lowerCase{
                         text-transform: lowercase;
