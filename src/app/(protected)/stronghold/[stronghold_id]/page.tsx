@@ -14,6 +14,7 @@ export default function Page({
 }) {
   const { stronghold_id } = use(params);
   const [loading, setLoading] = useState(false);
+  const [strongholdIsUpgraded, setStrongholdIsUpgraded] = useState(false);
   const [activeButton, setActiveButton] = useState({
     category: "stronghold",
     subCategory: "all",
@@ -26,6 +27,13 @@ export default function Page({
     stronghold_size: number;
     stronghold_type: string;
     upgrade_cost: number;
+    treasury: {
+      pp: number;
+      gp: number;
+      sp: number;
+      ep: number;
+      cp: number;
+    };
     features: {
       title: string;
       description: string;
@@ -89,6 +97,8 @@ export default function Page({
 
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
+  const [strongholdRevenue, setStrongholdRevenue] = useState<number>(0); 
+
   const [contextualInfo, setContextualInfo] = useState<{
     title: string | null;
     description: string | null;
@@ -107,7 +117,23 @@ export default function Page({
     } else {
       fetchStrongholdById();
     }
-  }, [isLoggedIn, stronghold?.stronghold_level]);
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (stronghold) {
+      calculateStrongholdRevenue();
+      if (strongholdIsUpgraded){
+        updateClassFeatureImprovementUses(stronghold?.stronghold_level);
+        setStrongholdIsUpgraded(false);
+      }
+    }
+  }, [stronghold?.stronghold_level]);
+
+  function calculateStrongholdRevenue(){
+    if( stronghold?.stronghold_type == "establishment") {
+      setStrongholdRevenue(1000 * stronghold?.stronghold_level)
+    }
+  }
 
   //decrease number of class feature improvement uses
   function updateUses(uses: number) {
@@ -126,7 +152,9 @@ export default function Page({
   }
 
   async function fetchStrongholdById() {
-    setLoading(true);
+    if (!stronghold) {
+      setLoading(true);
+    }
 
     try {
       const res = await fetch(
@@ -379,6 +407,16 @@ export default function Page({
             ) : (
               <section className={styles.strongholdTreasury}>
                 <div className={styles.cardHeader}>treasury</div>
+                <section className={styles.revenueContainer}>
+                  <p>Revenue: {strongholdRevenue}gp / Season</p>
+                </section>
+                <section className={styles.currencyContainer}>
+                  <p>pp:{stronghold?.treasury?.pp}</p>
+                  <p>gp:{stronghold?.treasury?.gp}</p>
+                  <p>sp:{stronghold?.treasury?.sp}</p>
+                  <p>ep:{stronghold?.treasury?.ep}</p>
+                  <p>cp:{stronghold?.treasury?.cp}</p>
+                </section>
               </section>
             )}
             {loading || !stronghold ? (
@@ -468,11 +506,10 @@ export default function Page({
         )}
         <UpgradeStrongholdModal
           stronghold={stronghold}
-          setStronghold={setStronghold}
-          level={stronghold?.stronghold_level}
           visible={upgradeModal}
           setVisible={setUpgradeModal}
-          updateClassFeatureImprovementUses={updateClassFeatureImprovementUses}
+          fetchStronghold={fetchStrongholdById}
+          setIsUpgraded={setStrongholdIsUpgraded}
         />
       </section>
     </main>

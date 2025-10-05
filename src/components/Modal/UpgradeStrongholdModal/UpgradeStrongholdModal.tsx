@@ -9,10 +9,9 @@ import LoadingBar from "components/LoadingUI/LoadingBar/LoadingBar";
 export default function UpgradeStrongholdModal({
   visible,
   setVisible,
-  setStronghold,
   stronghold,
-  level,
-  updateClassFeatureImprovementUses
+  fetchStronghold,
+  setIsUpgraded
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [updating, setUpdating] = useState<boolean>(false);
@@ -77,8 +76,9 @@ export default function UpgradeStrongholdModal({
     } catch (err) {
       console.log(err.message);
     } finally {
-      setStronghold({ ...stronghold, stronghold_level: level + 1 });
-      updateClassFeatureImprovementUses(stronghold?.stronghold_level + 1)
+      setIsUpgraded(true);
+      fetchStronghold(stronghold?.stronghold_id)
+      // updateClassFeatureImprovementUses(stronghold?.stronghold_level + 1)
       setUpdating(false);
     }
   }
@@ -153,7 +153,7 @@ export default function UpgradeStrongholdModal({
               onClick={() => setVisible(false)}
               className={styles.button}
             >
-              cancel
+              back
             </button>
             <button
               disabled={updating || stronghold?.stronghold_level >= 5}
