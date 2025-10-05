@@ -300,12 +300,13 @@
                             .strongholdStatNumber{
                                 // height: 50%;
                                 width: 65%;
+                                color: $text;
                                 aspect-ratio: 1/1;
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
                                 justify-content: center;
-                                font-size: medium;
+                                font-size: larger;
                                 background-color: $highlight;
                                 border: 2px solid $selected;
                                 // background-color: red;

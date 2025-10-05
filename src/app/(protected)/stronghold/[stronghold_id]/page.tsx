@@ -19,42 +19,42 @@ export default function Page({
     subCategory: "all",
   });
   const [stronghold, setStronghold] = useState<{
-    id: number,
-    owner_name: string,
-    stronghold_level: number,
-    stronghold_name: string,
-    stronghold_size: number,
-    stronghold_type: string,
-    upgrade_cost: number,
+    id: number;
+    owner_name: string;
+    stronghold_level: number;
+    stronghold_name: string;
+    stronghold_size: number;
+    stronghold_type: string;
+    upgrade_cost: number;
     features: {
-      title: string,
-      description: string
-    }[],
+      title: string;
+      description: string;
+    }[];
     stats: {
-      morale_bonus: number,
-      toughness: number,
-      size: number,
-      casualties: number
-    },
+      morale_bonus: number;
+      toughness: number;
+      size: number;
+      casualties: number;
+    };
     class: {
-      name: string,
-      stronghold_name: string, 
-      description: string,
+      name: string;
+      stronghold_name: string;
+      description: string;
       class_feature_improvement: {
-        description: string,
-        name: string,
-        restriction: string,
-        uses: number
-      },
+        description: string;
+        name: string;
+        restriction: string;
+        uses: number;
+      };
       demesne_effects: {
-        description: string
-      }[],
+        description: string;
+      }[];
       stronghold_actions: {
-        name: string,
-        description: string
-      }[]
-    }
-  } | null>(null)
+        name: string;
+        description: string;
+      }[];
+    };
+  } | null>(null);
 
   const strongholdMenuButtons = [
     {
@@ -90,8 +90,8 @@ export default function Page({
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
   const [contextualInfo, setContextualInfo] = useState<{
-    title: string | null,
-    description: string | null
+    title: string | null;
+    description: string | null;
   }>({
     title: null,
     description: null,
@@ -107,24 +107,23 @@ export default function Page({
     } else {
       fetchStrongholdById();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, stronghold?.stronghold_level]);
 
   //decrease number of class feature improvement uses
-  function updateUses(uses : number){
-
-    if (stronghold){
+  function updateUses(uses: number) {
+    if (stronghold) {
       setStronghold({
-        ...stronghold, 
-        class:{
+        ...stronghold,
+        class: {
           ...stronghold?.class,
           class_feature_improvement: {
             ...stronghold?.class?.class_feature_improvement,
-            uses: uses
-          }
-        }
-      }
-    )};
-  };
+            uses: uses,
+          },
+        },
+      });
+    }
+  }
 
   async function fetchStrongholdById() {
     setLoading(true);
@@ -148,10 +147,13 @@ export default function Page({
     }
   }
 
-  async function updateClassFeatureImprovementUses(uses: number){
-
-    if (stronghold && uses >= 0 && stronghold.class.class_feature_improvement.uses !== uses) {
-      console.log("updating number...")
+  async function updateClassFeatureImprovementUses(uses: number) {
+    if (
+      stronghold &&
+      uses >= 0 &&
+      stronghold.class.class_feature_improvement.uses !== uses
+    ) {
+      console.log("updating number...");
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/strongholds/class_feature_improvement_uses/${stronghold?.id}`,
@@ -161,23 +163,25 @@ export default function Page({
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              uses: uses
-            })
+              uses: uses,
+            }),
           }
-        )
-  
-        if(!res.ok) {
-          throw new Error("The application encountered an error trying to update this value")
-        } 
-        const data = await res.json()
-        console.log(data.message)
+        );
+
+        if (!res.ok) {
+          throw new Error(
+            "The application encountered an error trying to update this value"
+          );
+        }
+        const data = await res.json();
+        console.log(data.message);
       } catch (err) {
-        console.log(err.message)
-      } finally{
+        console.log(err.message);
+      } finally {
         updateUses(uses);
-      };
-    };
-  };
+      }
+    }
+  }
 
   return (
     <main className={styles.main}>
@@ -208,11 +212,26 @@ export default function Page({
                   </p>
                 </div>
                 <section className={styles.upgradeContainer}>
-                  <button className={styles.restButton} onClick={() => updateClassFeatureImprovementUses(stronghold?.stronghold_level)}>take extended rest</button>
-                  <div className={styles.upgradeInfo}>
-                    <p className={styles.upgradeText}>Cost to Upgrade: {stronghold.upgrade_cost}gp</p>
-                    <button onClick={() => setUpgradeModal(true)}>Upgrade</button>
-                  </div>
+                  <button
+                    className={styles.restButton}
+                    onClick={() =>
+                      updateClassFeatureImprovementUses(
+                        stronghold?.stronghold_level
+                      )
+                    }
+                  >
+                    take extended rest
+                  </button>
+                  {stronghold?.stronghold_level === 5 ? null : (
+                    <div className={styles.upgradeInfo}>
+                      <p className={styles.upgradeText}>
+                        Cost to Upgrade: {stronghold.upgrade_cost}gp
+                      </p>
+                      <button onClick={() => setUpgradeModal(true)}>
+                        Upgrade
+                      </button>
+                    </div>
+                  )}
                 </section>
               </section>
             </section>
@@ -229,7 +248,11 @@ export default function Page({
                   <div className={styles.numberContainer}>
                     <div className={styles.strongholdStatNumber}>
                       <div className={styles.statNumberText}>
-                        <div>{(stronghold?.stats.size) - (stronghold?.stats.casualties)}/{stronghold?.stats?.size}</div>
+                        <div>
+                          {stronghold?.stats.size -
+                            stronghold?.stats.casualties}
+                          /{stronghold?.stats?.size}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -303,8 +326,16 @@ export default function Page({
                     className={styles.featureButton}
                     onClick={() =>
                       setContextualInfo({
-                        title: stronghold?.class?.class_feature_improvement?.name ?? null,
-                        description: `${stronghold?.class?.class_feature_improvement?.description ?? ""} ${stronghold?.class?.class_feature_improvement?.restriction ?? ""}`,
+                        title:
+                          stronghold?.class?.class_feature_improvement?.name ??
+                          null,
+                        description: `${
+                          stronghold?.class?.class_feature_improvement
+                            ?.description ?? ""
+                        } ${
+                          stronghold?.class?.class_feature_improvement
+                            ?.restriction ?? ""
+                        }`,
                       })
                     }
                   >
@@ -312,12 +343,29 @@ export default function Page({
                   </button>
                   <section className={styles.usesContainer}>
                     <p>Uses:</p>{" "}
-                    {Array.from({ length: stronghold?.stronghold_level ?? 0 }).map(
-                      (_, index) => (
-                        <div className={`${styles.diamond} ${(index+1 <= stronghold.class.class_feature_improvement.uses ? styles.activeDiamond : "")}`} key={index} />
-                      )
-                    )}
-                    <button onClick={() => updateClassFeatureImprovementUses(stronghold?.class?.class_feature_improvement?.uses -1)} className={styles.useButton}>Use</button>
+                    {Array.from({
+                      length: stronghold?.stronghold_level ?? 0,
+                    }).map((_, index) => (
+                      <div
+                        className={`${styles.diamond} ${
+                          index + 1 <=
+                          stronghold.class.class_feature_improvement.uses
+                            ? styles.activeDiamond
+                            : ""
+                        }`}
+                        key={index}
+                      />
+                    ))}
+                    <button
+                      onClick={() =>
+                        updateClassFeatureImprovementUses(
+                          stronghold?.class?.class_feature_improvement?.uses - 1
+                        )
+                      }
+                      className={styles.useButton}
+                    >
+                      Use
+                    </button>
                   </section>
                 </section>
               )}
@@ -391,7 +439,9 @@ export default function Page({
                 <section className={styles.strongholdMenuText}>
                   <StrongholdFeatures
                     activeButton={activeButton}
-                    strongholdActions={stronghold?.class.stronghold_actions ?? null}
+                    strongholdActions={
+                      stronghold?.class.stronghold_actions ?? null
+                    }
                     demesneEffects={stronghold?.class.demesne_effects ?? null}
                     typeBenefits={stronghold?.features ?? null}
                     classFeatureImprovement={
@@ -416,7 +466,14 @@ export default function Page({
             <p className={styles.info}>{contextualInfo.description}</p>
           </section>
         )}
-      <UpgradeStrongholdModal stronghold={stronghold} setStronghold={setStronghold} level={stronghold?.stronghold_level} visible={upgradeModal} setVisible={setUpgradeModal}/>
+        <UpgradeStrongholdModal
+          stronghold={stronghold}
+          setStronghold={setStronghold}
+          level={stronghold?.stronghold_level}
+          visible={upgradeModal}
+          setVisible={setUpgradeModal}
+          updateClassFeatureImprovementUses={updateClassFeatureImprovementUses}
+        />
       </section>
     </main>
   );
