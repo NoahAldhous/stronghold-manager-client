@@ -217,30 +217,36 @@ export default function Page({
               <section className={styles.numericalStats}>
                 <section className={styles.cardHeader}>stats</section>
                 <div className={styles.statContainer}>
-                  <div className={styles.strongholdStatNumber}>
-                    <div className={styles.statNumberText}>
-                      <div>{(stronghold?.stats.size) - (stronghold?.stats.casualties)}/{stronghold?.stats?.size}</div>
+                  <div className={styles.numberContainer}>
+                    <div className={styles.strongholdStatNumber}>
+                      <div className={styles.statNumberText}>
+                        <div>{(stronghold?.stats.size) - (stronghold?.stats.casualties)}/{stronghold?.stats?.size}</div>
+                      </div>
                     </div>
                   </div>
                   <p className={styles.statName}>size</p>
                 </div>
                 <div className={styles.statContainer}>
-                  <div className={styles.strongholdStatNumber}>
-                    <div className={styles.statNumberText}>
-                      <div>
-                        +
-                        {stronghold?.stats?.morale_bonus
-                          ? stronghold?.stats?.morale_bonus
-                          : 0}
+                  <div className={styles.numberContainer}>
+                    <div className={styles.strongholdStatNumber}>
+                      <div className={styles.statNumberText}>
+                        <div>
+                          +
+                          {stronghold?.stats?.morale_bonus
+                            ? stronghold?.stats?.morale_bonus
+                            : 0}
+                        </div>
                       </div>
                     </div>
                   </div>
                   <p className={styles.statName}>fort bonus</p>
                 </div>
                 <div className={styles.statContainer}>
-                  <div className={styles.strongholdStatNumber}>
-                    <div className={styles.statNumberText}>
-                      <div>{stronghold?.stats?.toughness}</div>
+                  <div className={styles.numberContainer}>
+                    <div className={styles.strongholdStatNumber}>
+                      <div className={styles.statNumberText}>
+                        <div>{stronghold?.stats?.toughness}</div>
+                      </div>
                     </div>
                   </div>
                   <p className={styles.statName}>toughness</p>
