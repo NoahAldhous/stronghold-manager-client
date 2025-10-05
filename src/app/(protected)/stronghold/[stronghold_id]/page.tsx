@@ -411,11 +411,11 @@ export default function Page({
                   <p>Revenue: {strongholdRevenue}gp / Season</p>
                 </section>
                 <section className={styles.currencyContainer}>
-                  <p>pp:{stronghold?.treasury?.pp}</p>
-                  <p>gp:{stronghold?.treasury?.gp}</p>
-                  <p>sp:{stronghold?.treasury?.sp}</p>
-                  <p>ep:{stronghold?.treasury?.ep}</p>
-                  <p>cp:{stronghold?.treasury?.cp}</p>
+                  <div className={styles.textContainer}><span>{stronghold?.treasury?.pp}</span><p className={styles.text}>platinum</p></div>
+                  <div className={styles.textContainer}><span>{stronghold?.treasury?.gp}</span><p className={styles.text}>gold</p></div>
+                  <div className={styles.textContainer}><span>{stronghold?.treasury?.ep}</span><p className={styles.text}>electrum</p></div>
+                  <div className={styles.textContainer}><span>{stronghold?.treasury?.sp}</span><p className={styles.text}>silver</p></div>
+                  <div className={styles.textContainer}><span>{stronghold?.treasury?.cp}</span><p className={styles.text}>copper</p></div>
                 </section>
               </section>
             )}

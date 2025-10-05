@@ -391,6 +391,50 @@
                         width: 100%;
                         min-height: 50%;
                     }
+
+                    .revenueContainer{
+                        width: 100%; 
+                        height: 20%;
+                        border-bottom: $bottomBorder;
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .currencyContainer{
+                        height: 60%;
+                        width: 100%;
+                        font-size: small;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        border-bottom: $bottomBorder;
+                        // background-color: yellow;
+
+                        .textContainer{
+                            // background-color: red;
+                            height: 20%;
+                            width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: flex-start;
+                            border-top: 1px solid $selected;
+                            font-size: medium;
+
+                            &:hover{
+                                background-color: $highlight;
+                                cursor: pointer;
+                            }
+
+                            &:first-child{
+                                border: none;
+                            }
+                            .text{
+                                font-size: x-small;
+
+                            }
+                        }
+                    }
                 }
 
                 .strongholdMenu{
