@@ -99,6 +99,8 @@ export default function Page({
 
   const [activeCurrency, setActiveCurrency] = useState("");
 
+  const [inputValue, setInputValue] = useState<number | "">("");
+
   const [updatingTreasury, setUpdatingTreasury] = useState<boolean>(false);
 
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
@@ -139,6 +141,18 @@ export default function Page({
     if (stronghold?.stronghold_type == "establishment") {
       setStrongholdRevenue(1000 * stronghold?.stronghold_level);
     }
+  }
+
+  async function adjustCurrency(direction : "increase" | "decrease", currency: "pp" | "gp" | "sp" | "ep" | "cp"){
+    if (inputValue === "" || !stronghold) return;
+    const numericValue = Number(inputValue);
+
+    const newValue = direction === "increase" 
+      ? stronghold?.treasury[currency] + numericValue
+      : stronghold?.treasury[currency] - numericValue
+    
+    await updateTreasury(currency, newValue)
+    setInputValue("");
   }
 
   //decrease number of class feature improvement uses
@@ -473,13 +487,13 @@ export default function Page({
                   </button>
                 </section>
                 <section className={styles.currencyContainer}>
-                  {currencies.map((item, index) => (
+                  {currencies.map((item: "pp" | "gp" | "ep" | "sp" | "cp", index) => (
                     <div
                       key={index}
                       tabIndex={0}
                       onFocus={() => setActiveCurrency(item)}
                       onBlur={(e) => {
-                        if (!e.currentTarget.contains(e.relatedTarget)) {
+                        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                           setActiveCurrency("");
                         }
                       }}
@@ -512,8 +526,12 @@ export default function Page({
                           activeCurrency == item ? styles.visible : ""
                         }`}
                       >
-                        <button className={styles.button}>reduce</button>
+                        <button disabled={updatingTreasury} onMouseDown={() => adjustCurrency("decrease", item)} className={styles.button}>remove</button>
                         <input
+                          disabled={updatingTreasury}
+                          value={inputValue}
+                          type="number"
+                          onChange={(e) => setInputValue(e.target.value ? Number(e.target.value) : "")}
                           onKeyDown={(e) => {
                             // ESC while inside the input closes it
                             if (e.key === "Escape") {
@@ -523,7 +541,7 @@ export default function Page({
                           }}
                           className={styles.input}
                         ></input>
-                        <button className={styles.button}>increase</button>
+                        <button disabled={updatingTreasury} onMouseDown={() => adjustCurrency("increase", item)} className={styles.button}>add</button>
                       </section>
                     </div>
                   ))}
