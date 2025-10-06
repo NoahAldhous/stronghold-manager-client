@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "contexts/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSelectedLayoutSegment } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
@@ -94,6 +94,8 @@ export default function Page({
       ],
     },
   ];
+
+  const [updatingTreasury, setUpdatingTreasury] = useState<boolean>(false);
 
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
@@ -208,6 +210,45 @@ export default function Page({
       } finally {
         updateUses(uses);
       }
+    }
+  }
+
+  async function updateTreasury(currency: "pp" | "gp" | "sp" | "ep" | "cp", value: number){
+    // only runs if stronghold object exists, preventing undefined values 
+    if(!stronghold) return;
+
+    setUpdatingTreasury(true)
+  
+    const newTreasuryValues = {...stronghold?.treasury, [currency]: value};
+
+    setStronghold({...stronghold, treasury: newTreasuryValues})
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/treasury/update/${stronghold?.id}`, 
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify( newTreasuryValues )
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(
+          "The application encountered an error trying to update this value"
+        );
+      }
+      const data = await res.json();
+      // TODO: backend returns new treasury to reconcile with frontend state
+      console.log(data.message);
+    } catch (err) {
+      console.log(err.message);
+      //state rollback
+      setStronghold(prev => prev ? {...prev, treasury: stronghold?.treasury}: prev )
+    } finally {
+      setUpdatingTreasury(false);
     }
   }
 
@@ -409,6 +450,7 @@ export default function Page({
                 <div className={styles.cardHeader}>treasury</div>
                 <section className={styles.revenueContainer}>
                   <p>Revenue: {strongholdRevenue}gp / Season</p>
+                  <button disabled={updatingTreasury} onClick={() => {updateTreasury("gp", stronghold?.treasury.gp + strongholdRevenue)}} className={styles.button}>receive revenue</button>
                 </section>
                 <section className={styles.currencyContainer}>
                   <div className={styles.textContainer}><span>{stronghold?.treasury?.pp}</span><p className={styles.text}>platinum</p></div>
