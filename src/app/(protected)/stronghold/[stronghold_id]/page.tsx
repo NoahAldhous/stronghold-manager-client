@@ -14,6 +14,7 @@ export default function Page({
 }) {
   const { stronghold_id } = use(params);
   const [loading, setLoading] = useState(false);
+  const [animatedCurrency, setAnimatedCurrency] = useState("")
   const [strongholdIsUpgraded, setStrongholdIsUpgraded] = useState(false);
   const [activeButton, setActiveButton] = useState({
     category: "stronghold",
@@ -239,8 +240,11 @@ export default function Page({
     if (!stronghold) return;
 
     setUpdatingTreasury(true);
-
-    const newTreasuryValues = { ...stronghold?.treasury, [currency]: value };
+    setAnimatedCurrency("")
+    
+    const newTreasuryValues = value < 0 
+      ? { ...stronghold?.treasury, [currency]: 0 }
+      : { ...stronghold?.treasury, [currency]: value };
 
     setStronghold({ ...stronghold, treasury: newTreasuryValues });
 
@@ -272,6 +276,7 @@ export default function Page({
       );
     } finally {
       setUpdatingTreasury(false);
+      setAnimatedCurrency(currency);
     }
   }
 
@@ -472,7 +477,10 @@ export default function Page({
               <section className={styles.strongholdTreasury}>
                 <div className={styles.cardHeader}>treasury</div>
                 <section className={styles.revenueContainer}>
-                  <p>Revenue: {strongholdRevenue}gp / Season</p>
+                  <div>
+                    <p className={styles.containerHeader}>revenue</p>
+                    <p>{strongholdRevenue}gp<span className={styles.season}> /Season</span></p>
+                  </div>
                   <button
                     disabled={updatingTreasury}
                     onClick={() => {
@@ -487,6 +495,7 @@ export default function Page({
                   </button>
                 </section>
                 <section className={styles.currencyContainer}>
+                  <p className={styles.containerHeader}>currency</p>
                   {currencies.map((item: "pp" | "gp" | "ep" | "sp" | "cp", index) => (
                     <div
                       key={index}
@@ -518,7 +527,7 @@ export default function Page({
                       <section
                         className={`${styles.divider} ${styles.textDivider}`}
                       >
-                        <span>{stronghold?.treasury[item]}</span>
+                        <span className={`${styles.currencyAmount} ${animatedCurrency == item ? styles.animated : ""}`}>{stronghold?.treasury[item]}</span>
                         <p className={styles.text}>{item}</p>
                       </section>
                       <section

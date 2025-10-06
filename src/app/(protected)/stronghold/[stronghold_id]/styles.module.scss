@@ -1,613 +1,644 @@
 @use "../../../variables" as *;
 
-.main{
-    color: $offwhite;
-    @include mainPage;
-    width: full;
-    height: $page-height;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.main {
+  color: $offwhite;
+  @include mainPage;
+  width: full;
+  height: $page-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    @include screen("small"){
-        flex-direction: column;
+  @include screen("small") {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .adminLoadingButton {
+    position: absolute;
+    top: 5rem;
+    left: 0;
+    padding: 0.5rem;
+  }
+
+  .strongholdSheetContainer {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    // background-color: aliceblue;
+    @include screen("small") {
+      flex-direction: column;
+      min-height: 90dvh;
+      min-width: 90dvw;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    @include screen("medium") {
+      flex-direction: column;
+    }
+
+    .strongholdSheet {
+      width: 78%;
+      height: full;
+      display: flex;
+      flex-direction: column;
+      @include screen("small") {
+        width: 100%;
         justify-content: flex-start;
         align-items: center;
-    }
-
-    .adminLoadingButton{
-        position: absolute;
-        top: 5rem;
-        left: 0;
-        padding: 0.5rem;
-    }
-
-    .strongholdSheetContainer{
+      }
+      @include screen("medium") {
         width: 100%;
-        height: 90%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        // background-color: aliceblue;
-        @include screen("small"){
-            flex-direction: column;
-            min-height: 90dvh;
-            min-width: 90dvw;
-            justify-content: flex-start;
-            align-items: center;
+        height: 100%;
+      }
+
+      .strongholdOverview {
+        width: full;
+        height: 15%;
+        @include screen("small") {
+          width: full;
+          height: 6%;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
         }
-        @include screen("medium"){
-            flex-direction: column;
+        @include screen("medium") {
+          height: 10%;
         }
 
-        .strongholdSheet{
-            width: 78%;
-            height: full;
+        .loadingName {
+          height: 45%;
+          width: 50%;
+          margin: 0.5rem 0;
+          background-color: $selected;
+          opacity: 50%;
+          background: linear-gradient(
+            to right,
+            $selected 8%,
+            $mid 18%,
+            $selected 33%
+          );
+          background-size: 1000px 100%;
+          animation: shimmer 1.5s infinite linear forwards;
+        }
+
+        .loadingInfo {
+          height: 20%;
+          width: 25%;
+          opacity: 50%;
+          background-color: $selected;
+          background: linear-gradient(
+            to right,
+            $selected 8%,
+            $mid 18%,
+            $selected 33%
+          );
+          background-size: 1000px 100%;
+          animation: shimmer 1.5s infinite linear forwards;
+        }
+
+        .strongholdName {
+          font-size: xx-large;
+          text-shadow: $textShadow;
+
+          @include screen("small") {
+            font-size: x-large;
+          }
+        }
+
+        .strongholdInfo {
+          font-size: larger;
+          text-transform: capitalize;
+          text-shadow: $textShadow;
+          width: full;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          @include screen("small") {
+            font-size: medium;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: flex-start;
+          }
+
+          .upgradeContainer {
+            width: 25%;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            @include screen("small"){
-                width: 100%;
-                justify-content: flex-start;
-                align-items: center;
-            }
-            @include screen("medium"){
-                width: 100%;
-                height: 100%;
-            }
+            align-items: flex-end;
+            justify-content: center;
 
-            .strongholdOverview{
-                width: full;
-                height: 15%;
-                @include screen("small"){
-                    width: full;
-                    height: 6%;
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-evenly;
-                }
-                @include screen("medium"){
-                    height: 10%;
-                }
+            .upgradeInfo {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
 
-                .loadingName{
-                    height: 45%;
-                    width: 50%;
-                    margin: 0.5rem 0;
-                    background-color: $selected;
-                    opacity: 50%;
-                    background: linear-gradient(
-                        to right,
-                        $selected 8%,
-                        $mid 18%,
-                        $selected 33%
-                    );
-                    background-size: 1000px 100%;
-                    animation: shimmer 1.5s infinite linear forwards;
-                }
-
-                .loadingInfo{
-                    height: 20%;
-                    width: 25%;
-                    opacity: 50%;
-                    background-color: $selected;
-                    background: linear-gradient(
-                        to right,
-                        $selected 8%,
-                        $mid 18%,
-                        $selected 33%
-                    );
-                    background-size: 1000px 100%;
-                    animation: shimmer 1.5s infinite linear forwards;
-                }
-
-                .strongholdName{
-                    font-size: xx-large;
-                    text-shadow: $textShadow;
-
-                    @include screen("small"){
-                        font-size: x-large;
-                    }
-                }
-
-                .strongholdInfo{
-                    font-size: larger;
-                    text-transform: capitalize;
-                    text-shadow: $textShadow;
-                    width: full;
-                    display:flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    @include screen("small"){
-                        font-size: medium;
-                        flex-direction: column;
-                        justify-content: space-around;
-                        align-items: flex-start;
-                    }
-
-                    .upgradeContainer{
-                        width: 25%;
-                        height: 100%;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: flex-end;
-                        justify-content: center;
-
-                        .upgradeInfo{
-                            width: 100%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: space-between;
-
-                            .upgradeText{
-                                font-size: small;
-                            }
-                        }
-
-                        .restButton{
-                            padding: 0.5rem;
-                            text-transform: capitalize;
-                            @include screen("small"){
-                                font-size: xx-small;
-                                padding: 0.3rem;
-                            }
-                        }
-                    }
-
-
-                    .lowerCase{
-                        text-transform: lowercase;
-                    }
-                }
-
-                @keyframes shimmer {
-                    0% {
-                      background-position: -1000px 0;
-                    }
-                    100% {
-                      background-position: 1000px 0;
-                    }
-                  }
+              .upgradeText {
+                font-size: small;
+              }
             }
 
-            .strongholdStats{
-                // background-color: yellow;
-                width: full;
-                height: 25%;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                @include screen("small"){
-                    flex-direction: column;
-                    width: 100%;
-                    height: 20%;
-                }
-                @include screen("medium"){
-                    height: 15%;
-                }
-
-                .featuresContainer{
-                    height: 100%;
-                    width: 65%;
-                    border:5;
-                    font-size: large;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    align-items: center;
-                    // background-color: antiquewhite;
-                    @include screen("small"){
-                        width: 100%;
-                        flex-direction: column;
-                        justify-content: space-evenly;
-                    }
-
-                    .features{
-                        height: 80%;
-                        width: 48%;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: space-evenly;
-                        @include cardContainer;
-                        box-shadow: $boxShadow;
-
-                        @include screen("small"){
-                            height: 45%;
-                            width: 100%;
-                        }
-
-                        .featureButton{
-                            padding: 0.5rem;
-                            text-transform: capitalize;
-                        }
-
-                        .usesContainer{
-                            width: 100%;
-                            height: 30%;
-                            display: flex;
-                            align-items: center;
-                            font-size: small;
-                            position: relative;
-                            
-                            .diamond{
-                                width: 5%;
-                                aspect-ratio: 1/1;
-                                background-color: $highlight;
-                                border: 1px solid $selected;
-                                transform: rotate(45deg);
-                                margin-left: 1rem;
-                            }
-
-                            .activeDiamond{
-                                background-color: $selected;
-                                border: 1px solid $text;
-                            }
-
-                            .useButton{
-                                position: absolute;
-                                right: 0;
-                                width: 20%;
-                            }
-                        }
-                    }
-                    .benefits{
-                        flex-direction: row;
-                        @include screen("small"){
-                            flex-direction: column;
-                        }
-                        @include screen("medium"){
-                            flex-direction: column;
-                        }
-                    }
-                }
-
-                .numericalStats{
-                    height: 80%;
-                    width: 32.5%;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-around;
-                    align-items: center;
-                    @include cardContainer;
-                    box-shadow: $boxShadow;
-                    // background-color: palegoldenrod;
-                    @include screen("small"){
-                        // flex-direction: column;
-                        width: 100%;
-                        height: 45%;
-                    }
-                    
-                    .statContainer{
-                        display: flex;
-                        height: 100%;
-                        width:33%;
-                        flex-direction: column;
-                        justify-content: space-evenly;
-                        align-items: center;
-                        // background-color: palegreen;
-
-                        .numberContainer{
-                            // width: 100%;
-                            height: 80%;
-                            aspect-ratio: 1/1;
-                            // background-color: paleturquoise;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-
-                            .strongholdStatNumber{
-                                // height: 50%;
-                                width: 65%;
-                                color: $text;
-                                aspect-ratio: 1/1;
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                justify-content: center;
-                                font-size: larger;
-                                background-color: $highlight;
-                                border: 2px solid $selected;
-                                // background-color: red;
-                                transform: rotate(45deg);
-    
-                                @include screen("medium"){
-                                   width: 65%;
-                                }
-    
-                                @include screen("small"){
-                                    width: 45%;
-                                }
-        
-                                .statNumberText{
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: center;
-                                    align-items: center;
-                                    transform: rotate(-45deg);
-    
-                                    @include screen("small"){
-                                        font-size: smaller;
-                                    }
-    
-                                    @include screen("medium"){
-                                        font-size: small;
-                                    }
-                                }
-                            }
-                        }
-
-
-                        .statName{
-                            height: 20%;
-                            width: 100%;
-                            // background-color: pink;
-                            font-size: 0.7rem;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-
-                            @include screen("medium"){
-                                font-size: xx-small;
-                            }
-                        }
-                    }
-
-                }
+            .restButton {
+              padding: 0.5rem;
+              text-transform: capitalize;
+              @include screen("small") {
+                font-size: xx-small;
+                padding: 0.3rem;
+              }
             }
+          }
 
-            .strongholdAssets{
-                width: full;
-                height: 60%;
-                // border: 1px solid purple;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-
-                @include screen("medium"){
-                    flex-direction: column;
-                    height: 75%;
-                    width: 100%;
-                }
-
-                @include screen("small"){
-                    flex-direction: column-reverse;
-                }
-
-                .strongholdTreasury{
-                    height: 100%;
-                    width: 32.5%;
-                    // background-color: white;
-                    @include cardContainer;
-                    box-shadow: $boxShadow;
-
-                    @include screen("medium"){
-                        height: 25%;
-                        width: 100%;
-                    }
-
-                    @include screen("small"){
-                        width: 100%;
-                        min-height: 50%;
-                    }
-
-                    .revenueContainer{
-                        width: 100%; 
-                        height: 20%;
-                        border-bottom: $bottomBorder;
-                        display: flex;
-                        align-items: center;
-
-                        .button{
-                            font-size: x-small;
-                            padding: 0.5rem;
-                            width: 40%;
-                            text-transform: capitalize;
-                        }
-                    }
-
-                    .currencyContainer{
-                        height: 60%;
-                        width: 100%;
-                        font-size: small;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: space-between;
-                        border-bottom: $bottomBorder;
-                        // background-color: yellow;
-
-                        .textContainer{
-                            // background-color: red;
-                            height: 20%;
-                            width: 100%;
-                            display: flex;
-                            // flex-direction: column;
-                            justify-content: center;
-                            align-items: flex-start;
-                            border-top: 1px solid $selected;
-                            font-size: medium;
-
-                            &:hover{
-                                background-color: $highlight;
-                                cursor: pointer;
-                            }
-
-                            &:first-child{
-                                border: none;
-                            }
-
-                            .divider{
-                                width: 50%;
-                                height: 100%;
-
-                                .button{
-                                    width: 30%;
-                                    font-size: x-small;
-                                }
-
-                                .input{
-                                    width: 35%;
-                                    font-size: small;
-                                }
-                            }
-
-                            .textDivider{
-                                display: flex;
-                                flex-direction: column;
-                                align-items: flex-start;
-                                justify-content: center;
-                                width: 30%;
-
-                            }
-
-                            .inputDivider{
-                                display: flex;
-                                flex-direction: row;
-                                justify-content: space-evenly;
-                                align-items: center;
-                                width: 70%;
-                                visibility: hidden;
-                            }
-
-                            .visible{
-                                visibility: visible;
-                            }
-
-                            .text{
-                                font-size: x-small;
-                                padding-left: 0.2rem;
-                            }
-                        }
-
-                        .active{
-                            background-color: $highlight;
-                        }
-                    }
-                }
-
-                .strongholdMenu{
-                    height: 100%;
-                    width: 65%;
-                    @include cardContainer;
-                    box-shadow: $boxShadow;
-
-                    @include screen("medium"){
-                        width: 100%;
-                        height: 72.5%;
-                    }
-
-                    @include screen("small"){
-                        width: 100%;
-                        min-height: 50%;
-                    }
-
-                    .strongholdMenuButtons{
-                        width: 100%;
-                        height: 25%;
-                        display: flex;
-                        flex-direction: column;
-                        border-bottom: $bottomBorder;
-
-                        .menuCategories{
-                            width: 100%;
-                            height: 50%;
-                            display:flex;
-                            flex-direction: row;
-                            justify-content: space-between;
-                            align-items: center;
-
-                            .categoryButton{
-                                width: 22%;
-                                height: 75%;  
-                                text-transform: capitalize; 
-
-                                @include screen("small"){
-                                    font-size: xx-small;
-                                    padding: 0.1rem 0;
-                                    height: 50%;
-                                }
-                            }
-                        }
-
-                        .menuSubCategories{
-                            width: 100%;
-                            height: 50%;
-                            display: flex;
-                            flex-direction: row;
-                            justify-content: flex-start;
-                            align-items: center;
-                            @include screen("small"){
-                                flex-wrap: wrap;
-                                justify-content: space-around;
-                            }
-
-                            .subCategoryButton{
-                                // width: 17%;
-                                min-width: 15%;
-                                padding: 0 0.4rem;
-                                height: 60%;
-                                font-size: x-small;
-                                margin-right: 0.5rem;
-                                text-transform: capitalize;
-
-                                @include screen("small"){
-                                    font-size: xx-small;
-                                    min-width: 15%;
-                                    padding: 0.2rem;
-                                    height: 40%;
-                                }
-                            }
-                        }
-
-                        .activeButton{
-                            background-color: $selected;
-                            color: $offwhite;
-                            border: 1px solid $text;
-                        }
-                    }
-
-                    .strongholdMenuText{
-                        width: 100%;
-                        height: 75%;
-                    }
-
-                
-                }
-            }
+          .lowerCase {
+            text-transform: lowercase;
+          }
         }
 
-        .contextualPanel{
-            @include desktop-only;
-            width: 20%;
-            height: full;
-            // background-color: aliceblue;
+        @keyframes shimmer {
+          0% {
+            background-position: -1000px 0;
+          }
+          100% {
+            background-position: 1000px 0;
+          }
+        }
+      }
+
+      .strongholdStats {
+        // background-color: yellow;
+        width: full;
+        height: 25%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        @include screen("small") {
+          flex-direction: column;
+          width: 100%;
+          height: 20%;
+        }
+        @include screen("medium") {
+          height: 15%;
+        }
+
+        .featuresContainer {
+          height: 100%;
+          width: 65%;
+          border: 5;
+          font-size: large;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          // background-color: antiquewhite;
+          @include screen("small") {
+            width: 100%;
+            flex-direction: column;
+            justify-content: space-evenly;
+          }
+
+          .features {
+            height: 80%;
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
             @include cardContainer;
             box-shadow: $boxShadow;
 
-            @include screen("small"){
-                width: 100%;
-                height: full;
+            @include screen("small") {
+              height: 45%;
+              width: 100%;
             }
 
-            @include screen("medium"){
-                display: none;
+            .featureButton {
+              padding: 0.5rem;
+              text-transform: capitalize;
             }
 
-            .infoTitle{
-                font-size: medium;
-                width: 100%;
-                border-bottom: $bottomBorder;
-                text-transform: capitalize;
-                padding: 0.5rem 0;
-            }
+            .usesContainer {
+              width: 100%;
+              height: 30%;
+              display: flex;
+              align-items: center;
+              font-size: small;
+              position: relative;
 
-            .info{
-                font-size: small;
-                padding: 0.5rem 0;
-                border-bottom: $bottomBorder;
+              .diamond {
+                width: 5%;
+                aspect-ratio: 1/1;
+                background-color: $highlight;
+                border: 1px solid $selected;
+                transform: rotate(45deg);
+                margin-left: 1rem;
+              }
+
+              .activeDiamond {
+                background-color: $selected;
+                border: 1px solid $text;
+              }
+
+              .useButton {
+                position: absolute;
+                right: 0;
+                width: 20%;
+              }
             }
+          }
+          .benefits {
+            flex-direction: row;
+            @include screen("small") {
+              flex-direction: column;
+            }
+            @include screen("medium") {
+              flex-direction: column;
+            }
+          }
         }
+
+        .numericalStats {
+          height: 80%;
+          width: 32.5%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          @include cardContainer;
+          box-shadow: $boxShadow;
+          // background-color: palegoldenrod;
+          @include screen("small") {
+            // flex-direction: column;
+            width: 100%;
+            height: 45%;
+          }
+
+          .statContainer {
+            display: flex;
+            height: 100%;
+            width: 33%;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            // background-color: palegreen;
+
+            .numberContainer {
+              // width: 100%;
+              height: 80%;
+              aspect-ratio: 1/1;
+              // background-color: paleturquoise;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              .strongholdStatNumber {
+                // height: 50%;
+                width: 65%;
+                color: $text;
+                aspect-ratio: 1/1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: larger;
+                background-color: $highlight;
+                border: 2px solid $selected;
+                // background-color: red;
+                transform: rotate(45deg);
+
+                @include screen("medium") {
+                  width: 65%;
+                }
+
+                @include screen("small") {
+                  width: 45%;
+                }
+
+                .statNumberText {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  transform: rotate(-45deg);
+
+                  @include screen("small") {
+                    font-size: smaller;
+                  }
+
+                  @include screen("medium") {
+                    font-size: small;
+                  }
+                }
+              }
+            }
+
+            .statName {
+              height: 20%;
+              width: 100%;
+              // background-color: pink;
+              font-size: 0.7rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              @include screen("medium") {
+                font-size: xx-small;
+              }
+            }
+          }
+        }
+      }
+
+      .strongholdAssets {
+        width: full;
+        height: 60%;
+        // border: 1px solid purple;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        @include screen("medium") {
+          flex-direction: column;
+          height: 75%;
+          width: 100%;
+        }
+
+        @include screen("small") {
+          flex-direction: column-reverse;
+        }
+
+        .strongholdTreasury {
+          height: 100%;
+          width: 32.5%;
+          // background-color: white;
+          @include cardContainer;
+          box-shadow: $boxShadow;
+
+          @include screen("medium") {
+            height: 25%;
+            width: 100%;
+          }
+
+          @include screen("small") {
+            width: 100%;
+            min-height: 50%;
+          }
+
+          .revenueContainer {
+            width: 100%;
+            height: 20%;
+            border-bottom: $bottomBorder;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .season {
+              font-size: small;
+            }
+            .button {
+              font-size: x-small;
+              padding: 0.5rem;
+              width: 40%;
+              text-transform: capitalize;
+            }
+          }
+
+          .containerHeader {
+            height: 10%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            text-transform: capitalize;
+            font-weight: 500;
+            font-size: small;
+          }
+          .currencyContainer {
+            height: 70%;
+            width: 100%;
+            font-size: small;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-bottom: $bottomBorder;
+            // background-color: yellow;
+
+            .textContainer {
+              // background-color: red;
+              height: 18%;
+              width: 100%;
+              display: flex;
+              // flex-direction: column;
+              justify-content: center;
+              align-items: flex-start;
+              border-bottom: 1px solid $selected;
+              font-size: medium;
+
+              &:hover {
+                background-color: $highlight;
+                cursor: pointer;
+              }
+
+              &:first-child {
+                border: none;
+              }
+
+              &:last-child {
+                border: none;
+              }
+
+              .divider {
+                width: 50%;
+                height: 100%;
+
+                .currencyAmount {
+                  color: $text;
+                }
+
+                .animated {
+                  animation: glow 0.5s forwards;
+
+                  @keyframes glow {
+                    0% {
+                      text-shadow: none;
+                    }
+                    50% {
+                      text-shadow: 0 0 5px rgb(180, 136, 17), 0 0 10px rgb(180, 136, 17),
+                        0 0 20px rgb(180, 136, 17), 0 0 40px rgb(180, 136, 17), 0 0 80px rgb(180, 136, 17);
+                    }
+                    100% {
+                      text-shadow: none;
+                    }
+                  }
+                }
+
+                .button {
+                  width: 30%;
+                  font-size: x-small;
+                }
+
+                .input {
+                  width: 35%;
+                  font-size: small;
+                }
+              }
+
+              .textDivider {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                width: 30%;
+              }
+
+              .inputDivider {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                width: 70%;
+                visibility: hidden;
+              }
+
+              .visible {
+                visibility: visible;
+              }
+
+              .text {
+                font-size: x-small;
+                padding-left: 0.2rem;
+              }
+            }
+
+            .active {
+              background-color: $highlight;
+            }
+          }
+        }
+
+        .strongholdMenu {
+          height: 100%;
+          width: 65%;
+          @include cardContainer;
+          box-shadow: $boxShadow;
+
+          @include screen("medium") {
+            width: 100%;
+            height: 72.5%;
+          }
+
+          @include screen("small") {
+            width: 100%;
+            min-height: 50%;
+          }
+
+          .strongholdMenuButtons {
+            width: 100%;
+            height: 25%;
+            display: flex;
+            flex-direction: column;
+            border-bottom: $bottomBorder;
+
+            .menuCategories {
+              width: 100%;
+              height: 50%;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+
+              .categoryButton {
+                width: 22%;
+                height: 75%;
+                text-transform: capitalize;
+
+                @include screen("small") {
+                  font-size: xx-small;
+                  padding: 0.1rem 0;
+                  height: 50%;
+                }
+              }
+            }
+
+            .menuSubCategories {
+              width: 100%;
+              height: 50%;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              @include screen("small") {
+                flex-wrap: wrap;
+                justify-content: space-around;
+              }
+
+              .subCategoryButton {
+                // width: 17%;
+                min-width: 15%;
+                padding: 0 0.4rem;
+                height: 60%;
+                font-size: x-small;
+                margin-right: 0.5rem;
+                text-transform: capitalize;
+
+                @include screen("small") {
+                  font-size: xx-small;
+                  min-width: 15%;
+                  padding: 0.2rem;
+                  height: 40%;
+                }
+              }
+            }
+
+            .activeButton {
+              background-color: $selected;
+              color: $offwhite;
+              border: 1px solid $text;
+            }
+          }
+
+          .strongholdMenuText {
+            width: 100%;
+            height: 75%;
+          }
+        }
+      }
     }
 
+    .contextualPanel {
+      @include desktop-only;
+      width: 20%;
+      height: full;
+      // background-color: aliceblue;
+      @include cardContainer;
+      box-shadow: $boxShadow;
+
+      @include screen("small") {
+        width: 100%;
+        height: full;
+      }
+
+      @include screen("medium") {
+        display: none;
+      }
+
+      .infoTitle {
+        font-size: medium;
+        width: 100%;
+        border-bottom: $bottomBorder;
+        text-transform: capitalize;
+        padding: 0.5rem 0;
+      }
+
+      .info {
+        font-size: small;
+        padding: 0.5rem 0;
+        border-bottom: $bottomBorder;
+      }
+    }
+  }
 }
