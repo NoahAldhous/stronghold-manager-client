@@ -6,8 +6,16 @@ $navbar-height: 10vh;
 $page-height: 90vh;
 
 //1/12th column width
-$column-width: 8.33vw;
+// $column-width: 8.33vw;
+$column-width: 100vw / 15;
 $half-column-width: $column-width / 2;
+$two-column-width: $column-width * 2;
+$three-column-width: $column-width * 3;
+$three-and-half-column-width: $column-width * 3.5;
+$four-column-width: $column-width * 4;
+$five-column-width: $column-width * 5;
+$six-column-width: $column-width * 6;
+$six-and-half-column-width: $column-width * 6.5;
 
 //Screen sizes
 $max-small-screen-width: 700px;

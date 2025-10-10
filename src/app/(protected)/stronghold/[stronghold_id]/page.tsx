@@ -3,9 +3,11 @@ import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
+import type { Stronghold } from "types";
 import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 import UpgradeStrongholdModal from "components/Modal/UpgradeStrongholdModal/UpgradeStrongholdModal";
+import Stats from "components/StrongholdSheet/Stats/Stats";
 
 export default function Page({
   params,
@@ -20,50 +22,7 @@ export default function Page({
     category: "stronghold",
     subCategory: "all",
   });
-  const [stronghold, setStronghold] = useState<{
-    id: number;
-    owner_name: string;
-    stronghold_level: number;
-    stronghold_name: string;
-    stronghold_size: number;
-    stronghold_type: string;
-    upgrade_cost: number;
-    treasury: {
-      pp: number;
-      gp: number;
-      sp: number;
-      ep: number;
-      cp: number;
-    };
-    features: {
-      title: string;
-      description: string;
-    }[];
-    stats: {
-      morale_bonus: number;
-      toughness: number;
-      size: number;
-      casualties: number;
-    };
-    class: {
-      name: string;
-      stronghold_name: string;
-      description: string;
-      class_feature_improvement: {
-        description: string;
-        name: string;
-        restriction: string;
-        uses: number;
-      };
-      demesne_effects: {
-        description: string;
-      }[];
-      stronghold_actions: {
-        name: string;
-        description: string;
-      }[];
-    };
-  } | null>(null);
+  const [stronghold, setStronghold] = useState<Stronghold | null>(null);
 
   const currencies = ["pp", "gp", "sp", "ep", "cp"];
 
@@ -334,7 +293,7 @@ export default function Page({
             </section>
           )}
           <section className={styles.strongholdStats}>
-            {loading || !stronghold ? (
+            {/* {loading || !stronghold ? (
               <section className={styles.numericalStats}>
                 <LoadingCard />
               </section>
@@ -381,7 +340,8 @@ export default function Page({
                   <p className={styles.statName}>toughness</p>
                 </div>
               </section>
-            )}
+            )} */}
+            <Stats loading={loading} stronghold={stronghold}/>
             <section className={styles.featuresContainer}>
               {loading || !stronghold ? (
                 <section className={`${styles.features} ${styles.benefits}`}>
