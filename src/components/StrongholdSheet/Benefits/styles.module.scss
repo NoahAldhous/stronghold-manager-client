@@ -1,0 +1,11 @@
+@use "../../../app/variables" as *;
+
+.benefitsContainer{
+    height: 15vh;
+    width: $three-and-half-column-width;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    @include cardContainer;
+    box-shadow: $boxShadow;
+}

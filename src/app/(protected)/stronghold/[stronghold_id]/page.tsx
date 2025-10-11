@@ -8,6 +8,7 @@ import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeat
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 import UpgradeStrongholdModal from "components/Modal/UpgradeStrongholdModal/UpgradeStrongholdModal";
 import Stats from "components/StrongholdSheet/Stats/Stats";
+import Benefits from "components/StrongholdSheet/Benefits/Benefits";
 
 export default function Page({
   params,
@@ -293,57 +294,10 @@ export default function Page({
             </section>
           )}
           <section className={styles.strongholdStats}>
-            {/* {loading || !stronghold ? (
-              <section className={styles.numericalStats}>
-                <LoadingCard />
-              </section>
-            ) : (
-              <section className={styles.numericalStats}>
-                <section className={styles.cardHeader}>stats</section>
-                <div className={styles.statContainer}>
-                  <div className={styles.numberContainer}>
-                    <div className={styles.strongholdStatNumber}>
-                      <div className={styles.statNumberText}>
-                        <div>
-                          {stronghold?.stats.size -
-                            stronghold?.stats.casualties}
-                          /{stronghold?.stats?.size}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className={styles.statName}>size</p>
-                </div>
-                <div className={styles.statContainer}>
-                  <div className={styles.numberContainer}>
-                    <div className={styles.strongholdStatNumber}>
-                      <div className={styles.statNumberText}>
-                        <div>
-                          +
-                          {stronghold?.stats?.morale_bonus
-                            ? stronghold?.stats?.morale_bonus
-                            : 0}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className={styles.statName}>fort bonus</p>
-                </div>
-                <div className={styles.statContainer}>
-                  <div className={styles.numberContainer}>
-                    <div className={styles.strongholdStatNumber}>
-                      <div className={styles.statNumberText}>
-                        <div>{stronghold?.stats?.toughness}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className={styles.statName}>toughness</p>
-                </div>
-              </section>
-            )} */}
             <Stats loading={loading} stronghold={stronghold}/>
             <section className={styles.featuresContainer}>
-              {loading || !stronghold ? (
+              <Benefits loading={loading} stronghold={stronghold}/>
+              {/* {loading || !stronghold ? (
                 <section className={`${styles.features} ${styles.benefits}`}>
                   <LoadingCard />
                 </section>
@@ -369,7 +323,7 @@ export default function Page({
                     );
                   })}
                 </section>
-              )}
+              )} */}
               {loading || !stronghold ? (
                 <section className={styles.features}>
                   <LoadingCard />
