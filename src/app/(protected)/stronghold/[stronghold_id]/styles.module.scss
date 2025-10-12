@@ -186,460 +186,294 @@
           height: 15%;
         }
 
-        .featuresContainer {
-          height: 100%;
-          width: 65%;
-          border: 5;
-          font-size: large;
+        .strongholdAssets {
+          width: full;
+          height: 60%;
+          // border: 1px solid purple;
           display: flex;
           flex-direction: row;
           justify-content: space-between;
-          align-items: center;
-          // background-color: antiquewhite;
-          @include screen("small") {
-            width: 100%;
+
+          @include screen("medium") {
             flex-direction: column;
-            justify-content: space-evenly;
+            height: 75%;
+            width: 100%;
           }
 
-          .features {
-            height: 80%;
-            width: 48%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-evenly;
+          @include screen("small") {
+            flex-direction: column-reverse;
+          }
+
+          .strongholdTreasury {
+            height: 100%;
+            // width: 32.5%;
+            width: $three-column-width;
+            // background-color: white;
             @include cardContainer;
             box-shadow: $boxShadow;
 
-            @include screen("small") {
-              height: 45%;
-              width: 100%;
-            }
-
-            .featureButton {
-              padding: 0.5rem;
-              text-transform: capitalize;
-            }
-
-            .usesContainer {
-              width: 100%;
-              height: 30%;
-              display: flex;
-              align-items: center;
-              font-size: small;
-              position: relative;
-
-              .diamond {
-                width: 5%;
-                aspect-ratio: 1/1;
-                background-color: $highlight;
-                border: 1px solid $selected;
-                transform: rotate(45deg);
-                margin-left: 1rem;
-              }
-
-              .activeDiamond {
-                background-color: $selected;
-                border: 1px solid $text;
-              }
-
-              .useButton {
-                position: absolute;
-                right: 0;
-                width: 20%;
-              }
-            }
-          }
-          .benefits {
-            flex-direction: row;
-            @include screen("small") {
-              flex-direction: column;
-            }
             @include screen("medium") {
-              flex-direction: column;
+              height: 25%;
+              width: 100%;
             }
-          }
-        }
 
-        .numericalStats {
-          height: 80%;
-          width: 32.5%;
-          display: flex;
-          flex-direction: row;
-          justify-content: space-around;
-          align-items: center;
-          @include cardContainer;
-          box-shadow: $boxShadow;
-          // background-color: palegoldenrod;
-          @include screen("small") {
-            // flex-direction: column;
-            width: 100%;
-            height: 45%;
-          }
+            @include screen("small") {
+              width: 100%;
+              min-height: 50%;
+            }
 
-          .statContainer {
-            display: flex;
-            height: 100%;
-            width: 33%;
-            flex-direction: column;
-            justify-content: space-evenly;
-            align-items: center;
-            // background-color: palegreen;
-
-            .numberContainer {
-              // width: 100%;
-              height: 80%;
-              aspect-ratio: 1/1;
-              // background-color: paleturquoise;
+            .revenueContainer {
+              width: 100%;
+              height: 20%;
+              border-bottom: $bottomBorder;
               display: flex;
-              justify-content: center;
               align-items: center;
+              justify-content: space-between;
 
-              .strongholdStatNumber {
-                // height: 50%;
-                width: 65%;
-                color: $text;
-                aspect-ratio: 1/1;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                font-size: larger;
-                background-color: $highlight;
-                border: 2px solid $selected;
+              .season {
+                font-size: small;
+              }
+              .button {
+                font-size: x-small;
+                padding: 0.5rem;
+                width: 40%;
+                text-transform: capitalize;
+              }
+            }
+
+            .containerHeader {
+              height: 10%;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              text-transform: capitalize;
+              font-weight: 500;
+              font-size: small;
+            }
+            .currencyContainer {
+              height: 70%;
+              width: 100%;
+              font-size: small;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              border-bottom: $bottomBorder;
+              // background-color: yellow;
+
+              .textContainer {
                 // background-color: red;
-                transform: rotate(45deg);
+                height: 18%;
+                width: 100%;
+                display: flex;
+                // flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                border-bottom: 1px solid $selected;
+                font-size: medium;
 
-                @include screen("medium") {
-                  width: 65%;
+                &:hover {
+                  background-color: $highlight;
+                  cursor: pointer;
                 }
 
-                @include screen("small") {
-                  width: 45%;
+                &:first-child {
+                  border: none;
                 }
 
-                .statNumberText {
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: center;
-                  transform: rotate(-45deg);
+                &:last-child {
+                  border: none;
+                }
 
-                  @include screen("small") {
-                    font-size: smaller;
+                .divider {
+                  width: 50%;
+                  height: 100%;
+
+                  .currencyAmount {
+                    color: $text;
                   }
 
-                  @include screen("medium") {
+                  .animated {
+                    animation: glow 0.5s forwards;
+
+                    @keyframes glow {
+                      0% {
+                        text-shadow: none;
+                      }
+                      50% {
+                        text-shadow: 0 0 5px rgb(180, 136, 17),
+                          0 0 10px rgb(180, 136, 17), 0 0 20px rgb(180, 136, 17),
+                          0 0 40px rgb(180, 136, 17), 0 0 80px rgb(180, 136, 17);
+                      }
+                      100% {
+                        text-shadow: none;
+                      }
+                    }
+                  }
+
+                  .button {
+                    width: 30%;
+                    font-size: x-small;
+                  }
+
+                  .input {
+                    width: 35%;
                     font-size: small;
                   }
                 }
-              }
-            }
 
-            .statName {
-              height: 20%;
-              width: 100%;
-              // background-color: pink;
-              font-size: 0.7rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-
-              @include screen("medium") {
-                font-size: xx-small;
-              }
-            }
-          }
-        }
-      }
-
-      .strongholdAssets {
-        width: full;
-        height: 60%;
-        // border: 1px solid purple;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        @include screen("medium") {
-          flex-direction: column;
-          height: 75%;
-          width: 100%;
-        }
-
-        @include screen("small") {
-          flex-direction: column-reverse;
-        }
-
-        .strongholdTreasury {
-          height: 100%;
-          // width: 32.5%;
-          width: $three-column-width;
-          // background-color: white;
-          @include cardContainer;
-          box-shadow: $boxShadow;
-
-          @include screen("medium") {
-            height: 25%;
-            width: 100%;
-          }
-
-          @include screen("small") {
-            width: 100%;
-            min-height: 50%;
-          }
-
-          .revenueContainer {
-            width: 100%;
-            height: 20%;
-            border-bottom: $bottomBorder;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            .season {
-              font-size: small;
-            }
-            .button {
-              font-size: x-small;
-              padding: 0.5rem;
-              width: 40%;
-              text-transform: capitalize;
-            }
-          }
-
-          .containerHeader {
-            height: 10%;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            text-transform: capitalize;
-            font-weight: 500;
-            font-size: small;
-          }
-          .currencyContainer {
-            height: 70%;
-            width: 100%;
-            font-size: small;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border-bottom: $bottomBorder;
-            // background-color: yellow;
-
-            .textContainer {
-              // background-color: red;
-              height: 18%;
-              width: 100%;
-              display: flex;
-              // flex-direction: column;
-              justify-content: center;
-              align-items: flex-start;
-              border-bottom: 1px solid $selected;
-              font-size: medium;
-
-              &:hover {
-                background-color: $highlight;
-                cursor: pointer;
-              }
-
-              &:first-child {
-                border: none;
-              }
-
-              &:last-child {
-                border: none;
-              }
-
-              .divider {
-                width: 50%;
-                height: 100%;
-
-                .currencyAmount {
-                  color: $text;
-                }
-
-                .animated {
-                  animation: glow 0.5s forwards;
-
-                  @keyframes glow {
-                    0% {
-                      text-shadow: none;
-                    }
-                    50% {
-                      text-shadow: 0 0 5px rgb(180, 136, 17), 0 0 10px rgb(180, 136, 17),
-                        0 0 20px rgb(180, 136, 17), 0 0 40px rgb(180, 136, 17), 0 0 80px rgb(180, 136, 17);
-                    }
-                    100% {
-                      text-shadow: none;
-                    }
-                  }
-                }
-
-                .button {
+                .textDivider {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  justify-content: center;
                   width: 30%;
+                }
+
+                .inputDivider {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-evenly;
+                  align-items: center;
+                  width: 70%;
+                  visibility: hidden;
+                }
+
+                .visible {
+                  visibility: visible;
+                }
+
+                .text {
                   font-size: x-small;
-                }
-
-                .input {
-                  width: 35%;
-                  font-size: small;
+                  padding-left: 0.2rem;
                 }
               }
 
-              .textDivider {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: center;
-                width: 30%;
+              .active {
+                background-color: $highlight;
               }
+            }
+          }
 
-              .inputDivider {
+          .strongholdMenu {
+            height: 100%;
+            // width: 65%;
+            width: $seven-and-half-column-width;
+            @include cardContainer;
+            box-shadow: $boxShadow;
+
+            @include screen("medium") {
+              width: 100%;
+              height: 72.5%;
+            }
+
+            @include screen("small") {
+              width: 100%;
+              min-height: 50%;
+            }
+
+            .strongholdMenuButtons {
+              width: 100%;
+              height: 25%;
+              display: flex;
+              flex-direction: column;
+              border-bottom: $bottomBorder;
+
+              .menuCategories {
+                width: 100%;
+                height: 50%;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-evenly;
+                justify-content: space-between;
                 align-items: center;
-                width: 70%;
-                visibility: hidden;
-              }
 
-              .visible {
-                visibility: visible;
-              }
+                .categoryButton {
+                  width: 22%;
+                  height: 75%;
+                  text-transform: capitalize;
 
-              .text {
-                font-size: x-small;
-                padding-left: 0.2rem;
-              }
-            }
-
-            .active {
-              background-color: $highlight;
-            }
-          }
-        }
-
-        .strongholdMenu {
-          height: 100%;
-          // width: 65%;
-          width: $seven-and-half-column-width;
-          @include cardContainer;
-          box-shadow: $boxShadow;
-
-          @include screen("medium") {
-            width: 100%;
-            height: 72.5%;
-          }
-
-          @include screen("small") {
-            width: 100%;
-            min-height: 50%;
-          }
-
-          .strongholdMenuButtons {
-            width: 100%;
-            height: 25%;
-            display: flex;
-            flex-direction: column;
-            border-bottom: $bottomBorder;
-
-            .menuCategories {
-              width: 100%;
-              height: 50%;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              align-items: center;
-
-              .categoryButton {
-                width: 22%;
-                height: 75%;
-                text-transform: capitalize;
-
-                @include screen("small") {
-                  font-size: xx-small;
-                  padding: 0.1rem 0;
-                  height: 50%;
+                  @include screen("small") {
+                    font-size: xx-small;
+                    padding: 0.1rem 0;
+                    height: 50%;
+                  }
                 }
               }
-            }
 
-            .menuSubCategories {
-              width: 100%;
-              height: 50%;
-              display: flex;
-              flex-direction: row;
-              justify-content: flex-start;
-              align-items: center;
-              @include screen("small") {
-                flex-wrap: wrap;
-                justify-content: space-around;
-              }
-
-              .subCategoryButton {
-                // width: 17%;
-                min-width: 15%;
-                padding: 0 0.4rem;
-                height: 60%;
-                font-size: x-small;
-                margin-right: 0.5rem;
-                text-transform: capitalize;
-
+              .menuSubCategories {
+                width: 100%;
+                height: 50%;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
                 @include screen("small") {
-                  font-size: xx-small;
+                  flex-wrap: wrap;
+                  justify-content: space-around;
+                }
+
+                .subCategoryButton {
+                  // width: 17%;
                   min-width: 15%;
-                  padding: 0.2rem;
-                  height: 40%;
+                  padding: 0 0.4rem;
+                  height: 60%;
+                  font-size: x-small;
+                  margin-right: 0.5rem;
+                  text-transform: capitalize;
+
+                  @include screen("small") {
+                    font-size: xx-small;
+                    min-width: 15%;
+                    padding: 0.2rem;
+                    height: 40%;
+                  }
                 }
+              }
+
+              .activeButton {
+                background-color: $selected;
+                color: $offwhite;
+                border: 1px solid $text;
               }
             }
 
-            .activeButton {
-              background-color: $selected;
-              color: $offwhite;
-              border: 1px solid $text;
+            .strongholdMenuText {
+              width: 100%;
+              height: 75%;
             }
-          }
-
-          .strongholdMenuText {
-            width: 100%;
-            height: 75%;
           }
         }
       }
-    }
 
-    .contextualPanel {
-      @include desktop-only;
-      width: 20%;
-      height: full;
-      // background-color: aliceblue;
-      @include cardContainer;
-      box-shadow: $boxShadow;
-
-      @include screen("small") {
-        width: 100%;
+      .contextualPanel {
+        @include desktop-only;
+        width: 20%;
         height: full;
-      }
+        // background-color: aliceblue;
+        @include cardContainer;
+        box-shadow: $boxShadow;
 
-      @include screen("medium") {
-        display: none;
-      }
+        @include screen("small") {
+          width: 100%;
+          height: full;
+        }
 
-      .infoTitle {
-        font-size: medium;
-        width: 100%;
-        border-bottom: $bottomBorder;
-        text-transform: capitalize;
-        padding: 0.5rem 0;
-      }
+        @include screen("medium") {
+          display: none;
+        }
 
-      .info {
-        font-size: small;
-        padding: 0.5rem 0;
-        border-bottom: $bottomBorder;
+        .infoTitle {
+          font-size: medium;
+          width: 100%;
+          border-bottom: $bottomBorder;
+          text-transform: capitalize;
+          padding: 0.5rem 0;
+        }
+
+        .info {
+          font-size: small;
+          padding: 0.5rem 0;
+          border-bottom: $bottomBorder;
+        }
       }
     }
   }
