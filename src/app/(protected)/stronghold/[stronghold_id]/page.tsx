@@ -287,12 +287,10 @@ export default function Page({
               </section>
             </section>
           )}
-          <section className={styles.strongholdStats}>
+          <section className={styles.sheetSecondRow}>
             <Stats loading={loading} stats={stronghold?.stats ?? null}/>
             <Benefits loading={loading} type={stronghold?.stronghold_type ?? null} benefits={stronghold?.features ?? null} setContextualInfo={setContextualInfo}/>
             <FeatureImprovement loading={loading} level={stronghold?.stronghold_level ?? null} improvement={stronghold?.class?.class_feature_improvement ?? null} setContextualInfo={setContextualInfo} updateUses={updateClassFeatureImprovementUses}/>
-            {/* <section className={styles.featuresContainer}>
-            </section> */}
           </section>
           <section className={styles.strongholdAssets}>
             {loading || !stronghold ? (
