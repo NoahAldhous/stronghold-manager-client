@@ -374,7 +374,8 @@
 
         .strongholdTreasury {
           height: 100%;
-          width: 32.5%;
+          // width: 32.5%;
+          width: $three-column-width;
           // background-color: white;
           @include cardContainer;
           box-shadow: $boxShadow;
@@ -522,7 +523,8 @@
 
         .strongholdMenu {
           height: 100%;
-          width: 65%;
+          // width: 65%;
+          width: $seven-and-half-column-width;
           @include cardContainer;
           box-shadow: $boxShadow;
 

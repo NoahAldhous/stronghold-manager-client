@@ -5,12 +5,12 @@ import { JSX } from "react";
 
 interface StatsProps {
   loading: boolean;
-  stronghold: Stronghold | null;
+  stats: Stronghold["stats"] | null;
 }
 
 export default function Stats({
   loading,
-  stronghold,
+  stats
 }: StatsProps): JSX.Element {
 
   function renderStat(stat: "toughness" | "size" | "morale_bonus") {
@@ -27,21 +27,21 @@ export default function Stats({
         case "toughness":
           info = {
             statName: "toughness",
-            statNumber: stronghold?.stats?.toughness ?? null,
+            statNumber: stats?.toughness ?? null,
             statMod: null,
           };
           break;
         case "size":
           info = {
             statName: "size",
-            statNumber: stronghold?.stats?.size ?? null,
+            statNumber: stats?.size ?? null,
             statMod: "d",
           };
           break;
         case "morale_bonus":
           info = {
             statName: "morale",
-            statNumber: stronghold?.stats?.morale_bonus ?? null,
+            statNumber: stats?.morale_bonus ?? null,
             statMod: "+",
           };
           break;
@@ -60,12 +60,9 @@ export default function Stats({
     </div>
   }
 
-
-
-
   return (
     <section>
-      {loading || !stronghold ? (
+      {loading || !stats ? (
         <section className={styles.statsContainer}>
           <LoadingCard />
         </section>

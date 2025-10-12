@@ -5,7 +5,13 @@
     width: $three-and-half-column-width;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    align-items: center;
+    justify-content: space-evenly;
     @include cardContainer;
     box-shadow: $boxShadow;
+
+    .button{
+        padding: 0.5rem;
+        text-transform: capitalize;
+    }
 }

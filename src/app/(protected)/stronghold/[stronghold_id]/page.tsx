@@ -9,6 +9,7 @@ import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 import UpgradeStrongholdModal from "components/Modal/UpgradeStrongholdModal/UpgradeStrongholdModal";
 import Stats from "components/StrongholdSheet/Stats/Stats";
 import Benefits from "components/StrongholdSheet/Benefits/Benefits";
+import FeatureImprovement from "components/StrongholdSheet/FeatureImprovement/FeatureImprovement";
 
 export default function Page({
   params,
@@ -116,22 +117,6 @@ export default function Page({
     setInputValue("");
   }
 
-  //decrease number of class feature improvement uses
-  function updateUses(uses: number) {
-    if (stronghold) {
-      setStronghold({
-        ...stronghold,
-        class: {
-          ...stronghold?.class,
-          class_feature_improvement: {
-            ...stronghold?.class?.class_feature_improvement,
-            uses: uses,
-          },
-        },
-      });
-    }
-  }
-
   async function fetchStrongholdById() {
     if (!stronghold) {
       setLoading(true);
@@ -187,7 +172,16 @@ export default function Page({
       } catch (err) {
         console.log(err.message);
       } finally {
-        updateUses(uses);
+        setStronghold({
+          ...stronghold,
+          class: {
+            ...stronghold?.class,
+            class_feature_improvement: {
+              ...stronghold?.class?.class_feature_improvement,
+              uses: uses,
+            },
+          },
+        });
       }
     }
   }
@@ -294,93 +288,11 @@ export default function Page({
             </section>
           )}
           <section className={styles.strongholdStats}>
-            <Stats loading={loading} stronghold={stronghold}/>
-            <section className={styles.featuresContainer}>
-              <Benefits loading={loading} stronghold={stronghold}/>
-              {/* {loading || !stronghold ? (
-                <section className={`${styles.features} ${styles.benefits}`}>
-                  <LoadingCard />
-                </section>
-              ) : (
-                <section className={`${styles.features} ${styles.benefits}`}>
-                  <div className={styles.cardHeader}>
-                    {stronghold?.stronghold_type} benefits
-                  </div>
-                  {stronghold?.features.map((item, index) => {
-                    return (
-                      <button
-                        className={styles.featureButton}
-                        onClick={() =>
-                          setContextualInfo({
-                            title: item.title,
-                            description: item.description,
-                          })
-                        }
-                        key={index}
-                      >
-                        {item.title}
-                      </button>
-                    );
-                  })}
-                </section>
-              )} */}
-              {loading || !stronghold ? (
-                <section className={styles.features}>
-                  <LoadingCard />
-                </section>
-              ) : (
-                <section className={styles.features}>
-                  <div className={styles.cardHeader}>
-                    class feature improvement
-                  </div>
-                  <button
-                    className={styles.featureButton}
-                    onClick={() =>
-                      setContextualInfo({
-                        title:
-                          stronghold?.class?.class_feature_improvement?.name ??
-                          null,
-                        description: `${
-                          stronghold?.class?.class_feature_improvement
-                            ?.description ?? ""
-                        } ${
-                          stronghold?.class?.class_feature_improvement
-                            ?.restriction ?? ""
-                        }`,
-                      })
-                    }
-                  >
-                    {stronghold?.class.class_feature_improvement.name}
-                  </button>
-                  <section className={styles.usesContainer}>
-                    <p>Uses:</p>{" "}
-                    {Array.from({
-                      length: stronghold?.stronghold_level ?? 0,
-                    }).map((_, index) => (
-                      <div
-                        className={`${styles.diamond} ${
-                          index + 1 <=
-                          stronghold.class.class_feature_improvement.uses
-                            ? styles.activeDiamond
-                            : ""
-                        }`}
-                        key={index}
-                      />
-                    ))}
-                    <button
-                      onClick={() =>
-                        updateClassFeatureImprovementUses(
-                          stronghold?.class?.class_feature_improvement?.uses - 1
-                        )
-                      }
-                      className={styles.useButton}
-                    >
-                      Use
-                    </button>
-                  </section>
-                </section>
-              )}
-            </section>
+            <Stats loading={loading} stats={stronghold?.stats ?? null}/>
+            <Benefits loading={loading} type={stronghold?.stronghold_type ?? null} benefits={stronghold?.features ?? null} setContextualInfo={setContextualInfo}/>
+            <FeatureImprovement loading={loading} level={stronghold?.stronghold_level ?? null} improvement={stronghold?.class?.class_feature_improvement ?? null} setContextualInfo={setContextualInfo} updateUses={updateClassFeatureImprovementUses}/>
+            {/* <section className={styles.featuresContainer}>
+            </section> */}
           </section>
           <section className={styles.strongholdAssets}>
             {loading || !stronghold ? (
