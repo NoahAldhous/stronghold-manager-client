@@ -27,8 +27,6 @@ export default function Page({
   });
   const [stronghold, setStronghold] = useState<Stronghold | null>(null);
 
-  const currencies = ["pp", "gp", "sp", "ep", "cp"];
-
   const strongholdMenuButtons = [
     {
       category: "stronghold",
@@ -60,12 +58,6 @@ export default function Page({
     },
   ];
 
-  const [activeCurrency, setActiveCurrency] = useState("");
-
-  const [inputValue, setInputValue] = useState<number | "">("");
-
-  const [updatingTreasury, setUpdatingTreasury] = useState<boolean>(false);
-
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
   const [strongholdRevenue, setStrongholdRevenue] = useState<number>(0);
@@ -91,32 +83,11 @@ export default function Page({
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (stronghold) {
-      calculateStrongholdRevenue();
-      if (strongholdIsUpgraded) {
-        updateClassFeatureImprovementUses(stronghold?.stronghold_level);
-        setStrongholdIsUpgraded(false);
-      }
+    if (stronghold && strongholdIsUpgraded) {
+      updateClassFeatureImprovementUses(stronghold?.stronghold_level);
+      setStrongholdIsUpgraded(false);
     }
   }, [stronghold?.stronghold_level]);
-
-  function calculateStrongholdRevenue() {
-    if (stronghold?.stronghold_type == "establishment") {
-      setStrongholdRevenue(1000 * stronghold?.stronghold_level);
-    }
-  }
-
-  async function adjustCurrency(direction : "increase" | "decrease", currency: "pp" | "gp" | "sp" | "ep" | "cp"){
-    if (inputValue === "" || !stronghold) return;
-    const numericValue = Number(inputValue);
-
-    const newValue = direction === "increase" 
-      ? stronghold?.treasury[currency] + numericValue
-      : stronghold?.treasury[currency] - numericValue
-    
-    await updateTreasury(currency, newValue)
-    setInputValue("");
-  }
 
   async function fetchStrongholdById() {
     if (!stronghold) {
@@ -184,54 +155,6 @@ export default function Page({
           },
         });
       }
-    }
-  }
-
-  async function updateTreasury(
-    currency: "pp" | "gp" | "sp" | "ep" | "cp",
-    value: number
-  ) {
-    // only runs if stronghold object exists, preventing undefined values
-    if (!stronghold) return;
-
-    setUpdatingTreasury(true);
-    setAnimatedCurrency("")
-    
-    const newTreasuryValues = value < 0 
-      ? { ...stronghold?.treasury, [currency]: 0 }
-      : { ...stronghold?.treasury, [currency]: value };
-
-    setStronghold({ ...stronghold, treasury: newTreasuryValues });
-
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/treasury/update/${stronghold?.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newTreasuryValues),
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error(
-          "The application encountered an error trying to update this value"
-        );
-      }
-      const data = await res.json();
-      // TODO: backend returns new treasury to reconcile with frontend state
-      console.log(data.message);
-    } catch (err) {
-      console.log(err.message);
-      //state rollback
-      setStronghold((prev) =>
-        prev ? { ...prev, treasury: stronghold?.treasury } : prev
-      );
-    } finally {
-      setUpdatingTreasury(false);
-      setAnimatedCurrency(currency);
     }
   }
 
@@ -303,94 +226,6 @@ export default function Page({
               stronghold={stronghold ?? null}
               setStronghold={setStronghold}
             />
-            {/* {loading || !stronghold ? (
-              <section className={styles.strongholdTreasury}>
-                <LoadingCard />
-              </section>
-            ) : (
-              <section className={styles.strongholdTreasury}>
-                <div className={styles.cardHeader}>treasury</div>
-                <section className={styles.revenueContainer}>
-                  <div>
-                    <p className={styles.containerHeader}>revenue</p>
-                    <p>{strongholdRevenue}gp<span className={styles.season}> /Season</span></p>
-                  </div>
-                  <button
-                    disabled={updatingTreasury}
-                    onClick={() => {
-                      updateTreasury(
-                        "gp",
-                        stronghold?.treasury.gp + strongholdRevenue
-                      );
-                    }}
-                    className={styles.button}
-                  >
-                    receive revenue
-                  </button>
-                </section> */}
-                {/* <section className={styles.currencyContainer}>
-                  <p className={styles.containerHeader}>currency</p>
-                  {currencies.map((item: "pp" | "gp" | "ep" | "sp" | "cp", index) => (
-                    <div
-                      key={index}
-                      tabIndex={0}
-                      onFocus={() => setActiveCurrency(item)}
-                      onBlur={(e) => {
-                        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                          setActiveCurrency("");
-                        }
-                      }}
-                      onKeyDown={(e) => {
-                        // Pressing Enter or Space toggles the active state
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault(); // prevents scrolling on Space
-                          setActiveCurrency((prev) =>
-                            prev === item ? "" : item
-                          );
-                        }
-                        // Pressing Escape collapses the container
-                        if (e.key === "Escape") {
-                          setActiveCurrency("");
-                          (e.currentTarget as HTMLElement).blur(); // remove focus
-                        }
-                      }}
-                      className={`${styles.textContainer} ${
-                        activeCurrency == item ? styles.active : ""
-                      }`}
-                    >
-                      <section
-                        className={`${styles.divider} ${styles.textDivider}`}
-                      >
-                        <span className={`${styles.currencyAmount} ${animatedCurrency == item ? styles.animated : ""}`}>{stronghold?.treasury[item]}</span>
-                        <p className={styles.text}>{item}</p>
-                      </section>
-                      <section
-                        className={`${styles.divider} ${styles.inputDivider} ${
-                          activeCurrency == item ? styles.visible : ""
-                        }`}
-                      >
-                        <button disabled={updatingTreasury} onMouseDown={() => adjustCurrency("decrease", item)} className={styles.button}>remove</button>
-                        <input
-                          disabled={updatingTreasury}
-                          value={inputValue}
-                          type="number"
-                          onChange={(e) => setInputValue(e.target.value ? Number(e.target.value) : "")}
-                          onKeyDown={(e) => {
-                            // ESC while inside the input closes it
-                            if (e.key === "Escape") {
-                              e.currentTarget.blur();
-                              setActiveCurrency("");
-                            }
-                          }}
-                          className={styles.input}
-                        ></input>
-                        <button disabled={updatingTreasury} onMouseDown={() => adjustCurrency("increase", item)} className={styles.button}>add</button>
-                      </section>
-                    </div>
-                  ))}
-                </section>
-              </section>
-            )} */}
             {loading || !stronghold ? (
               <section className={styles.strongholdMenu}>
                 <LoadingCard />
