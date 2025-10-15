@@ -1,0 +1,49 @@
+@use "../../../app/variables" as *;
+
+.treasuryContainer{
+    height: 45vh;
+    width: $three-column-width;
+    @include cardContainer;
+    box-shadow: $boxShadow;
+
+    .revenueContainer{
+        width: 100%;
+        height: 20%;
+        border-bottom: $bottomBorder;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .season{
+            font-size: small;
+        }
+
+        .button{
+            font-size: x-small;
+            padding: 0.5rem;
+            width: 40%;
+            text-transform: capitalize;
+        }
+    }
+
+    .sectionHeader{
+        height: 10%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        text-transform: capitalize;
+        font-weight: 500;
+        font-size: small;
+    }
+
+    .currencyContainer{
+        height: 70%;
+        width: 100%;
+        font-size: small;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-bottom: $bottomBorder;
+
+    }
+}

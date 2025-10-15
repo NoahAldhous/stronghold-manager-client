@@ -1,1 +1,2 @@
-export * from "./stronghold"
+export * from "./stronghold";
+export * from "./currency";

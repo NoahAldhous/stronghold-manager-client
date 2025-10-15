@@ -10,6 +10,7 @@ import UpgradeStrongholdModal from "components/Modal/UpgradeStrongholdModal/Upgr
 import Stats from "components/StrongholdSheet/Stats/Stats";
 import Benefits from "components/StrongholdSheet/Benefits/Benefits";
 import FeatureImprovement from "components/StrongholdSheet/FeatureImprovement/FeatureImprovement";
+import Treasury from "components/StrongholdSheet/Treasury/Treasury";
 
 export default function Page({
   params,
@@ -293,7 +294,16 @@ export default function Page({
             <FeatureImprovement loading={loading} level={stronghold?.stronghold_level ?? null} improvement={stronghold?.class?.class_feature_improvement ?? null} setContextualInfo={setContextualInfo} updateUses={updateClassFeatureImprovementUses}/>
           </section>
           <section className={styles.strongholdAssets}>
-            {loading || !stronghold ? (
+            <Treasury 
+              loading={loading}
+              treasury={stronghold?.treasury ?? null}
+              level={stronghold?.stronghold_level ?? null}
+              type={stronghold?.stronghold_type ?? null}
+              id={stronghold?.id ?? null}
+              stronghold={stronghold ?? null}
+              setStronghold={setStronghold}
+            />
+            {/* {loading || !stronghold ? (
               <section className={styles.strongholdTreasury}>
                 <LoadingCard />
               </section>
@@ -317,8 +327,8 @@ export default function Page({
                   >
                     receive revenue
                   </button>
-                </section>
-                <section className={styles.currencyContainer}>
+                </section> */}
+                {/* <section className={styles.currencyContainer}>
                   <p className={styles.containerHeader}>currency</p>
                   {currencies.map((item: "pp" | "gp" | "ep" | "sp" | "cp", index) => (
                     <div
@@ -380,7 +390,7 @@ export default function Page({
                   ))}
                 </section>
               </section>
-            )}
+            )} */}
             {loading || !stronghold ? (
               <section className={styles.strongholdMenu}>
                 <LoadingCard />
