@@ -1,6 +1,11 @@
+"use client";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
+import { Units } from "types";
 
-type StrongholdFeaturesType = {
+interface StrongholdFeaturesType {
+    userId: string | null;
+    strongholdId: string ;
     activeButton : {
         category: string,
         subCategory: string
@@ -26,6 +31,8 @@ type StrongholdFeaturesType = {
 }
 
 export default function StrongholdFeatures({
+    userId,
+    strongholdId,
     activeButton, 
     strongholdActions,
     demesneEffects,
@@ -35,10 +42,40 @@ export default function StrongholdFeatures({
     characterClass
     }:StrongholdFeaturesType){
 
-    //pass prop activeButton from parent
-    //switch statement that renders different elements-
-    //category and subcategory- switches inside switch
-    //return dynamic elements based on each one.
+    const [unitsList, setUnitsList] = useState<Units | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    async function fetchUnits(): Promise<void>{
+        if(!unitsList) {
+            setLoading(true);
+
+            if(userId){
+                try {
+                    const res = await fetch(
+                        `${process.env.NEXT_PUBLIC_API_URL}/units/?user_id=${userId}&stronghold_id=${strongholdId}`
+                    );
+    
+                    if(!res.ok) {
+                        throw new Error("There was a problem fetching this Stronghold's units. Pleas try again")
+                    }
+    
+                    const data = await res.json();
+                    setUnitsList(data.units);
+                    console.log(data.units);
+                } catch (err) {
+                    console.log(err.message);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (activeButton.category === "units") {
+            fetchUnits();
+        }
+    }, [activeButton.category])
 
     function renderText(){
         switch(activeButton.category) {
@@ -109,7 +146,32 @@ export default function StrongholdFeatures({
                         </div>
                 }
             case "units":
-                return <p>units</p>;
+                switch(activeButton.subCategory){
+                    case "list":
+                        return <div className={styles.unitContainer}>
+                            <section className={styles.unitCategories}>
+                                <div className={styles.largeCategory}>name</div>
+                                <div className={styles.mediumCategory}>ancestry</div>
+                                <div className={styles.mediumCategory}>experience</div>
+                                <div className={styles.mediumCategory}>equipment</div>
+                                <div className={styles.smallCategory}>type</div>
+                                <div className={styles.smallCategory}>size</div>
+                            </section>
+                            <section className={styles.unitList}>
+                                {unitsList?.map((unit) => (
+                                    <div className={styles.unit}>
+                                        <p className={styles.largeCategory}>{unit.name}</p>
+                                        <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
+                                            <p className={styles.mediumCategory}>{unit.experience.name}</p>  
+                                            <p className={styles.mediumCategory}>{unit.equipment.name} </p>
+                                            <p className={styles.smallCategory}>{unit.type.name}</p>
+                                            <p className={styles.smallCategory}>{unit.size.unitSize}</p>
+                                    </div>
+                                )
+                                )}
+                            </section>
+                        </div>;
+                }
             case "artisans":
                 return <p>artisans</p>;
             case "followers":

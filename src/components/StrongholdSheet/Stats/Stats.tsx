@@ -35,7 +35,7 @@ export default function Stats({
           info = {
             statName: "size",
             statNumber: stats?.size ?? null,
-            statMod: "d",
+            statMod: `${(stats?.size ?? 0) - (stats?.casualties ?? 0)}/`,
           };
           break;
         case "morale_bonus":

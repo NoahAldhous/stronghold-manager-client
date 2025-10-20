@@ -19,7 +19,6 @@ export default function Page({
 }) {
   const { stronghold_id } = use(params);
   const [loading, setLoading] = useState(false);
-  const [animatedCurrency, setAnimatedCurrency] = useState("")
   const [strongholdIsUpgraded, setStrongholdIsUpgraded] = useState(false);
   const [activeButton, setActiveButton] = useState({
     category: "stronghold",
@@ -59,8 +58,6 @@ export default function Page({
   ];
 
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
-
-  const [strongholdRevenue, setStrongholdRevenue] = useState<number>(0);
 
   const [contextualInfo, setContextualInfo] = useState<{
     title: string | null;
@@ -212,12 +209,23 @@ export default function Page({
             </section>
           )}
           <section className={styles.sheetSecondRow}>
-            <Stats loading={loading} stats={stronghold?.stats ?? null}/>
-            <Benefits loading={loading} type={stronghold?.stronghold_type ?? null} benefits={stronghold?.features ?? null} setContextualInfo={setContextualInfo}/>
-            <FeatureImprovement loading={loading} level={stronghold?.stronghold_level ?? null} improvement={stronghold?.class?.class_feature_improvement ?? null} setContextualInfo={setContextualInfo} updateUses={updateClassFeatureImprovementUses}/>
+            <Stats loading={loading} stats={stronghold?.stats ?? null} />
+            <Benefits
+              loading={loading}
+              type={stronghold?.stronghold_type ?? null}
+              benefits={stronghold?.features ?? null}
+              setContextualInfo={setContextualInfo}
+            />
+            <FeatureImprovement
+              loading={loading}
+              level={stronghold?.stronghold_level ?? null}
+              improvement={stronghold?.class?.class_feature_improvement ?? null}
+              setContextualInfo={setContextualInfo}
+              updateUses={updateClassFeatureImprovementUses}
+            />
           </section>
           <section className={styles.strongholdAssets}>
-            <Treasury 
+            <Treasury
               loading={loading}
               treasury={stronghold?.treasury ?? null}
               level={stronghold?.stronghold_level ?? null}
@@ -283,6 +291,8 @@ export default function Page({
                 </section>
                 <section className={styles.strongholdMenuText}>
                   <StrongholdFeatures
+                  userId={userId}
+                  strongholdId={stronghold_id}
                     activeButton={activeButton}
                     strongholdActions={
                       stronghold?.class.stronghold_actions ?? null
