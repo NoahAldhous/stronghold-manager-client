@@ -1,0 +1,8 @@
+@use "../../app/variables" as *;
+
+.card{
+    width: 40%;
+    height: 60%;
+    display: flex;
+    border: 1px solid $selected;
+}

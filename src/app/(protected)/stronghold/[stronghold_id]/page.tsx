@@ -160,29 +160,29 @@ export default function Page({
       <section className={styles.strongholdSheetContainer}>
         <section className={styles.strongholdSheet}>
           {loading || !stronghold ? (
-            <section className={styles.strongholdOverview}>
+            <section className={styles.sheetFirstRow}>
               <div className={styles.loadingName}></div>
               <div className={styles.loadingInfo}></div>
               <div className={styles.loadingInfo}></div>
             </section>
           ) : (
-            <section className={styles.strongholdOverview}>
-              <p className={styles.strongholdName}>
-                {stronghold?.stronghold_name}
-              </p>
+            <section className={styles.sheetFirstRow}>
+              <section className={styles.strongholdTitle}>
+                <p className={styles.strongholdName}>
+                  {stronghold?.stronghold_name}
+                </p>
+                <p className={styles.strongholdSubHeading}>
+                  {stronghold?.owner_name}
+                  <span className={styles.lowerCase}>&apos;s</span> Level{" "}
+                  {stronghold?.stronghold_level} {stronghold?.stronghold_type}
+                </p>
+                <p className={styles.strongholdSubHeading}>
+                  {stronghold?.class.name}
+                  <span className={styles.lowerCase}>&apos;s</span>{" "}
+                  {stronghold?.class.stronghold_name}
+                </p>
+              </section>
               <section className={styles.strongholdInfo}>
-                <div>
-                  <p>
-                    {stronghold?.owner_name}
-                    <span className={styles.lowerCase}>&apos;s</span> Level{" "}
-                    {stronghold?.stronghold_level} {stronghold?.stronghold_type}
-                  </p>
-                  <p>
-                    {stronghold?.class.name}
-                    <span className={styles.lowerCase}>&apos;s</span>{" "}
-                    {stronghold?.class.stronghold_name}
-                  </p>
-                </div>
                 <section className={styles.upgradeContainer}>
                   <button
                     className={styles.restButton}
@@ -224,7 +224,7 @@ export default function Page({
               updateUses={updateClassFeatureImprovementUses}
             />
           </section>
-          <section className={styles.strongholdAssets}>
+          <section className={styles.sheetThirdRow}>
             <Treasury
               loading={loading}
               treasury={stronghold?.treasury ?? null}

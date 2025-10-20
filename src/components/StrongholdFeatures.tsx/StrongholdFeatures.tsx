@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { Units } from "types";
+import UnitCard from "components/UnitCard/UnitCard";
 
 interface StrongholdFeaturesType {
     userId: string | null;
@@ -148,7 +149,7 @@ export default function StrongholdFeatures({
             case "units":
                 switch(activeButton.subCategory){
                     case "list":
-                        return <div className={styles.unitContainer}>
+                        return <div className={styles.unitListContainer}>
                             <section className={styles.unitCategories}>
                                 <div className={styles.largeCategory}>name</div>
                                 <div className={styles.mediumCategory}>ancestry</div>
@@ -159,7 +160,7 @@ export default function StrongholdFeatures({
                             </section>
                             <section className={styles.unitList}>
                                 {unitsList?.map((unit) => (
-                                    <div className={styles.unit}>
+                                    <div key={unit.unit_id} className={styles.unit}>
                                         <p className={styles.largeCategory}>{unit.name}</p>
                                         <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
                                             <p className={styles.mediumCategory}>{unit.experience.name}</p>  
@@ -171,6 +172,12 @@ export default function StrongholdFeatures({
                                 )}
                             </section>
                         </div>;
+                    case "card":
+                        return <div className={styles.unitCardContainer}>
+                            {unitsList?.map(( unit =>
+                                <UnitCard key={unit.unit_id} unit={unit}/>
+                            ))}
+                        </div>
                 }
             case "artisans":
                 return <p>artisans</p>;

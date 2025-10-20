@@ -1,7 +1,7 @@
 @use "../../../app/variables" as *;
 
 .treasuryContainer{
-    height: 45vh;
+    height: 50vh;
     width: $three-column-width;
     @include cardContainer;
     box-shadow: $boxShadow;

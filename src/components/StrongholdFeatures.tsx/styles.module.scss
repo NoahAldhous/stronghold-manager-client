@@ -49,7 +49,7 @@
         }
     }
 
-    .unitContainer{
+    .unitListContainer{
         width: 100%;
         height: 100%;
 
@@ -114,6 +114,14 @@
                 border-bottom: 1px solid $selected-transparent;
             }
         }
+    }
 
+    .unitCardContainer{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
 }
