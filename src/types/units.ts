@@ -1,3 +1,10 @@
+export type BonusKeys = "attackBonus" | "powerBonus" | "defenseBonus" | "toughnessBonus" | "moraleBonus";
+
+export type BonusValues = Partial<Record<BonusKeys, number>>;
+
+export interface NamedBonusSource extends BonusValues {
+    name: string;
+}
 interface BonusStats {
     name: string;
     attackBonus: number;
@@ -41,3 +48,14 @@ export interface Unit {
 }
 
 export type Units = Unit[];
+
+export interface Stats {
+    attack: number;
+    power: number;
+    defense: number;
+    toughness: number;
+    morale: number;
+    breakdown?:{
+        sources: Array<{ source: string; attack?: number; power?: number; defense?: number; toughness?: number; morale?: number }>;
+    };
+}

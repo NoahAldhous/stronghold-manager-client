@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function NavBar(){
 
-    const { role, logout } = useAuth();
+    const { role, userId, logout } = useAuth();
 
     const[screenEffect, setScreenEffect] = useState(true);
 
@@ -18,6 +18,7 @@ export default function NavBar(){
             <h1 className={styles.title}>Stronghold Manager</h1>
             <section className={styles.buttonContainer}>
                 <Link className={`${styles.button} ${styles.link}`}  href="/">Home</Link>
+                <Link className={`${styles.button} ${styles.link}`}  href={`/units/${userId}`}>Units</Link>
                 <button className={styles.button} onClick={() => {setScreenEffect(!screenEffect)}}>Toggle Screen Effect</button>
                 <button className={styles.button} onClick={logout}>Log Out</button>
                 {role == "admin" ? <Link className={`${styles.button} ${styles.link}`} href="/admin">admin</Link> : null}

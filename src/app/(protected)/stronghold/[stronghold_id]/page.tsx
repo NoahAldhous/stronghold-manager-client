@@ -79,6 +79,7 @@ export default function Page({
     }
   }, [isLoggedIn]);
 
+  //reset class feature improvement uses when Stronghold upgrades
   useEffect(() => {
     if (stronghold && strongholdIsUpgraded) {
       updateClassFeatureImprovementUses(stronghold?.stronghold_level);
