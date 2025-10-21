@@ -3,7 +3,6 @@ import styles from "./styles.module.scss";
 import { Stronghold, Currency } from "types";
 
 interface CurrencyProps {
-  index: number;
   currency: Currency;
   activeCurrency: Currency;
   animatedCurrency: Currency;
@@ -18,7 +17,6 @@ interface CurrencyProps {
 }
 
 export default function CurrencyElement({
-  index,
   currency,
   activeCurrency,
   animatedCurrency,
@@ -43,7 +41,6 @@ export default function CurrencyElement({
 
   return (
     <div
-      key={index}
       tabIndex={0}
       onFocus={() => setActiveCurrency(currency)}
       onBlur={(e) => {

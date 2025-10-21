@@ -123,7 +123,7 @@ export default function Treasury({ loading, treasury, level, type, id, stronghol
                     <div className={styles.sectionHeader}>currency</div>
                     {currencyList.map((item: Currency, index) => 
                         <CurrencyElement
-                            index={index}
+                            key={index}
                             currency={item}
                             activeCurrency={activeCurrency}
                             animatedCurrency={animatedCurrency}
