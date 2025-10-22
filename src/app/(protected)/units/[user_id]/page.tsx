@@ -59,9 +59,14 @@ export default function Page({
         <main className={styles.main}>
             <section className={styles.unitNav}>
                 <section className={styles.filterContainer}>
-                    <button>filter 1</button>
-                    <button>filter 2</button>
-                    <button>filter 3</button>
+                    <p>{units?.length} units</p>
+                    <section>
+                        <label htmlFor = "strongholds">
+                            filter by stronghold:</label>
+                        <select name="strongholds" className={styles.dropDown}>
+                            <option value="all">all</option>
+                        </select>
+                    </section>
                 </section>
                 <section className={styles.buttonContainer}>
                     <Link className={styles.link} href="/unit/create">create a unit</Link>

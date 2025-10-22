@@ -27,6 +27,19 @@
     }
 
   }
+
+  select,
+  ::picker(select){
+    appearance: base-select;
+  }
+
+  select{
+    border: 1px solid $selected;
+    border-radius: 0;
+    background-color: $highlight;
+    color: $text;
+    padding: 0.25rem;
+  }
   
   html,
   body {
