@@ -55,6 +55,10 @@ export interface Stats {
     defense: number;
     toughness: number;
     morale: number;
+    costs: {
+        cost: number;
+        upkeep: number;
+    }
     breakdown?:{
         sources: Array<{ source: string; attack?: number; power?: number; defense?: number; toughness?: number; morale?: number }>;
     };

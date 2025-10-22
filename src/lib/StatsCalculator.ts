@@ -30,6 +30,43 @@ export class StatsCalculator {
         return this.sources.reduce((acc, s) => acc + (s[key] ?? 0), 0) 
     }
 
+    private getTraitsCost(): number {
+        let cost = 0;
+
+        this.unit.traits.forEach((trait) => {
+            cost = (cost + trait.cost) 
+            console.log(cost)})
+
+        cost = (cost + 30)
+        console.log(cost)
+        return cost;
+    }
+
+    // compute and get Unit cost object
+    private getCost(unit: Unit){
+        console.log(unit.name)
+        const attack = this.sumBonus("attackBonus");
+        const power = this.sumBonus("powerBonus");
+        const morale = this.sumBonus("moraleBonus");
+        const defense = this.sumBonus("defenseBonus");
+        const toughness = this.sumBonus("toughnessBonus");
+
+        const sumOfBonuses = (attack + power + defense + toughness + (morale * 2));
+        console.log(sumOfBonuses)
+        const multipliedSum = ((sumOfBonuses * unit.type.costModifier) * unit.size.costModifier ) * 10;
+        console.log(multipliedSum)
+        const unitCost = multipliedSum + this.getTraitsCost()
+        console.log(unitCost)
+        const unitUpkeep = (unitCost / 10) * (unit.isMercenary ? 2 : 1)
+
+        const cost = {
+            cost: unitCost,
+            upkeep: unitUpkeep
+        }
+
+        return cost;
+    }
+
     // compute and return Stats object
     public getStats(includeBreakdown = false): Stats{
         const attack = this.sumBonus("attackBonus");
@@ -37,8 +74,9 @@ export class StatsCalculator {
         const morale = this.sumBonus("moraleBonus");
         const defense = BASE_DEFENSE + this.sumBonus("defenseBonus");
         const toughness = BASE_TOUGHNESS + this.sumBonus("toughnessBonus");
+        const costs = this.getCost(this.unit) 
 
-        const stats: Stats = { attack, power, defense, toughness, morale };
+        const stats: Stats = { attack, power, defense, toughness, morale, costs };
 
         if(includeBreakdown) {
             stats.breakdown = {
@@ -47,7 +85,8 @@ export class StatsCalculator {
                     attack: s.attackBonus ?? 0,
                     power: s.powerBonus ?? 0,
                     defense: s.defenseBonus ?? 0,
-                    toughness: s.moraleBonus ?? 0,
+                    toughness: s.toughnessBonus ?? 0,
+                    morale: s.moraleBonus ?? 0
                 })),
             };
         }

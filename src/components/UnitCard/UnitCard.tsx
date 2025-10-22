@@ -10,13 +10,21 @@ type UnitCardProps = {
 export default function UnitCard({ unit }: UnitCardProps){
 
     const calc = StatsCalculator.fromUnit(unit);
-    const stats = calc.getStats();
+    const stats = calc.getStats(true);
+    console.log(stats)
 
     return (
         <div key={unit?.unit_id} className={styles.card}>   
             <section className={styles.cardTop}>
                 <section className={styles.cardBanners}>
                     <div className={styles.banner}>
+                        {
+                            Array.from({length: (unit.experience.moraleBonus + 1)}).map((_, index) => (
+                                <span key={index} className={styles.experienceDiamondContainer}>
+                                    <span className={styles.experienceDiamond}/>
+                                </span>
+                            ))
+                        }
                         <span className={styles.bannerBottom}>
                             <span className={styles.diamond}/>
                         </span>
@@ -39,7 +47,7 @@ export default function UnitCard({ unit }: UnitCardProps){
                             {unit?.equipment.name} {unit?.type.name}
                         </p>
                     </section>
-                    <section className={styles.cardCost}>cost: </section>
+                    <section className={styles.cardCost}>cost: {stats.costs.cost}gp</section>
                 </section>
             </section>
             <section className={styles.cardStats}>
@@ -70,7 +78,7 @@ export default function UnitCard({ unit }: UnitCardProps){
                     </div>
                     <div className={styles.stat}>
                         <p className={styles.statText}>size:</p>
-                        <p className={styles.statText}>d{unit.size.unitSize}</p>
+                        <p className={styles.statText}>{unit.size.unitSize - unit.casualties}/{unit.size.unitSize}</p>
                     </div>
                 </div>
             </section>
