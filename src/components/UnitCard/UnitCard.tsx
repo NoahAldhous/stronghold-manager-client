@@ -47,7 +47,7 @@ export default function UnitCard({ unit }: UnitCardProps){
                             {unit?.equipment.name} {unit?.type.name}
                         </p>
                     </section>
-                    <section className={styles.cardCost}>cost: {stats.costs.cost}gp</section>
+                    {/* <section className={styles.cardCost}>cost: {stats.costs.cost}gp upkeep: {stats.costs.upkeep}gp</section> */}
                 </section>
             </section>
             <section className={styles.cardStats}>
@@ -92,6 +92,10 @@ export default function UnitCard({ unit }: UnitCardProps){
                         </div>
                     )}
                 </section>
+            </section>
+            <section className={styles.cardCost}>
+                <p>upkeep: {stats.costs.upkeep}gp</p>
+                <p>cost: {stats.costs.cost}gp</p>
             </section>
         </div>
     )

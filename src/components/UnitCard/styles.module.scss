@@ -1,8 +1,10 @@
 @use "../../app/variables" as *;
 
 .card{
-    width: 27.5%;
-    height: 60%;
+    // width: 27.5%;
+    // height: 60%;
+    height: 60vh;
+    aspect-ratio: 4/5;
     display: flex;
     flex-direction: column;
     padding: 0 1.5rem;
@@ -10,11 +12,12 @@
     margin: 1rem 0;
     box-shadow: $boxShadow;
     color: $text;
-    border: 2px solid $selected;
+    border: 3px solid $selected;
+    box-sizing: border-box;
 
     .cardTop{
         width: 100%;
-        height: 35%;
+        height: 25%;
         display: flex;
         flex-direction: row;
 
@@ -23,11 +26,11 @@
             width: 25%;
             display: flex;
             justify-content: space-around;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
 
             .banner{
                 width: 40%;
-                height: 80%;
+                height: 90%;
                 background-color: $dark;
                 position: relative;
                 overflow: hidden;
@@ -41,6 +44,10 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
+
+                    &:first-child{
+                        margin-top: 15%;
+                    }
 
                     .experienceDiamond{
                         width: 40%;
@@ -85,12 +92,14 @@
                 justify-content: flex-start;
                 align-items: center;
                 border-bottom: $bottomBorder;
-                font-size: larger;
+                text-transform: uppercase;
+                font-weight: 500;
+                font-size: large;
             }
         
             .cardSummary{
                 width: 100%;
-                height: 30%;
+                height: 40%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -100,16 +109,10 @@
                     width: 100%;
                     display: flex;
                     align-items: center;
+                    font-size: smaller;
+                    font-weight: 500;
                     text-transform: capitalize;
                 }
-            }
-        
-            .cardCost{
-                width: 100%;
-                height: 20%;
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
             }
         }
     }
@@ -147,7 +150,7 @@
 
     .cardTraits{
         width: 100%;
-        height: 35%;
+        height: 40%;
 
         .title{
             width: 100%;
@@ -164,6 +167,7 @@
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            border-bottom: $bottomBorder;
 
             .traitName{
                 font-size: smaller;
@@ -175,5 +179,15 @@
                 font-size: small;
             }
         }
+    }
+
+    .cardCost{
+        width: 100%;
+        height: 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: smaller;
+        font-weight: 400;
     }
 }

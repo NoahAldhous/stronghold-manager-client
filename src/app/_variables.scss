@@ -1,12 +1,4 @@
-
-// Navbar height
-$navbar-height: 10vh;
-
-// Page height
-$page-height: 90vh;
-
-//1/12th column width
-// $column-width: 8.33vw;
+//1/15th column widths
 $column-width: 100vw / 15;
 $half-column-width: $column-width / 2;
 $two-column-width: $column-width * 2;
@@ -20,6 +12,18 @@ $seven-and-half-column-width: $column-width * 7.5;
 $eleven-column-width: $column-width * 11;
 $thirteen-column-width: $column-width * 13;
 $fourteen-column-width: $column-width * 14;
+
+// Navbar height
+$navbar-height: 10vh;
+
+//Scrollbar width
+$scrollbar-width: 0.75rem;
+
+//Main page padding
+$main-padding: $half-column-width;
+
+// Page height
+$page-height: 90vh;
 
 //Screen sizes
 $max-small-screen-width: 700px;
@@ -126,6 +130,7 @@ $bottomBorder: 2px solid $selected;
 //Card Container
 @mixin cardContainer{
     border: 2px solid $highlight;
+    border: 2px solid $selected;
     background-color: $mid;
     color: $text;
     position: relative;
@@ -140,9 +145,11 @@ $bottomBorder: 2px solid $selected;
         font-weight: 500;
         text-transform: capitalize;
         background-color: $highlight;
+        background-color: $selected;
         padding: 0.2rem 1.75rem;
         font-size: small;
         color: $text;
+        // color: $highlight;
         display: flex;
         align-items: center;
     }
@@ -153,6 +160,30 @@ $bottomBorder: 2px solid $selected;
 }
 
 @mixin mainPage{
-    padding: 0 $half-column-width;
+    padding: 0 $main-padding;
+}
+
+@mixin adjustedPaddingForScrollbar{
+    scrollbar-gutter: stable;
+    padding: 0 calc($half-column-width - 0.75rem) 0 $half-column-width;
+}
+
+@mixin linkAsButton{  
+    border: 1px solid $selected;
+    background-color: $highlight;
+    color: $text;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    font-size: medium;
+    text-transform: capitalize;
+
+    &:hover{
+        cursor: pointer;
+        background-color: $selected;
+        border: 1px solid $text;
+        color: $offwhite;
+      }
 }
 

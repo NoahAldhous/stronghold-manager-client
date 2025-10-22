@@ -33,12 +33,12 @@ export class StatsCalculator {
     private getTraitsCost(): number {
         let cost = 0;
 
-        this.unit.traits.forEach((trait) => {
-            cost = (cost + trait.cost) 
-            console.log(cost)})
+        this.unit.traits.forEach((trait: {traitName: string, traitDescription: string, cost: number}) => {
+            cost = (cost + trait.cost)
+        })
 
         cost = (cost + 30)
-        console.log(cost)
+
         return cost;
     }
 
@@ -52,16 +52,13 @@ export class StatsCalculator {
         const toughness = this.sumBonus("toughnessBonus");
 
         const sumOfBonuses = (attack + power + defense + toughness + (morale * 2));
-        console.log(sumOfBonuses)
         const multipliedSum = ((sumOfBonuses * unit.type.costModifier) * unit.size.costModifier ) * 10;
-        console.log(multipliedSum)
         const unitCost = multipliedSum + this.getTraitsCost()
-        console.log(unitCost)
         const unitUpkeep = (unitCost / 10) * (unit.isMercenary ? 2 : 1)
 
         const cost = {
-            cost: unitCost,
-            upkeep: unitUpkeep
+            cost: Math.round(unitCost),
+            upkeep: Math.round(unitUpkeep)
         }
 
         return cost;

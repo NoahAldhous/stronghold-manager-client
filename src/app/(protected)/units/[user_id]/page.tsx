@@ -5,6 +5,8 @@ import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import type { Units, Unit } from "types";
 import UnitCard from "components/UnitCard/UnitCard";
+import Link from "next/link";
+import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 
 export default function Page({
     params,
@@ -55,11 +57,35 @@ export default function Page({
 
     return (
         <main className={styles.main}>
-            {units?.map((unit, index) => 
-                <UnitCard key={index} unit={unit}/>
-                
-            )}
+            <section className={styles.unitNav}>
+                <section className={styles.filterContainer}>
+                    <button>filter 1</button>
+                    <button>filter 2</button>
+                    <button>filter 3</button>
+                </section>
+                <section className={styles.buttonContainer}>
+                    <Link className={styles.link} href="/unit/create">create a unit</Link>
+                </section>
+            </section>
+            {loading ? 
+                <section className={styles.unitBody}>
+                    {
+                        Array.from({length: 6}).map((_, index) => (
+                            <span key={index} className={styles.loading}>
+                                <LoadingCard/>
+                            </span>
+                        ))
+                    }
+                </section>
+            :
+                <section className={styles.unitBody}>
+                    {units?.map((unit, index) => 
+                        <UnitCard key={index} unit={unit}/>
+                        
+                    )}
+                </section>
+            }
+            <section className={styles.footer}></section>
         </main>
     )
-
 }

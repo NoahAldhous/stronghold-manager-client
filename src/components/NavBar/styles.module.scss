@@ -8,7 +8,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: $highlight;
-    border-bottom: 2px solid $dark;
+    border-bottom: 2px solid $selected-transparent;
     padding: 0 $half-column-width;
     // border: 1;
     // border-style: dotted;
@@ -25,6 +25,7 @@
     .buttonContainer{
         @include desktop-only;
         width: 60%;
+        height: 100%;
         // border: 1;
         // border-style: dashed;
         display: flex;
@@ -38,7 +39,6 @@
             min-width: 15%;
             font-size: medium;
             margin-left: 0.5rem;
-
         }
 
         .link{  

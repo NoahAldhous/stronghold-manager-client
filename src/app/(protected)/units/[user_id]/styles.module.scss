@@ -2,12 +2,65 @@
 
 .main{
     color: $offwhite;
-    @include mainPage;
-    width: full;
-    height: $page-height;
+    // @include mainPage;
+    width: 100vw;
+    // height: $page-height;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    overflow-y: auto;
+    
+    .unitNav{
+        width: 100vw;
+        height: 10vh;
+        display: flex;
+        flex-direction: row;
+        background-color: $selected;
+        border-bottom: 2px solid $text-transparent;
+        padding: 0 $main-padding;
+
+
+        .filterContainer{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .buttonContainer{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            .link{
+                @include linkAsButton;
+                min-width: 25%;
+            }
+        }
+    }
+    
+    .unitBody{
+        width: 100vw;
+        min-height: 90vh;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        overflow-y: auto;
+        padding: 0 $main-padding;
+
+        .loading{
+            height: 60vh;
+            aspect-ratio: 4/5;
+            position: relative;
+            margin: 1rem 0;
+            border: 3px solid $selected;
+        }
+    }
+
+    .footer{
+        width: 100%;
+        height: 10vh;
+    }
 }
