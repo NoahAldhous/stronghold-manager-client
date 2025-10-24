@@ -15,7 +15,7 @@ interface BonusStats {
     costModifier: number;
 }
 
-type AncestryStats = Required<Omit<BonusStats, "morale_bonus" | "costModifier">>;
+type AncestryStats = Required<Omit<BonusStats, "costModifier">>;
 
 type EquipmentStats = Required<Pick<BonusStats, "defenseBonus" | "powerBonus" | "name">>;
 
@@ -29,7 +29,7 @@ export interface Unit {
     experience: ExperienceStats;
     type: TypeStats;
     casualties: number;
-    creationDate: string;
+    creationDate?: string;
     isMercenary: boolean;
     name: string;
     size: {
@@ -43,7 +43,7 @@ export interface Unit {
         traitName: string;
         traitDescription: string;
     }[] | [];
-    unit_id: number;
+    unit_id?: number;
     user_id: number;
 }
 

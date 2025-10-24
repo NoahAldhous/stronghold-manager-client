@@ -1,0 +1,24 @@
+@use "../../../variables" as *;
+
+.main{
+    background-color: blue;
+    width: 100vw;
+    height: $page-height;
+    display: flex;
+    flex-direction: row;
+
+    .selectionContainer{
+        width: 50%;
+        height: 100%;
+        background-color: azure;
+    }
+
+    .cardContainer{
+        width: 50%;
+        height: 100%;
+        background-color: antiquewhite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

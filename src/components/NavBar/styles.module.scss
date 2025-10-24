@@ -42,21 +42,22 @@
         }
 
         .link{  
-            border: 1px solid $selected;
-            background-color: $highlight;
-            color: $text;
-            text-decoration: none;
-            display: flex;
-            justify-content: center;
-            font-style: normal;
+            @include linkAsButton
+            // border: 1px solid $selected;
+            // background-color: $highlight;
+            // color: $text;
+            // text-decoration: none;
+            // display: flex;
+            // justify-content: center;
+            // font-style: normal;
 
 
-            &:hover{
-                cursor: pointer;
-                background-color: $selected;
-                border: 1px solid $text;
-                color: $offwhite;
-              }
+            // &:hover{
+            //     cursor: pointer;
+            //     background-color: $selected;
+            //     border: 1px solid $text;
+            //     color: $offwhite;
+            //   }
         }
     }
 }

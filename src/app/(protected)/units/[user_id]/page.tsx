@@ -69,7 +69,7 @@ export default function Page({
                     </section>
                 </section>
                 <section className={styles.buttonContainer}>
-                    <Link className={styles.link} href="/unit/create">create a unit</Link>
+                    <Link className={styles.link} href="/units/create">create a unit</Link>
                 </section>
             </section>
             {loading ? 
