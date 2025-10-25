@@ -1,13 +1,15 @@
 "use client";
 import UnitCard from "components/UnitCard/UnitCard";
 import styles from "./styles.module.scss";
-import { useState } from 'react';
-import type { Unit } from "types";
+import { useEffect, useState } from 'react';
+import type { Unit, Ancestry } from "types";
 import { useAuth } from "contexts/AuthContext";
 
 export default function Page(){
 
     const { userId } = useAuth();
+
+    const [ loading, setLoading ] = useState<boolean>(false);
 
     const [unit, setUnit] = useState<Unit>({
         ancestry: {
@@ -51,6 +53,8 @@ export default function Page(){
         user_id: Number(userId)
     });
 
+    const [ancestries, setAncestries] = useState<Ancestry[] | null>(null)
+
     const [requestData, setRequestData] = useState({
         user_id: unit.user_id,
         unit_name: unit.name,
@@ -64,8 +68,55 @@ export default function Page(){
         mercenary: unit.isMercenary
     })
 
+    // FETCH FUNCTIONS
+
+    async function fetchUnitAncestries(): Promise<void>{
+        if(!ancestries){
+            setLoading(true);
+
+            try{
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/units/ancestries`);
+                
+                if (!res.ok) {
+                    throw new Error("There was a problem fetching this data");
+                }
+
+                const data = await res.json();
+                console.log(data)
+                setAncestries(data.ancestries)
+            } catch (err) {
+                console.log(err.message)
+            } finally {
+                setLoading(false);
+            }
+
+        }
+    }
+
+    useEffect(() => {
+        if(!ancestries){
+            fetchUnitAncestries();
+        }
+    }, [ancestries])
+
     return <main className={styles.main}>
-        <section className={styles.selectionContainer}>hello world!</section>
+        <section className={styles.selectionContainer}>
+            <section className={styles.form}>
+                <p>name:</p>
+                <label htmlFor="ancestry-select">ancestry:</label>
+                <select name="ancestries" id="ancestry-select">
+                    {ancestries?.map((ancestry, index) =>
+                        <option key={index} value={ancestry.name}>{ancestry.name}</option>
+                    )}
+                </select>
+                <p>experience:</p>
+                <p>equipment:</p>
+                <p>size:</p>
+                <p>mercenary?:</p>
+                <p>stronghold:</p>
+                <p>name:</p>
+            </section>
+        </section>
         <section className={styles.cardContainer}>
             <UnitCard unit={unit}/>
         </section>

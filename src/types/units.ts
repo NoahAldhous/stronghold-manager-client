@@ -63,3 +63,11 @@ export interface Stats {
         sources: Array<{ source: string; attack?: number; power?: number; defense?: number; toughness?: number; morale?: number }>;
     };
 }
+
+export interface Ancestry extends AncestryStats {
+    traits: {
+        cost: number;
+        traitName: string;
+        traitDescription: string;
+    }[] | [];
+}
