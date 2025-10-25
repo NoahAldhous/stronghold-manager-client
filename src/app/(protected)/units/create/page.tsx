@@ -2,7 +2,7 @@
 import UnitCard from "components/UnitCard/UnitCard";
 import styles from "./styles.module.scss";
 import { useEffect, useState } from 'react';
-import type { Unit, Ancestry } from "types";
+import type { Unit, Ancestry, ExperienceLevel } from "types";
 import { useAuth } from "contexts/AuthContext";
 
 export default function Page(){
@@ -54,6 +54,7 @@ export default function Page(){
     });
 
     const [ancestries, setAncestries] = useState<Ancestry[] | null>(null)
+    const [experienceLevels, setExperienceLevels] = useState<ExperienceLevel[] | null>(null)
 
     const [requestData, setRequestData] = useState({
         user_id: unit.user_id,
@@ -67,6 +68,18 @@ export default function Page(){
         casualties: unit.casualties,
         mercenary: unit.isMercenary
     })
+
+    // FUNCTIONS
+
+    function handleSelectChange(objectKey: string, objectValue: string){
+        setUnit({
+            ...unit, 
+            [objectKey]: {
+                ...unit[objectKey],
+                name: objectValue
+            }})
+    }
+
 
     // FETCH FUNCTIONS
 
@@ -93,9 +106,35 @@ export default function Page(){
         }
     }
 
+    async function fetchUnitExperience(): Promise<void>{
+        if(!ancestries){
+            setLoading(true);
+
+            try{
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/units/experience_levels`);
+                
+                if (!res.ok) {
+                    throw new Error("There was a problem fetching this data");
+                }
+
+                const data = await res.json();
+                console.log(data)
+                setExperienceLevels(data.experience_levels)
+            } catch (err) {
+                console.log(err.message)
+            } finally {
+                setLoading(false);
+            }
+
+        }
+    }
+
+    // USE EFFECT
+
     useEffect(() => {
         if(!ancestries){
             fetchUnitAncestries();
+            fetchUnitExperience();
         }
     }, [ancestries])
 
@@ -104,12 +143,20 @@ export default function Page(){
             <section className={styles.form}>
                 <p>name:</p>
                 <label htmlFor="ancestry-select">ancestry:</label>
-                <select name="ancestries" id="ancestry-select">
+                <select onChange={(e) => handleSelectChange("ancestry", e.target.value)} name="ancestries" id="ancestry-select">
+                    <option value="select ancestry">select ancestry</option>
                     {ancestries?.map((ancestry, index) =>
                         <option key={index} value={ancestry.name}>{ancestry.name}</option>
                     )}
                 </select>
                 <p>experience:</p>
+                <label htmlFor="experience-select">experience:</label>
+                <select onChange={(e) => handleSelectChange("experience", e.target.value)} name="experience" id="experience-select">
+                    <option value="select experience level">select experience level</option>
+                    {experienceLevels?.map((experienceLevel, index) =>
+                        <option key={index} value={experienceLevel.levelName}>{experienceLevel.levelName}</option>
+                    )}
+                </select>
                 <p>equipment:</p>
                 <p>size:</p>
                 <p>mercenary?:</p>

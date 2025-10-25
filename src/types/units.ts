@@ -71,3 +71,8 @@ export interface Ancestry extends AncestryStats {
         traitDescription: string;
     }[] | [];
 }
+
+export interface ExperienceLevel extends Omit<ExperienceStats, "name"> {
+    id: number;
+    levelName: string;
+};
