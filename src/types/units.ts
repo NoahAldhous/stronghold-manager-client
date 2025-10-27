@@ -64,6 +64,12 @@ export interface Stats {
     };
 }
 
+interface Trait {
+    cost: number;
+    traitName: string;
+    traitDescription: string;
+}
+
 export interface Ancestry extends AncestryStats {
     traits: {
         cost: number;
@@ -76,3 +82,20 @@ export interface ExperienceLevel extends Omit<ExperienceStats, "name"> {
     id: number;
     levelName: string;
 };
+
+export interface EquipmentLevel extends Omit<EquipmentStats, "name">{
+    id: number;
+    levelName: string;
+};
+
+export interface SizeLevel {
+    costModifier: number;
+    id: number;
+    levelName:string;
+    size: number;
+};
+
+export interface UnitType extends TypeStats {
+    id: number;
+    traits: Trait[] | [];
+}

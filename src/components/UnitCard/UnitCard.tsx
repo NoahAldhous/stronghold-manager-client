@@ -1,6 +1,8 @@
+"useClient"
 import styles from "./styles.module.scss";
 import { StatsCalculator } from "lib/StatsCalculator";
 import type { Unit } from "types";
+import { useState, useEffect } from "react";
 
 
 type UnitCardProps = {
@@ -9,9 +11,14 @@ type UnitCardProps = {
 
 export default function UnitCard({ unit }: UnitCardProps){
 
-    const calc = StatsCalculator.fromUnit(unit);
-    const stats = calc.getStats(true);
-    console.log(stats)
+    const [calc, setCalc] = useState(StatsCalculator.fromUnit(unit));
+    const [stats, setStats] = useState(calc.getStats(true));
+    
+    useEffect(() => {
+        const newCalc = StatsCalculator.fromUnit(unit);
+        setCalc(newCalc);
+        setStats(newCalc.getStats(true));
+    }, [unit])
 
     return (
         <div key={unit?.unit_id} className={styles.card}>   
@@ -41,11 +48,16 @@ export default function UnitCard({ unit }: UnitCardProps){
                     </section>
                     <section className={styles.cardSummary}>
                         <p className={styles.cardText}>
-                            {unit?.ancestry.name} {unit?.experience.name}
+                            {unit?.ancestry.name} {unit?.type.name == "levies" ? unit?.type.name : unit?.experience.name}
                         </p>
-                        <p className={styles.cardText}>
-                            {unit?.equipment.name} {unit?.type.name}
-                        </p>
+                        {unit.type.name == "levies" 
+                            ? 
+                                null 
+                            : 
+                                <p className={styles.cardText}>
+                                    {unit?.equipment.name} {unit?.type.name}
+                                </p>
+                            }
                     </section>
                     {/* <section className={styles.cardCost}>cost: {stats.costs.cost}gp upkeep: {stats.costs.upkeep}gp</section> */}
                 </section>
@@ -54,7 +66,7 @@ export default function UnitCard({ unit }: UnitCardProps){
                 <div className={styles.statRow}>
                     <div className={styles.stat}>
                         <p className={styles.statText}>attack:</p>
-                        <p className={styles.statText}>+{stats.attack}</p>
+                        <p className={styles.statText}>{stats.attack >= 0 ? "+" : ""}{stats.attack}</p>
                     </div>
                     <div className={styles.stat}>
                         <p className={styles.statText}>defense:</p>
@@ -64,7 +76,7 @@ export default function UnitCard({ unit }: UnitCardProps){
                 <div className={styles.statRow}>
                 <div className={styles.stat}>
                         <p className={styles.statText}>power:</p>
-                        <p className={styles.statText}>+{stats.power}</p>
+                        <p className={styles.statText}>{stats.power >= 0 ? "+" : ""}{stats.power}</p>
                     </div>
                     <div className={styles.stat}>
                         <p className={styles.statText}>toughness:</p>
@@ -74,7 +86,7 @@ export default function UnitCard({ unit }: UnitCardProps){
                 <div className={styles.statRow}>
                 <div className={styles.stat}>
                         <p className={styles.statText}>morale:</p>
-                        <p className={styles.statText}>+{stats.morale}</p>
+                        <p className={styles.statText}>{stats.morale >= 0 ? "+" : ""}{stats.morale}</p>
                     </div>
                     <div className={styles.stat}>
                         <p className={styles.statText}>size:</p>

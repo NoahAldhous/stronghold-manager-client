@@ -48,6 +48,11 @@
     border: 1px solid $dark;
   }
 
+  select:disabled{
+    opacity: 50%;
+    pointer-events: none;
+  }
+
   select::picker-icon{
     color: $text;
     transition: 0.1s;
