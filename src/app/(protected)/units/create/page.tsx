@@ -268,7 +268,7 @@ export default function Page(){
 
     useEffect(() => {
         setUnit(prev => {
-            let next = {...prev};
+            const next = {...prev};
 
             if (prev.ancestry.name !=="") {
                 const newAncestry = ancestries?.find(item => item.name === prev.ancestry.name)
