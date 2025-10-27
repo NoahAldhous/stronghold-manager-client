@@ -335,7 +335,7 @@ export default function Page(){
     }, [unit.ancestry.name, unit.experience.name, unit.equipment.name, unit.type.name, unit.size.unitSize])
 
     return <main className={styles.main}>
-        <section className={styles.selectionContainer}>
+        <section className={styles.container}>
             <section className={styles.form}>
                 <section className={styles.cardHeader}>create a unit</section>
                 <section className={styles.formSection}>
@@ -396,8 +396,6 @@ export default function Page(){
                 </section>
                 <p>stronghold:</p>
             </section>
-        </section>
-        <section className={styles.cardContainer}>
             <UnitCard unit={unit}/>
         </section>
     </main>
