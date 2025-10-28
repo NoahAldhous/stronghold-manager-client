@@ -28,7 +28,7 @@ export default function UnitCard({ unit }: UnitCardProps){
                         {
                             Array.from({length: (unit.experience.moraleBonus + 1)}).map((_, index) => (
                                 <span key={index} className={styles.experienceDiamondContainer}>
-                                    <span className={styles.experienceDiamond}/>
+                                    <span className={`${styles.experienceDiamond} ${styles[unit.experience.name]}`}/>
                                 </span>
                             ))
                         }
@@ -38,8 +38,32 @@ export default function UnitCard({ unit }: UnitCardProps){
                     </div>
                     <div className={styles.banner}>
                         <span className={styles.bannerBottom}>
-                        <span className={styles.diamond}/>
+                            <span className={styles.diamond}/>
                         </span>
+                        {["light", "medium", "heavy", "super-heavy"].includes(unit.equipment.name) ?
+                            <span className={`${styles.bannerBottom} ${styles.equipmentRibbon} ${styles.light}`}>
+                                <span className={`${styles.diamond} ${styles.equipmentDiamond}`}/>
+                            </span>
+                        : null
+                        }
+                        {["medium", "heavy", "super-heavy"].includes(unit.equipment.name) ?
+                            <span className={`${styles.bannerBottom} ${styles.equipmentRibbon} ${styles.medium}`}>
+                                <span className={`${styles.diamond} ${styles.equipmentDiamond}`}/>
+                            </span>
+                        : null
+                        }
+                        {["heavy", "super-heavy"].includes(unit.equipment.name) ?
+                            <span className={`${styles.bannerBottom} ${styles.equipmentRibbon} ${styles.heavy}`}>
+                                <span className={`${styles.diamond} ${styles.equipmentDiamond}`}/>
+                            </span>
+                        : null
+                        }
+                        {["super-heavy"].includes(unit.equipment.name) ?
+                            <span className={`${styles.bannerBottom} ${styles.equipmentRibbon} ${styles.superHeavy}`}>
+                                <span className={`${styles.diamond} ${styles.equipmentDiamond}`}/>
+                            </span>
+                        : null
+                        }
                     </div>
                 </section>
                 <section className={styles.cardOverview}>

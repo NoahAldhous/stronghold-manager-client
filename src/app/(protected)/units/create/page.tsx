@@ -13,6 +13,7 @@ import type {
 import { useAuth } from "contexts/AuthContext";
 import CreateUnitModal from "components/Modal/CreateUnitModal/CreateUnitModal";
 import Tooltip from "components/Tooltip/Tooltip";
+import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 
 interface StrongholdName {
   id: number;
@@ -20,7 +21,6 @@ interface StrongholdName {
 }
 
 export default function Page() {
-
   const { userId } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -82,7 +82,9 @@ export default function Page() {
   >(null);
   const [sizeLevels, setSizeLevels] = useState<SizeLevel[] | null>(null);
   const [types, setTypes] = useState<UnitType[] | null>(null);
-  const [strongholdNames, setStrongholdNames] = useState<StrongholdName[] | null>(null);
+  const [strongholdNames, setStrongholdNames] = useState<
+    StrongholdName[] | null
+  >(null);
 
   // const [newUnitData, setNewUnitData] = useState({
   //   user_id: unit.user_id,
@@ -154,7 +156,7 @@ export default function Page() {
         ...unit.size,
         unitSize: 4,
       },
-      isMercenary: false
+      isMercenary: false,
     });
   }
 
@@ -172,17 +174,17 @@ export default function Page() {
     });
   }
 
-  function handleStrongholdChange(e: { target: {value: string} }) {
-    if (e.target.value === "null"){
+  function handleStrongholdChange(e: { target: { value: string } }) {
+    if (e.target.value === "null") {
       setUnit({
         ...unit,
-        stronghold_id: null
-      })
+        stronghold_id: null,
+      });
     } else {
       setUnit({
         ...unit,
-        stronghold_id: Number(e.target.value)
-      })
+        stronghold_id: Number(e.target.value),
+      });
     }
   }
 
@@ -309,15 +311,15 @@ export default function Page() {
   }
 
   async function fetchStrongholdNames(): Promise<void> {
-    if (!strongholdNames){
+    if (!strongholdNames) {
       setLoading(true);
 
       try {
-        const res = await fetch (
+        const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/strongholds/names/${userId}`
         );
 
-        if(!res.ok) {
+        if (!res.ok) {
           throw new Error("There was a problem fetching this data");
         }
 
@@ -331,37 +333,32 @@ export default function Page() {
     }
   }
 
-  async function handleSubmit(){
+  async function handleSubmit() {
     setSendingData(true);
     setDisplayModal(true);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/units/add`,
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(newUnitData),
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/units/add`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(newUnitData),
+      });
 
-      if(!res.ok) {
+      if (!res.ok) {
         throw new Error("Error: Could not create unit.");
       }
 
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       //TODO: capture data for navigation to unit page or stronghold page?
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message);
     } finally {
       setSendingData(false);
     }
   }
-
-
 
   // USE EFFECT
 
@@ -470,12 +467,12 @@ export default function Page() {
   ]);
 
   useEffect(() => {
-    if(unit.name !==""){
+    if (unit.name !== "") {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [unit.name])
+  }, [unit.name]);
 
   return (
     <main className={styles.main}>
@@ -491,170 +488,192 @@ export default function Page() {
           <p>unit type:{newUnitData.unit_type}</p>
           <p>size:{newUnitData.size_level}</p>
         </section> */}
-        <section className={styles.form}>
-          <section className={styles.cardHeader}>create a unit</section>
-          <section className={styles.formSection}>
-            <p className={styles.label}>name:</p>
-            <input
-              className={styles.input}
-              placeholder="name your unit..."
-              type="text"
-              maxLength={40}
-              name="unit_name"
-              value={unit.name}
-              onChange={handleUnitNameChange}
-            />
+        {loading ? (
+          <section className={styles.form}>
+            <LoadingCard />
           </section>
-          <section className={styles.formSection}>
-            <label className={styles.label} htmlFor="ancestry-select">
-              ancestry:
-            </label>
-            <select
-              value={unit.ancestry.name}
-              className={styles.select}
-              onChange={(e) => handleSelectChange("ancestry", e.target.value)}
-              name="ancestries"
-              id="ancestry-select"
-            >
-              {ancestries?.map((ancestry, index) => (
-                <option key={index} value={ancestry.name}>
-                  {ancestry.name}
-                </option>
-              ))}
-            </select>
-          </section>
-          <section className={styles.formSection}>
-            <label className={styles.label} htmlFor="experience-select">
-              experience:
-            </label>
-            <select
-              disabled={unit.type.name === "levies"}
-              value={unit.experience.name}
-              className={styles.select}
-              onChange={(e) => handleSelectChange("experience", e.target.value)}
-              name="experience"
-              id="experience-select"
-            >
-              {experienceLevels?.map((experienceLevel, index) => (
-                <option
-                  hidden={experienceLevel.levelName === "levies"}
-                  key={index}
-                  value={experienceLevel.levelName}
+        ) : (
+          <section className={styles.form}>
+            <section className={styles.cardHeader}>create a unit</section>
+            <section className={styles.formSection}>
+              <p className={styles.label}>name:</p>
+              <input
+                className={styles.input}
+                placeholder="name your unit..."
+                type="text"
+                maxLength={40}
+                name="unit_name"
+                value={unit.name}
+                onChange={handleUnitNameChange}
+              />
+            </section>
+            <section className={styles.formSection}>
+              <label className={styles.label} htmlFor="ancestry-select">
+                ancestry:
+              </label>
+              <select
+                value={unit.ancestry.name}
+                className={styles.select}
+                onChange={(e) => handleSelectChange("ancestry", e.target.value)}
+                name="ancestries"
+                id="ancestry-select"
+              >
+                {ancestries?.map((ancestry, index) => (
+                  <option key={index} value={ancestry.name}>
+                    {ancestry.name}
+                  </option>
+                ))}
+              </select>
+            </section>
+            <section className={styles.formSection}>
+              <label className={styles.label} htmlFor="experience-select">
+                experience:
+              </label>
+              <select
+                disabled={unit.type.name === "levies"}
+                value={unit.experience.name}
+                className={styles.select}
+                onChange={(e) =>
+                  handleSelectChange("experience", e.target.value)
+                }
+                name="experience"
+                id="experience-select"
+              >
+                {experienceLevels?.map((experienceLevel, index) => (
+                  <option
+                    hidden={experienceLevel.levelName === "levies"}
+                    key={index}
+                    value={experienceLevel.levelName}
+                  >
+                    {experienceLevel.levelName}
+                  </option>
+                ))}
+              </select>
+            </section>
+            <section className={styles.formSection}>
+              <label className={styles.label} htmlFor="equipment-select">
+                equipment:
+              </label>
+              <select
+                disabled={unit.type.name === "levies"}
+                value={unit.equipment.name}
+                className={styles.select}
+                onChange={(e) =>
+                  handleSelectChange("equipment", e.target.value)
+                }
+                name="equipment"
+                id="equipment-select"
+              >
+                {equipmentLevels?.map((equipmentLevel, index) => (
+                  <option
+                    hidden={equipmentLevel.levelName === "levies"}
+                    key={index}
+                    value={equipmentLevel.levelName}
+                  >
+                    {equipmentLevel.levelName}
+                  </option>
+                ))}
+              </select>
+            </section>
+            <section className={styles.formSection}>
+              <label className={styles.label} htmlFor="type-select">
+                type:
+              </label>
+              <select
+                value={unit.type.name}
+                className={styles.select}
+                onChange={(e) => handleSelectChange("type", e.target.value)}
+                name="type"
+                id="type-select"
+              >
+                {types?.map((type, index) => (
+                  <option key={index} value={type.name}>
+                    {type.name}
+                  </option>
+                ))}
+              </select>
+            </section>
+            <section className={styles.formSection}>
+              <label className={styles.label} htmlFor="size-select">
+                size:
+              </label>
+              <select
+                value={unit.size.unitSize}
+                className={styles.select}
+                onChange={(e) => handleSelectChange("size", e.target.value)}
+                name="size"
+                id="size-select"
+              >
+                {sizeLevels?.map((sizeLevel, index) => (
+                  <option key={index} value={sizeLevel.size}>
+                    {sizeLevel.size}
+                  </option>
+                ))}
+              </select>
+            </section>
+            <section className={styles.formSection}>
+              <label className={styles.label} htmlFor="stronghold-select">
+                stronghold:
+              </label>
+              <select
+                value={unit.stronghold_id ?? 0}
+                className={styles.select}
+                name="stronghold"
+                id="stronghold-select"
+                onChange={handleStrongholdChange}
+              >
+                <option value={"null"}>no stronghold</option>
+                {strongholdNames?.map((stronghold, index) => (
+                  <option key={index} value={stronghold.id}>
+                    {stronghold.name}
+                  </option>
+                ))}
+              </select>
+            </section>
+            <section className={styles.formSection}>
+              <p className={styles.label}>mercenary?:</p>
+              <input
+                className={styles.input}
+                onChange={handleMercenaryChange}
+                type="checkbox"
+              />
+            </section>
+
+            <section className={styles.formSection}>
+              <span
+                className={styles.createButtonContainer}
+                onMouseEnter={
+                  isButtonDisabled
+                    ? () => setHovered(true)
+                    : () => setHovered(false)
+                }
+                onMouseLeave={() => setHovered(false)}
+              >
+                <button
+                  disabled={isButtonDisabled}
+                  className={styles.button}
+                  onClick={handleSubmit}
                 >
-                  {experienceLevel.levelName}
-                </option>
-              ))}
-            </select>
+                  <Tooltip visible={hovered}>unit needs name</Tooltip>
+                  Create unit
+                </button>
+              </span>
+            </section>
           </section>
-          <section className={styles.formSection}>
-            <label className={styles.label} htmlFor="equipment-select">
-              equipment:
-            </label>
-            <select
-              disabled={unit.type.name === "levies"}
-              value={unit.equipment.name}
-              className={styles.select}
-              onChange={(e) => handleSelectChange("equipment", e.target.value)}
-              name="equipment"
-              id="equipment-select"
-            >
-              {equipmentLevels?.map((equipmentLevel, index) => (
-                <option
-                  hidden={equipmentLevel.levelName === "levies"}
-                  key={index}
-                  value={equipmentLevel.levelName}
-                >
-                  {equipmentLevel.levelName}
-                </option>
-              ))}
-            </select>
+        )}
+        {loading ? (
+          <section className={styles.form}>
+            <LoadingCard />
           </section>
-          <section className={styles.formSection}>
-            <label className={styles.label} htmlFor="type-select">
-              type:
-            </label>
-            <select
-              value={unit.type.name}
-              className={styles.select}
-              onChange={(e) => handleSelectChange("type", e.target.value)}
-              name="type"
-              id="type-select"
-            >
-              {types?.map((type, index) => (
-                <option key={index} value={type.name}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-          </section>
-          <section className={styles.formSection}>
-            <label className={styles.label} htmlFor="size-select">
-              size:
-            </label>
-            <select
-              value={unit.size.unitSize}
-              className={styles.select}
-              onChange={(e) => handleSelectChange("size", e.target.value)}
-              name="size"
-              id="size-select"
-            >
-              {sizeLevels?.map((sizeLevel, index) => (
-                <option key={index} value={sizeLevel.size}>
-                  {sizeLevel.size}
-                </option>
-              ))}
-            </select>
-          </section>
-          <section className={styles.formSection}>
-            <label className={styles.label} htmlFor="stronghold-select">
-              stronghold:
-            </label>
-            <select
-              value={unit.stronghold_id ?? 0}
-              className={styles.select}
-              name="stronghold"
-              id="stronghold-select"
-              onChange={handleStrongholdChange}
-            >
-              <option value={"null"}>no stronghold</option>
-              {strongholdNames?.map((stronghold, index) => (
-                <option key={index} value={stronghold.id}>{stronghold.name}</option>
-              ))}
-            </select>
-          </section>
-          <section className={styles.formSection}>
-            <p className={styles.label}>mercenary?:</p>
-            <input
-              className={styles.input}
-              onChange={handleMercenaryChange}
-              type="checkbox"
-            />
-          </section>
-          
-          <section className={styles.formSection}>
-            <span
-              className={styles.createButtonContainer}
-              onMouseEnter={
-                isButtonDisabled
-                  ? () => setHovered(true) 
-                  : () => setHovered(false) 
-              }
-              onMouseLeave={() => setHovered(false)}
-            >
-              <button 
-                disabled={isButtonDisabled} 
-                className={styles.button}
-                onClick={handleSubmit}
-              > 
-                <Tooltip visible={hovered}>unit needs name</Tooltip>
-                Create unit
-              </button>
-            </span>
-          </section>
-        </section>
-        <UnitCard unit={unit} />
+        ) : (
+          <UnitCard unit={unit} />
+        )}
       </section>
-      <CreateUnitModal visible={displayModal} setVisible={setDisplayModal} sendingData={sendingData}/>
+      <CreateUnitModal
+        visible={displayModal}
+        setVisible={setDisplayModal}
+        sendingData={sendingData}
+      />
     </main>
   );
 }

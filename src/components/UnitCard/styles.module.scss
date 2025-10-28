@@ -52,8 +52,32 @@
                     .experienceDiamond{
                         width: 40%;
                         aspect-ratio: 1/1;
-                        background-color: $highlight;
+                        background-color: $offwhite;
                         transform: rotate(45deg);
+                    }
+
+                    .green{
+                        opacity: 50%;
+                    }
+
+                    .regular{
+                        opacity: 60%;
+                    }
+
+                    .seasoned{
+                        opacity: 70%
+                    }
+
+                    .veteran{
+                        opacity: 80%;
+                    }
+
+                    .elite{
+                        opacity: 90%;
+                    }
+
+                    .super-elite{
+                        opacity: 100%
                     }
                 }
 
@@ -67,14 +91,49 @@
                     justify-content: center;
                     align-items: center;
                     transform: translateY(50%);
+                    z-index: 5;
                     
                     .diamond{
                         background-color: $mid;
                         width: 70.1%;
                         aspect-ratio: 1/1;
                         transform: rotate(45deg);
+                        
+                    }
+
+                }
+
+                .equipmentRibbon{
+                    // transform: translateY(40%);
+                    // background-color: blue;
+                    z-index: 4;
+
+                    .equipmentDiamond{
+                        background-color: $selected;
+                        border: 2px solid $mid;
+                        width: 100%;
                     }
                 }
+
+                .light{
+                    bottom: 5%;
+                }
+
+                .medium{
+                    bottom: 15%;
+                    z-index: 3;
+                }
+
+                .heavy{
+                    bottom: 25%;
+                    z-index: 2;
+                }
+
+                .superHeavy{
+                    bottom: 35%;
+                    z-index: 1
+                }
+
             }
         }
         
