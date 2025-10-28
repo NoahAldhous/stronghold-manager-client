@@ -11,11 +11,20 @@ import type {
   UnitType,
 } from "types";
 import { useAuth } from "contexts/AuthContext";
+import CreateUnitModal from "components/Modal/CreateUnitModal/CreateUnitModal";
+
+interface StrongholdName {
+  id: number;
+  name: string;
+}
 
 export default function Page() {
+
   const { userId } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [sendingData, setSendingData] = useState<boolean>(false);
+  const [displayModal, setDisplayModal] = useState<boolean>(false);
 
   const [unit, setUnit] = useState<Unit>({
     ancestry: {
@@ -68,8 +77,21 @@ export default function Page() {
   >(null);
   const [sizeLevels, setSizeLevels] = useState<SizeLevel[] | null>(null);
   const [types, setTypes] = useState<UnitType[] | null>(null);
+  const [strongholdNames, setStrongholdNames] = useState<StrongholdName[] | null>(null);
 
-  const [requestData, setRequestData] = useState({
+  // const [newUnitData, setNewUnitData] = useState({
+  //   user_id: unit.user_id,
+  //   unit_name: unit.name,
+  //   stronghold_id: unit.stronghold_id,
+  //   ancestry: unit.ancestry.name,
+  //   experience: unit.experience.name,
+  //   equipment: unit.equipment.name,
+  //   unit_type: unit.type.name,
+  //   size_level: unit.size.sizeLevel,
+  //   casualties: unit.casualties,
+  //   mercenary: unit.isMercenary,
+  // });
+  const newUnitData = {
     user_id: unit.user_id,
     unit_name: unit.name,
     stronghold_id: unit.stronghold_id,
@@ -80,7 +102,7 @@ export default function Page() {
     size_level: unit.size.sizeLevel,
     casualties: unit.casualties,
     mercenary: unit.isMercenary,
-  });
+  };
 
   // FUNCTIONS
 
@@ -127,6 +149,7 @@ export default function Page() {
         ...unit.size,
         unitSize: 4,
       },
+      isMercenary: false
     });
   }
 
@@ -142,6 +165,20 @@ export default function Page() {
       ...unit,
       isMercenary: e.target.checked,
     });
+  }
+
+  function handleStrongholdChange(e: { target: {value: string} }) {
+    if (e.target.value === "null"){
+      setUnit({
+        ...unit,
+        stronghold_id: null
+      })
+    } else {
+      setUnit({
+        ...unit,
+        stronghold_id: Number(e.target.value)
+      })
+    }
   }
 
   // FETCH FUNCTIONS
@@ -266,6 +303,61 @@ export default function Page() {
     }
   }
 
+  async function fetchStrongholdNames(): Promise<void> {
+    if (!strongholdNames){
+      setLoading(true);
+
+      try {
+        const res = await fetch (
+          `${process.env.NEXT_PUBLIC_API_URL}/strongholds/names/${userId}`
+        );
+
+        if(!res.ok) {
+          throw new Error("There was a problem fetching this data");
+        }
+
+        const data = await res.json();
+        setStrongholdNames(data.strongholds);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
+
+  async function handleSubmit(){
+    setSendingData(true);
+    setDisplayModal(true);
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/units/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(newUnitData),
+        }
+      );
+
+      if(!res.ok) {
+        throw new Error("Error: Could not create unit.");
+      }
+
+      const data = await res.json();
+      console.log(data)
+      //TODO: capture data for navigation to unit page or stronghold page?
+    } catch (err) {
+      console.log(err.message)
+    } finally {
+      setSendingData(false);
+    }
+  }
+
+
+
   // USE EFFECT
 
   useEffect(() => {
@@ -281,6 +373,7 @@ export default function Page() {
       fetchUnitEquipment();
       fetchUnitSizes();
       fetchUnitTypes();
+      fetchStrongholdNames();
     } else if (!loading) {
       setInitialUnitValues();
     }
@@ -374,6 +467,17 @@ export default function Page() {
   return (
     <main className={styles.main}>
       <section className={styles.container}>
+        <section className={styles.admin}>
+          <p>name:{newUnitData.unit_name}</p>
+          <p>ancestry:{newUnitData.ancestry}</p>
+          <p>casualties:{newUnitData.casualties}</p>
+          <p>equipment:{newUnitData.equipment}</p>
+          <p>experience:{newUnitData.experience}</p>
+          <p>mercenary:{newUnitData.mercenary.toString()}</p>
+          <p>strongholdId:{newUnitData.stronghold_id}</p>
+          <p>unit type:{newUnitData.unit_type}</p>
+          <p>size:{newUnitData.size_level}</p>
+        </section>
         <section className={styles.form}>
           <section className={styles.cardHeader}>create a unit</section>
           <section className={styles.formSection}>
@@ -400,11 +504,7 @@ export default function Page() {
               id="ancestry-select"
             >
               {ancestries?.map((ancestry, index) => (
-                <option
-                //   selected={ancestry.name == unit.ancestry.name}
-                  key={index}
-                  value={ancestry.name}
-                >
+                <option key={index} value={ancestry.name}>
                   {ancestry.name}
                 </option>
               ))}
@@ -422,18 +522,15 @@ export default function Page() {
               name="experience"
               id="experience-select"
             >
-              {experienceLevels?.map((experienceLevel, index) =>
-                // experienceLevel.levelName === "levies" ? null : (
-                  <option
-                    // selected={experienceLevel.levelName == unit.experience.name}
-                    hidden={experienceLevel.levelName === "levies"}
-                    key={index}
-                    value={experienceLevel.levelName}
-                  >
-                    {experienceLevel.levelName}
-                  </option>
-                // )
-              )}
+              {experienceLevels?.map((experienceLevel, index) => (
+                <option
+                  hidden={experienceLevel.levelName === "levies"}
+                  key={index}
+                  value={experienceLevel.levelName}
+                >
+                  {experienceLevel.levelName}
+                </option>
+              ))}
             </select>
           </section>
           <section className={styles.formSection}>
@@ -448,16 +545,15 @@ export default function Page() {
               name="equipment"
               id="equipment-select"
             >
-              {equipmentLevels?.map((equipmentLevel, index) =>
-                  <option
-                    // selected={equipmentLevel.levelName == unit.equipment.name}
-                    hidden={equipmentLevel.levelName === "levies"}
-                    key={index}
-                    value={equipmentLevel.levelName}
-                  >
-                    {equipmentLevel.levelName}
-                  </option>
-              )}
+              {equipmentLevels?.map((equipmentLevel, index) => (
+                <option
+                  hidden={equipmentLevel.levelName === "levies"}
+                  key={index}
+                  value={equipmentLevel.levelName}
+                >
+                  {equipmentLevel.levelName}
+                </option>
+              ))}
             </select>
           </section>
           <section className={styles.formSection}>
@@ -472,11 +568,7 @@ export default function Page() {
               id="type-select"
             >
               {types?.map((type, index) => (
-                <option
-                //   selected={type.name == unit.type.name}
-                  key={index}
-                  value={type.name}
-                >
+                <option key={index} value={type.name}>
                   {type.name}
                 </option>
               ))}
@@ -494,13 +586,26 @@ export default function Page() {
               id="size-select"
             >
               {sizeLevels?.map((sizeLevel, index) => (
-                <option
-                //   selected={sizeLevel.size == unit.size.unitSize}
-                  key={index}
-                  value={sizeLevel.size}
-                >
+                <option key={index} value={sizeLevel.size}>
                   {sizeLevel.size}
                 </option>
+              ))}
+            </select>
+          </section>
+          <section className={styles.formSection}>
+            <label className={styles.label} htmlFor="stronghold-select">
+              stronghold:
+            </label>
+            <select
+              value={unit.stronghold_id ?? null ?? 0}
+              className={styles.select}
+              name="stronghold"
+              id="stronghold-select"
+              onChange={handleStrongholdChange}
+            >
+              <option value={"null"}>no stronghold</option>
+              {strongholdNames?.map((stronghold, index) => (
+                <option key={index} value={stronghold.id}>{stronghold.name}</option>
               ))}
             </select>
           </section>
@@ -512,10 +617,20 @@ export default function Page() {
               type="checkbox"
             />
           </section>
-          <p>stronghold:</p>
+          
+          <section className={styles.formSection}>
+            <button 
+              disabled={unit.name === ""} 
+              className={styles.button}
+              onClick={handleSubmit}
+            >
+              create unit
+            </button>
+          </section>
         </section>
         <UnitCard unit={unit} />
       </section>
+      <CreateUnitModal visible={displayModal} setVisible={setDisplayModal} sendingData={sendingData}/>
     </main>
   );
 }
