@@ -467,7 +467,7 @@ export default function Page() {
   return (
     <main className={styles.main}>
       <section className={styles.container}>
-        <section className={styles.admin}>
+        {/* <section className={styles.admin}>
           <p>name:{newUnitData.unit_name}</p>
           <p>ancestry:{newUnitData.ancestry}</p>
           <p>casualties:{newUnitData.casualties}</p>
@@ -477,7 +477,7 @@ export default function Page() {
           <p>strongholdId:{newUnitData.stronghold_id}</p>
           <p>unit type:{newUnitData.unit_type}</p>
           <p>size:{newUnitData.size_level}</p>
-        </section>
+        </section> */}
         <section className={styles.form}>
           <section className={styles.cardHeader}>create a unit</section>
           <section className={styles.formSection}>
