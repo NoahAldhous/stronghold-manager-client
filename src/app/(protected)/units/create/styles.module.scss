@@ -65,6 +65,11 @@
                 .button{
                     padding: 0.5rem;
                     text-transform: capitalize;
+                    position: relative;
+
+                    &:disabled{
+                        cursor: not-allowed;
+                    }
                 }
 
             }

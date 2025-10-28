@@ -12,6 +12,7 @@ import type {
 } from "types";
 import { useAuth } from "contexts/AuthContext";
 import CreateUnitModal from "components/Modal/CreateUnitModal/CreateUnitModal";
+import Tooltip from "components/Tooltip/Tooltip";
 
 interface StrongholdName {
   id: number;
@@ -25,6 +26,10 @@ export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
   const [sendingData, setSendingData] = useState<boolean>(false);
   const [displayModal, setDisplayModal] = useState<boolean>(false);
+  //isFormComplete
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
+  //is the create button being hovered, used for showing tooltip
+  const [hovered, setHovered] = useState<boolean>(false);
 
   const [unit, setUnit] = useState<Unit>({
     ancestry: {
@@ -464,6 +469,14 @@ export default function Page() {
     unit.size.unitSize,
   ]);
 
+  useEffect(() => {
+    if(unit.name !==""){
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [unit.name])
+
   return (
     <main className={styles.main}>
       <section className={styles.container}>
@@ -619,13 +632,24 @@ export default function Page() {
           </section>
           
           <section className={styles.formSection}>
-            <button 
-              disabled={unit.name === ""} 
-              className={styles.button}
-              onClick={handleSubmit}
+            <span
+              className={styles.createButtonContainer}
+              onMouseEnter={
+                isButtonDisabled
+                  ? () => setHovered(true) 
+                  : () => setHovered(false) 
+              }
+              onMouseLeave={() => setHovered(false)}
             >
-              create unit
-            </button>
+              <button 
+                disabled={isButtonDisabled} 
+                className={styles.button}
+                onClick={handleSubmit}
+              > 
+                <Tooltip visible={hovered}>unit needs name</Tooltip>
+                Create unit
+              </button>
+            </span>
           </section>
         </section>
         <UnitCard unit={unit} />
