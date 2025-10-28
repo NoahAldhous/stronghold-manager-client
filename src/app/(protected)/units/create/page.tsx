@@ -610,7 +610,7 @@ export default function Page() {
               stronghold:
             </label>
             <select
-              value={unit.stronghold_id ?? null ?? 0}
+              value={unit.stronghold_id ?? 0}
               className={styles.select}
               name="stronghold"
               id="stronghold-select"
