@@ -58,7 +58,7 @@ export class StatsCalculator {
         let unitUpkeep = (unitCost / 10) * (unit.isMercenary ? 2 : 1)
         let costDiscount = 0;
         let upkeepDiscount = 0
-        var keepDiscount = 0
+        let keepDiscount = 0
         // if stronghold is a keep, unit cost and upkeep is reduced by 10% per level
         if ( this.stronghold?.stronghold_type === "keep" ) {
             keepDiscount = 10 * this.stronghold.stronghold_level;
