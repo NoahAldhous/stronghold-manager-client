@@ -17,7 +17,6 @@ export default function UnitCard({ unit }: UnitCardProps){
     const [stats, setStats] = useState(calc.getStats(true));
 
     async function fetchStronghold(){
-        if(!stronghold){
             setLoading(true);
 
             try {
@@ -36,19 +35,22 @@ export default function UnitCard({ unit }: UnitCardProps){
             } finally {
                 setLoading(false)
             }
-        }
     }
     
+    useEffect(() => {
+        const newCalc = StatsCalculator.fromUnit(unit, stronghold);
+        setCalc(newCalc);
+        setStats(newCalc.getStats(true));
+    }, [unit, stronghold]);
+
     useEffect(() => {
         if(unit.stronghold_id){
             fetchStronghold();
         } else {
             setStronghold(null);
         }
-        const newCalc = StatsCalculator.fromUnit(unit, stronghold);
-        setCalc(newCalc);
-        setStats(newCalc.getStats(true));
-    }, [unit, stronghold?.stronghold_type])
+    }, [unit.stronghold_id, stronghold?.stronghold_type])
+
 
     return (
         <div key={unit?.unit_id} className={styles.card}>   
