@@ -1,16 +1,18 @@
-import type { Unit, Stats, NamedBonusSource, BonusKeys } from "types";
+import type { Unit, Stronghold, Stats, NamedBonusSource, BonusKeys } from "types";
 
 const BASE_TOUGHNESS = 10;
 const BASE_DEFENSE = 10;
 
 export class StatsCalculator {
     private unit: Unit;
+    private stronghold: Stronghold | null;
     private sources: NamedBonusSource[];
 
-    constructor(unit: Unit) {
+    constructor(unit: Unit, stronghold: Stronghold | null) {
         //do not mutate
         this.unit = unit;
         this.sources = this.collectSources(unit);
+        this.stronghold = stronghold
     }
 
     // gather sources into an array for iteration
@@ -52,8 +54,19 @@ export class StatsCalculator {
 
         const sumOfBonuses = (attack + power + defense + toughness + (morale * 2));
         const multipliedSum = ((sumOfBonuses * unit.type.costModifier) * unit.size.costModifier ) * 10;
-        const unitCost = multipliedSum + this.getTraitsCost()
-        const unitUpkeep = (unitCost / 10) * (unit.isMercenary ? 2 : 1)
+        let unitCost = multipliedSum + this.getTraitsCost()
+        let unitUpkeep = (unitCost / 10) * (unit.isMercenary ? 2 : 1)
+        let costDiscount = 0;
+        let upkeepDiscount = 0
+        var keepDiscount = 0
+        // if stronghold is a keep, unit cost and upkeep is reduced by 10% per level
+        if ( this.stronghold?.stronghold_type === "keep" ) {
+            keepDiscount = 10 * this.stronghold.stronghold_level;
+        }
+        costDiscount = (unitCost / 100) * keepDiscount;
+        upkeepDiscount = (unitUpkeep / 100) * keepDiscount;
+        unitCost = unitCost - costDiscount;
+        unitUpkeep = unitUpkeep - upkeepDiscount;
 
         const cost = {
             cost: Math.round(unitCost),
@@ -91,7 +104,7 @@ export class StatsCalculator {
     }
 
     // static factory
-    public static fromUnit(unit: Unit) {
-        return new StatsCalculator(unit);
+    public static fromUnit(unit: Unit, stronghold: Stronghold | null) {
+        return new StatsCalculator(unit, stronghold);
     }
 }

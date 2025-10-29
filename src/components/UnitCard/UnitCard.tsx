@@ -1,7 +1,7 @@
 "useClient"
 import styles from "./styles.module.scss";
 import { StatsCalculator } from "lib/StatsCalculator";
-import type { Unit } from "types";
+import type { Unit, Stronghold } from "types";
 import { useState, useEffect } from "react";
 
 
@@ -11,14 +11,44 @@ type UnitCardProps = {
 
 export default function UnitCard({ unit }: UnitCardProps){
 
-    const [calc, setCalc] = useState(StatsCalculator.fromUnit(unit));
+    const [loading, setLoading] = useState<boolean>(false);
+    const [stronghold, setStronghold] = useState<Stronghold | null>(null);
+    const [calc, setCalc] = useState(StatsCalculator.fromUnit(unit, stronghold));
     const [stats, setStats] = useState(calc.getStats(true));
+
+    async function fetchStronghold(){
+        if(!stronghold){
+            setLoading(true);
+
+            try {
+                const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/strongholds/data/${unit.stronghold_id}`
+                );
+    
+                if (!res.ok) {
+                    throw new Error("There was a problem fetching stronghold data")
+                }
+    
+                const data = await res.json();
+                setStronghold(data.stronghold);
+            } catch (err) {
+                console.log(err.message);
+            } finally {
+                setLoading(false)
+            }
+        }
+    }
     
     useEffect(() => {
-        const newCalc = StatsCalculator.fromUnit(unit);
+        if(unit.stronghold_id){
+            fetchStronghold();
+        } else {
+            setStronghold(null);
+        }
+        const newCalc = StatsCalculator.fromUnit(unit, stronghold);
         setCalc(newCalc);
         setStats(newCalc.getStats(true));
-    }, [unit])
+    }, [unit, stronghold?.stronghold_type])
 
     return (
         <div key={unit?.unit_id} className={styles.card}>   
