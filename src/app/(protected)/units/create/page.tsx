@@ -20,6 +20,7 @@ interface StrongholdName {
   name: string;
 }
 
+
 export default function Page() {
   const { userId } = useAuth();
 
@@ -71,6 +72,7 @@ export default function Page() {
     stronghold_id: null,
     traits: [],
     user_id: Number(userId),
+    id: 0
   });
 
   const [ancestries, setAncestries] = useState<Ancestry[] | null>(null);
@@ -109,6 +111,7 @@ export default function Page() {
     size_level: unit.size.sizeLevel,
     casualties: unit.casualties,
     mercenary: unit.isMercenary,
+    id: 0 ?? null
   };
 
   // FUNCTIONS

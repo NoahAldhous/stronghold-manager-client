@@ -7,8 +7,8 @@ import { useState, useEffect, SetStateAction } from "react";
 
 type UnitCardProps = {
     unit: Unit;
-    deleteModalSettings: DeleteModalSettings;
-    setDeleteModalSettings: React.Dispatch<SetStateAction<DeleteModalSettings>>
+    deleteModalSettings?: DeleteModalSettings;
+    setDeleteModalSettings?: React.Dispatch<SetStateAction<DeleteModalSettings>>
 }
 
 export default function UnitCard({ unit, deleteModalSettings, setDeleteModalSettings }: UnitCardProps){
@@ -20,11 +20,13 @@ export default function UnitCard({ unit, deleteModalSettings, setDeleteModalSett
     const [stats, setStats] = useState(calc.getStats(true));
 
     function handleDelete(){
-        setDeleteModalSettings({
-            ...deleteModalSettings,
-            isVisible: true,
-            itemId: unit.id,
-        })
+        if(deleteModalSettings && setDeleteModalSettings){
+            setDeleteModalSettings({
+                ...deleteModalSettings,
+                isVisible: true,
+                itemId: unit.id,
+            })
+        }
     }
 
     async function fetchStronghold(){
