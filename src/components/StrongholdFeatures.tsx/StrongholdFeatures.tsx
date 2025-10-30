@@ -160,7 +160,7 @@ export default function StrongholdFeatures({
                             </section>
                             <section className={styles.unitList}>
                                 {unitsList?.map((unit) => (
-                                    <div key={unit.unit_id} className={styles.unit}>
+                                    <div key={unit.id} className={styles.unit}>
                                         <p className={styles.largeCategory}>{unit.name}</p>
                                         <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
                                             <p className={styles.mediumCategory}>{unit.experience.name}</p>  
@@ -175,7 +175,7 @@ export default function StrongholdFeatures({
                     case "card":
                         return <div className={styles.unitCardContainer}>
                             {unitsList?.map(( unit =>
-                                <UnitCard key={unit.unit_id} unit={unit}/>
+                                <UnitCard key={unit.id} unit={unit}/>
                             ))}
                         </div>
                 }
