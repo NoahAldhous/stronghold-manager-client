@@ -110,8 +110,7 @@ export default function Page() {
     unit_type: unit.type.name,
     size_level: unit.size.sizeLevel,
     casualties: unit.casualties,
-    mercenary: unit.isMercenary,
-    id: 0 ?? null
+    mercenary: unit.isMercenary
   };
 
   // FUNCTIONS
