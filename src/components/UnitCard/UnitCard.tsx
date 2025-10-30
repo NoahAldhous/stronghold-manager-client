@@ -1,20 +1,31 @@
 "useClient"
 import styles from "./styles.module.scss";
 import { StatsCalculator } from "lib/StatsCalculator";
-import type { Unit, Stronghold } from "types";
-import { useState, useEffect } from "react";
+import type { Unit, Stronghold, DeleteModalSettings } from "types";
+import { useState, useEffect, SetStateAction } from "react";
 
 
 type UnitCardProps = {
     unit: Unit;
+    deleteModalSettings: DeleteModalSettings;
+    setDeleteModalSettings: React.Dispatch<SetStateAction<DeleteModalSettings>>
 }
 
-export default function UnitCard({ unit }: UnitCardProps){
+export default function UnitCard({ unit, deleteModalSettings, setDeleteModalSettings }: UnitCardProps){
 
+    const [activeCard, setActiveCard] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [stronghold, setStronghold] = useState<Stronghold | null>(null);
     const [calc, setCalc] = useState(StatsCalculator.fromUnit(unit, stronghold));
     const [stats, setStats] = useState(calc.getStats(true));
+
+    function handleDelete(){
+        setDeleteModalSettings({
+            ...deleteModalSettings,
+            isVisible: true,
+            itemId: unit.id,
+        })
+    }
 
     async function fetchStronghold(){
             setLoading(true);
@@ -53,7 +64,8 @@ export default function UnitCard({ unit }: UnitCardProps){
 
 
     return (
-        <div key={unit?.unit_id} className={styles.card}>   
+        <>
+        <div onClick={() => {setActiveCard(true)}} key={unit?.id} className={`${styles.card} ${activeCard ? styles.activeCard : ""}`}>   
             <section className={styles.cardTop}>
                 <section className={styles.cardBanners}>
                     <div className={styles.banner}>
@@ -98,9 +110,17 @@ export default function UnitCard({ unit }: UnitCardProps){
                         }
                     </div>
                 </section>
+             
                 <section className={styles.cardOverview}>
+                    
                     <section className={styles.cardHeader}>
                         {unit?.name}
+                    </section>
+                    <section className={styles.unitStronghold}>
+                        {unit.stronghold_id ?
+                            `${unit.isMercenary ? "Mercenaries" : "Soldiers"} of  ${stronghold?.stronghold_name ?? null}`
+                            : null
+                        }
                     </section>
                     <section className={styles.cardSummary}>
                         <p className={styles.cardText}>
@@ -165,7 +185,18 @@ export default function UnitCard({ unit }: UnitCardProps){
                 <p>upkeep: {stats.costs.upkeep}gp</p>
                 <p>cost: {stats.costs.cost}gp</p>
             </section>
+            {
+                activeCard ?
+                <section className={styles.cardFooter}>
+                    <button className={styles.button}>edit</button>
+                    <button className={styles.button}>upgrade</button>
+                    <button className={styles.button} onClick={handleDelete}>delete</button>
+                </section>
+                : null
+            }
         </div>
+        <div onClick={() => {setActiveCard(false)}} className={`${styles.background} ${activeCard ? styles.visible : ""}`}/>
+        </>
     )
 
 }

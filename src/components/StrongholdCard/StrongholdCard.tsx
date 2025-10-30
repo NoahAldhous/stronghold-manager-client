@@ -1,12 +1,24 @@
 import Link from "next/link"
 import styles from "./styles.module.scss"
+import { ReactNode, SetStateAction } from "react"
+import type { DeleteModalSettings } from "types"
 
-export default function StrongholdCard({stronghold, setDeleteItemModal}){
+interface StrongholdSummary {
+    id: number;
+    name: string;
+    level: number;
+    type: string;
+    ownerClass: string;
+    classStrongholdName: string
+}
+
+export default function StrongholdCard({stronghold, deleteModalSettings, setDeleteModalSettings} : {stronghold: StrongholdSummary, deleteModalSettings: DeleteModalSettings, setDeleteModalSettings: React.Dispatch<SetStateAction<DeleteModalSettings>>}): ReactNode{
 
     function handleDelete(){
-        setDeleteItemModal({
+        setDeleteModalSettings({
+            ...deleteModalSettings,
             isVisible: true,
-            strongholdId: stronghold.id,
+            itemId: stronghold.id,
         })
     }
 

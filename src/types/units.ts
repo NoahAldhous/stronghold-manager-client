@@ -43,7 +43,7 @@ export interface Unit {
         traitName: string;
         traitDescription: string;
     }[] | [];
-    unit_id?: number;
+    id: number;
     user_id: number;
 }
 

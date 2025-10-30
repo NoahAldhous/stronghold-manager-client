@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import type { DeleteModalSettings } from "types";
 import { useAuth } from "contexts/AuthContext";
 import Link from "next/link";
 import styles from "./styles.module.scss";
@@ -10,9 +11,11 @@ import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 export default function Page() {
   const [loading, setLoading] = useState(false);
   const [noStrongholds, setNoStrongholds] = useState< boolean | undefined >(undefined);
-  const [deleteItemModal, setDeleteItemModal] = useState({
+  const [deleteModalSettings, setDeleteModalSettings] = useState<DeleteModalSettings>({
     isVisible: false,
-    strongholdId: 0
+    itemId: 0,
+    itemType: "stronghold",
+    urlSlug: "strongholds"
   })
   const [listOfStrongholds, setListOfStrongholds] = useState<{
     id: number,
@@ -90,7 +93,7 @@ export default function Page() {
               <div className={styles.cardContainer}>
                 {listOfStrongholds?.map((item, index) => {
                   return (
-                    <StrongholdCard key={index} stronghold={item} setDeleteItemModal={setDeleteItemModal}/>
+                    <StrongholdCard key={index} stronghold={item} deleteModalSettings={deleteModalSettings} setDeleteModalSettings={setDeleteModalSettings}/>
                     // <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link>
                   )
                 })}
@@ -125,8 +128,8 @@ export default function Page() {
           </div>
         )} */}
       </section>
-      {deleteItemModal.isVisible ? 
-        <DeleteItemModal deleteItemModal={deleteItemModal} setDeleteItemModal={setDeleteItemModal} listOfStrongholds={listOfStrongholds} setListOfStrongholds={setListOfStrongholds}/>
+      {deleteModalSettings.isVisible ? 
+        <DeleteItemModal deleteModalSettings={deleteModalSettings} setDeleteModalSettings={setDeleteModalSettings} itemList={listOfStrongholds} setItemList={setListOfStrongholds}/>
       : null
       }
     </main>
