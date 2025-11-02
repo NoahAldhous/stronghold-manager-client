@@ -34,113 +34,200 @@
             justify-content: space-around;
             transform: translateY(-3px);
 
-            .banner{
+            .bannerContainer{
                 width: 40%;
-                height: 90%;
-                background-color: $dark;
-                position: relative;
+                height: 100%;
                 overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
 
-                .experienceDiamondContainer{
-                    height: 12.5%;
-                    aspect-ratio: 1/1;
+                .banner{
+                    width: 100%;
+                    height: 90%;
+                    background-color: $dark;
+                    position: relative;
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
-                    justify-content: center;
+                    justify-content: flex-end;
 
-                    &:first-child{
-                        margin-top: 15%;
-                    }
-
-                    .experienceDiamond{
-                        width: 40%;
+                    &:after{
+                        content: "";
+                        position: absolute;
+                        background-color: $mid;
+                        bottom: 0;
+                        left: 15%;
+                        // width: 100%;
+                        width: 70.1%;
                         aspect-ratio: 1/1;
-                        background-color: $offwhite;
-                        transform: rotate(45deg);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        transform: translateY(50%) rotate(45deg);
+                        z-index: 3;
+                    }
+    
+                }
+                
+                .experience{
+                    height: 50%;
+
+                    .experienceRibbon{
+                        // position:absolute;
+                        // bottom: -10px;
+                        width: 100%;
+                        aspect-ratio: 1/1;
+                        background-color: transparent;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-end;
+                        align-items: center;
+
+                        &:before{
+                            content: "";
+                            background-color: $mid;
+                            width: 100%;
+                            height: 100%;
+                            position: absolute;
+                            bottom: -100%;
+                            z-index: 6;
+                        }
+
+                        &:after{
+                            content: "";
+                            // position: absolute;
+                            background-color: $mid;
+                            border: 5px solid $dark;
+                            width: 70.1%;
+                            aspect-ratio: 1/1;
+                            transform: translateY(50%) rotate(45deg);
+                            z-index: 5;
+                        }
+
                     }
 
                     .green{
-                        opacity: 50%;
+                        position: absolute;
+                        bottom: -10px;
+                        &:after{
+                            opacity: 50%;
+                        }
                     }
 
                     .regular{
-                        opacity: 60%;
+                        position: absolute;
+                        bottom: -20px;
+                        
+                        &:before{
+                            z-index: 7;
+                        }
+                        &:after{
+                            z-index: 6;
+                            opacity: 60%;
+                        }
                     }
 
                     .seasoned{
-                        opacity: 70%
+                        position: absolute;
+                        bottom: -30px;
+                        
+                        &:before{
+                            z-index: 8;
+                        }
+                        &:after{
+                            z-index: 7;
+                            opacity: 70%
+                        }
                     }
 
                     .veteran{
-                        opacity: 80%;
+                        position: absolute;
+                        bottom: -40px;
+                        
+                        &:before{
+                            z-index: 9;
+                        }
+                        &:after{
+                            z-index: 8;
+                            opacity: 80%;
+                        }
                     }
 
                     .elite{
-                        opacity: 90%;
-                    }
-
-                    .super-elite{
-                        opacity: 100%
-                    }
-                }
-
-                .bannerBottom{
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    aspect-ratio: 1/1;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    transform: translateY(50%);
-                    z-index: 5;
-                    
-                    .diamond{
-                        background-color: $mid;
-                        width: 70.1%;
-                        aspect-ratio: 1/1;
-                        transform: rotate(45deg);
+                        position: absolute;
+                        bottom: -50px;
                         
+                        &:before{
+                            z-index: 10;
+                        }
+                        &:after{
+                            z-index: 9;
+                            opacity: 90%;
+                        }
                     }
 
+                    .superElite{
+                        position: absolute;
+                        bottom: -60px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        .imageContainer{
+                            width: 70%;
+                            aspect-ratio: 1/1;
+                            z-index: 11;
+                            position: absolute;
+                            bottom: 0;
+
+                            .svg{
+                                z-index: 11;
+                            }
+                        }
+
+                    }
                 }
 
-                .equipmentRibbon{
-                    // transform: translateY(40%);
-                    // background-color: blue;
-                    z-index: 4;
+                .equipment{
+                    justify-content: flex-start;
 
-                    .equipmentDiamond{
-                        background-color: $selected;
-                        border: 2px solid $mid;
+                    .iconContainer{
+                        display: flex;
+                        flex-direction: column;
                         width: 100%;
+                        height: 75%;
+                        align-items: center;
+                        justify-content: space-evenly;
+
+                        .typeImageContainer{
+                            width: 80%;
+                            aspect-ratio: 1/1;
+                            position: relative;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+    
+                        .equipmentImageContainer{
+                            width: 100%;
+                            aspect-ratio: 1/1;
+                            display: flex;
+                            justify-content: space-evenly;
+                            align-items: center;
+                            z-index: 12;
+                            flex-wrap: wrap;
+    
+                            .shield{
+                                width: 40%;
+                                height: 40%;
+                                position: relative;
+                            }
+                        }
                     }
-                }
 
-                .light{
-                    bottom: 5%;
-                }
 
-                .medium{
-                    bottom: 15%;
-                    z-index: 3;
                 }
-
-                .heavy{
-                    bottom: 25%;
-                    z-index: 2;
-                }
-
-                .superHeavy{
-                    bottom: 35%;
-                    z-index: 1
-                }
-
             }
+
+
         }
         
         .cardOverview{
@@ -157,7 +244,6 @@
                 align-items: center;
                 // background-color: green;
                 font-size: x-small;
-                border-bottom: $bottomBorder;
             }
 
             .cardHeader{
@@ -168,19 +254,20 @@
                 align-items: center;
                 text-transform: uppercase;
                 font-weight: 500;
-                font-size: x-large;
-                // background-color: aqua;
+                font-size: larger;
+                flex-grow: 1;
             }
         
             .cardSummary{
                 width: 100%;
-                height: 30%;
+                height: 40%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                border-top: $bottomBorder;
 
                 .cardText{
-                    height: 50%;
+                    height: 35%;
                     width: 100%;
                     display: flex;
                     align-items: center;
