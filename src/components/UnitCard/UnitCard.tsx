@@ -2,7 +2,7 @@
 import styles from "./styles.module.scss";
 import { StatsCalculator } from "lib/StatsCalculator";
 import type { Unit, Stronghold, DeleteModalSettings } from "types";
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect, useRef, SetStateAction } from "react";
 import Image from "next/image";
 import star from "../../../public/images/star_formation.svg";
 import cavalry from "../../../public/images/cavalry_type.svg";
@@ -12,6 +12,14 @@ import infantry from "../../../public/images/infantry_type.svg";
 import levies from "../../../public/images/levies_type.svg";
 import siegeEngine from "../../../public/images/siege_engine_type.svg";
 import shield from "../../../public/images/shield.svg";
+import dragonborn from "../../../public/images/dragonborn.svg";
+import dwarf from "../../../public/images/dwarf.svg";
+import elf from "../../../public/images/elf.svg";
+import human from "../../../public/images/human.svg";
+import goblinoid from "../../../public/images/goblinoid.svg";
+import gnoll from "../../../public/images/gnoll.svg";
+import orc from "../../../public/images/orc.svg";
+import undead from "../../../public/images/undead.svg";
 
 type UnitCardProps = {
   unit: Unit;
@@ -30,6 +38,8 @@ export default function UnitCard({
   const [calc, setCalc] = useState(StatsCalculator.fromUnit(unit, stronghold));
   const [stats, setStats] = useState(calc.getStats(true));
 
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
   function handleDelete() {
     if (deleteModalSettings && setDeleteModalSettings) {
       setDeleteModalSettings({
@@ -38,6 +48,10 @@ export default function UnitCard({
         itemId: unit.id,
       });
     }
+  }
+
+  function scrollToCard(): void{
+      cardRef?.current?.scrollIntoView({behavior: "smooth", block: "center"})
   }
 
   async function fetchStronghold() {
@@ -77,8 +91,9 @@ export default function UnitCard({
 
   return (
     <>
-      <div
+      <div ref={cardRef}
         onClick={() => {
+          scrollToCard();
           setActiveCard(true);
         }}
         key={unit?.id}
@@ -88,6 +103,49 @@ export default function UnitCard({
           <section className={styles.cardBanners}>
             <div className={styles.bannerContainer}>  
               <div className={`${styles.banner} ${styles.experience}`}>
+                <div className={styles.ancestryImageContainer}>
+                  {
+                    unit.ancestry.name === "human" ?
+                      <Image src={human} alt="human icon" fill/>
+                    : null
+                  }
+                  {
+                    ["dragonborn", "kobold", "lizardfolk"].includes(unit.ancestry.name) ?
+                      <Image src={dragonborn} alt="dragonborn icon" fill/>
+                    : null
+                  }
+                  {
+                    unit.ancestry.name === "dwarf" ?
+                      <Image src={dwarf} alt="dwarf icon" fill/>
+                    : null
+                  }
+                  {
+                    ["elf", "elf (winged)"].includes(unit.ancestry.name) ?
+                      <Image src={elf} alt="elf icon" fill/>
+                    : null
+                  }
+                  {
+                    unit.ancestry.name === "gnoll" ?
+                      <Image src={gnoll} alt="gnoll icon" fill/>
+                    : null
+                  }
+                  {
+                    ["goblin", "hobgoblin", "bugbear"].includes(unit.ancestry.name) ?
+                      <Image src={goblinoid} alt="goblinoid icon" fill/>
+                    : null
+                  }
+                  {
+                    ["orc", "ogre", "troll"].includes(unit.ancestry.name) ?
+                      <Image src={orc} alt="orc icon" fill/>
+                    : null
+                  }
+                  {
+                    ["skeleton", "zombie", "ghoul"].includes(unit.ancestry.name) ?
+                      <Image src={undead} alt="skelton icon" fill/>
+                    : null
+                  }
+                    
+                </div>
                 {
                   ["green", "regular", "seasoned", "veteran", "elite", "super-elite"].includes(unit?.experience.name) ?
                     <div className={`${styles.experienceRibbon} ${styles.green}`}></div>
@@ -122,20 +180,6 @@ export default function UnitCard({
                     </div>
                     : null
                 }
-                {/* {Array.from({ length: unit.experience.moraleBonus + 1 }).map(
-                  (_, index) => (
-                    <span
-                      key={index}
-                      className={styles.experienceDiamondContainer}
-                    >
-                      <span
-                        className={`${styles.experienceDiamond} ${
-                          styles[unit.experience.name]
-                        }`}
-                      />
-                    </span>
-                  )
-                )} */}
               </div>
             </div>
             
