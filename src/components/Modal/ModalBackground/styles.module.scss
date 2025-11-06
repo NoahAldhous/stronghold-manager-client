@@ -2,9 +2,9 @@
 
 .modalBackground{
     width: 100dvw;
-    height: 100dvh;
-    position: absolute;
-    top: 0;
+    height: $page-height;
+    position: fixed;
+    bottom: 0;
     left: 0;
     z-index: 3;
     background-color: rgba(0, 0, 0, 0.75);

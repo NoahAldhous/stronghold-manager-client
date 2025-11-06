@@ -1,79 +1,36 @@
-"use client";
-import UnitCard from "components/UnitCard/UnitCard";
-import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
-import type {
-  Unit,
-  Ancestry,
-  ExperienceLevel,
-  EquipmentLevel,
-  SizeLevel,
-  UnitType,
-} from "types";
+import styles from "./styles.module.scss";
 import { useAuth } from "contexts/AuthContext";
-import CreateUnitModal from "components/Modal/CreateUnitModal/CreateUnitModal";
-import Tooltip from "components/Tooltip/Tooltip";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
-import UnitEditor from "components/UnitEditor/UnitEditor";
+import type {
+    Unit,
+    Ancestry,
+    ExperienceLevel,
+    EquipmentLevel,
+    SizeLevel,
+    UnitType
+} from "types";
+import Tooltip from "components/Tooltip/Tooltip";
+import CreateUnitModal from "components/Modal/CreateUnitModal/CreateUnitModal";
 
 interface StrongholdName {
-  id: number;
-  name: string;
+    id: number; 
+    name: string;
 }
 
-
-export default function Page() {
-  const { userId } = useAuth();
+export default function UnitEditor({unit, setUnit}) {
+    //Get user id from auth context
+    const { userId } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [sendingData, setSendingData] = useState<boolean>(false);
   const [displayModal, setDisplayModal] = useState<boolean>(false);
-  //isFormComplete
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
-  //is the create button being hovered, used for showing tooltip
   const [hovered, setHovered] = useState<boolean>(false);
 
-  const [unit, setUnit] = useState<Unit>({
-    ancestry: {
-      name: "",
-      attackBonus: 0,
-      powerBonus: 0,
-      defenseBonus: 0,
-      toughnessBonus: 0,
-      moraleBonus: 0,
-    },
-    equipment: {
-      name: "",
-      defenseBonus: 0,
-      powerBonus: 0,
-    },
-    experience: {
-      name: "",
-      attackBonus: 0,
-      toughnessBonus: 0,
-      moraleBonus: 0,
-    },
-    type: {
-      name: "",
-      attackBonus: 0,
-      powerBonus: 0,
-      defenseBonus: 0,
-      toughnessBonus: 0,
-      moraleBonus: 0,
-      costModifier: 0,
-    },
-    casualties: 0,
-    isMercenary: false,
-    name: "",
-    size: {
-      costModifier: 0,
-      sizeLevel: 0,
-      unitSize: 0,
-    },
-    stronghold_id: null,
-    traits: [],
-    user_id: Number(userId),
-    id: 0
+  //changes the ui between a 'create a new unit' menu and 'edit existing unit' menu
+  const [editorSettings, setEditorSettings] = useState({
+    headerText: "create a unit",
   });
 
   const [ancestries, setAncestries] = useState<Ancestry[] | null>(null);
@@ -89,6 +46,7 @@ export default function Page() {
     StrongholdName[] | null
   >(null);
 
+  //Data object to be sent to DB
   const newUnitData = {
     user_id: unit.user_id,
     unit_name: unit.name,
@@ -101,83 +59,6 @@ export default function Page() {
     casualties: unit.casualties,
     mercenary: unit.isMercenary
   };
-
-  // FUNCTIONS
-
-  function handleSelectChange(objectKey: string, objectValue: string | number) {
-    if (objectKey === "size") {
-      setUnit({
-        ...unit,
-        size: {
-          ...unit.size,
-          unitSize: Number(objectValue),
-        },
-      });
-    } else {
-      setUnit({
-        ...unit,
-        [objectKey]: {
-          ...unit[objectKey],
-          name: objectValue,
-        },
-      });
-    }
-  }
-
-  function setInitialUnitValues() {
-    setUnit({
-      ...unit,
-      ancestry: {
-        ...unit.ancestry,
-        name: "human",
-      },
-      experience: {
-        ...unit.experience,
-        name: "green",
-      },
-      equipment: {
-        ...unit.equipment,
-        name: "light",
-      },
-      type: {
-        ...unit.type,
-        name: "infantry",
-      },
-      size: {
-        ...unit.size,
-        unitSize: 4,
-      },
-      isMercenary: false,
-    });
-  }
-
-  function handleUnitNameChange(e: { target: { value: string } }) {
-    setUnit({
-      ...unit,
-      name: e.target.value,
-    });
-  }
-
-  function handleMercenaryChange(e: { target: { checked: boolean } }) {
-    setUnit({
-      ...unit,
-      isMercenary: e.target.checked,
-    });
-  }
-
-  function handleStrongholdChange(e: { target: { value: string } }) {
-    if (e.target.value === "null") {
-      setUnit({
-        ...unit,
-        stronghold_id: null,
-      });
-    } else {
-      setUnit({
-        ...unit,
-        stronghold_id: Number(e.target.value),
-      });
-    }
-  }
 
   // FETCH FUNCTIONS
 
@@ -324,6 +205,88 @@ export default function Page() {
     }
   }
 
+  //Set initial values of the select inputs
+
+  function setInitialUnitValues() {
+    setUnit({
+      ...unit,
+      ancestry: {
+        ...unit.ancestry,
+        name: "human",
+      },
+      experience: {
+        ...unit.experience,
+        name: "green",
+      },
+      equipment: {
+        ...unit.equipment,
+        name: "light",
+      },
+      type: {
+        ...unit.type,
+        name: "infantry",
+      },
+      size: {
+        ...unit.size,
+        unitSize: 4,
+      },
+      isMercenary: false,
+    });
+  }
+
+  //INPUT VALUE CHANGES
+
+  function handleUnitNameChange(e: { target: { value: string } }) {
+    setUnit({
+      ...unit,
+      name: e.target.value,
+    });
+  }
+
+  function handleMercenaryChange(e: { target: { checked: boolean } }) {
+    setUnit({
+      ...unit,
+      isMercenary: e.target.checked,
+    });
+  }
+
+  function handleStrongholdChange(e: { target: { value: string } }) {
+    if (e.target.value === "null") {
+      setUnit({
+        ...unit,
+        stronghold_id: null,
+      });
+    } else {
+      setUnit({
+        ...unit,
+        stronghold_id: Number(e.target.value),
+      });
+    }
+  }
+
+  function handleSelectChange(objectKey: string, objectValue: string | number) {
+    if (objectKey === "size") {
+      setUnit({
+        ...unit,
+        size: {
+          ...unit.size,
+          unitSize: Number(objectValue),
+        },
+      });
+    } else {
+      setUnit({
+        ...unit,
+        [objectKey]: {
+          ...unit[objectKey],
+          name: objectValue,
+        },
+      });
+    }
+  }
+
+  //SUBMIT DATA TO DB
+  //TODO: Refactor to either create or edit unit- different urls
+
   async function handleSubmit() {
     setSendingData(true);
     setDisplayModal(true);
@@ -465,18 +428,16 @@ export default function Page() {
     }
   }, [unit.name]);
 
-  return (
-    <main className={styles.main}>
-      <section className={styles.container}>
-        <UnitEditor unit={unit} setUnit={setUnit}/>
-        {/* {loading ? (
-          <section className={styles.form}>
-            <LoadingCard />
-          </section>
-        ) : (
-          <section className={styles.form}>
-            <section className={styles.cardHeader}>create a unit</section>
-            <section className={styles.formSection}>
+  return loading ? (
+    <section className={styles.form}>
+      <LoadingCard />
+    </section>
+  ) : (
+    <section className={styles.form}>
+      <section className={styles.cardHeader}>
+        {editorSettings.headerText}
+      </section>
+      <section className={styles.formSection}>
               <p className={styles.label}>name:</p>
               <input
                 className={styles.input}
@@ -640,21 +601,11 @@ export default function Page() {
                 </button>
               </span>
             </section>
-          </section>
-        )} */}
-        {loading ? (
-          <section className={styles.form}>
-            <LoadingCard />
-          </section>
-        ) : (
-          <UnitCard unit={unit} />
-        )}
-      </section>
-      {/* <CreateUnitModal
-        visible={displayModal}
-        setVisible={setDisplayModal}
-        sendingData={sendingData}
-      /> */}
-    </main>
+            <CreateUnitModal
+                visible={displayModal}
+                setVisible={setDisplayModal}
+                sendingData={sendingData}
+            />
+    </section>
   );
 }
