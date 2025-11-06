@@ -1,8 +1,6 @@
 @use "../../app/variables" as *;
 
-.notClickable{
-    pointer-events: none;
-}
+
 
 .card{
     // width: 27.5%;
@@ -417,4 +415,12 @@
 
 .visible{
     visibility: visible;
+}
+
+.notClickable{
+
+    &:hover{
+        border: 3px solid $selected;
+        cursor: default;
+    }
 }
