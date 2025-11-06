@@ -20,17 +20,21 @@ import goblinoid from "../../../public/images/goblinoid.svg";
 import gnoll from "../../../public/images/gnoll.svg";
 import orc from "../../../public/images/orc.svg";
 import undead from "../../../public/images/undead.svg";
+import Link from "next/link";
 
 type UnitCardProps = {
   unit: Unit;
   deleteModalSettings?: DeleteModalSettings;
   setDeleteModalSettings?: React.Dispatch<SetStateAction<DeleteModalSettings>>;
+  clickable: boolean;
 };
 
+//TODO: Add prop 'in edit mode' which disables the onClick focus behaviour
 export default function UnitCard({
   unit,
   deleteModalSettings,
   setDeleteModalSettings,
+  clickable
 }: UnitCardProps) {
   const [activeCard, setActiveCard] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -94,10 +98,10 @@ export default function UnitCard({
       <div ref={cardRef}
         onClick={() => {
           scrollToCard();
-          setActiveCard(true);
+          clickable ? setActiveCard(true) : null;
         }}
         key={unit?.id}
-        className={`${styles.card} ${activeCard ? styles.activeCard : ""}`}
+        className={`${styles.card} ${!clickable ? styles.notClickable : ""} ${activeCard ? styles.activeCard : ""}`}
       >
         <section className={styles.cardTop}>
           <section className={styles.cardBanners}>
@@ -340,8 +344,9 @@ export default function UnitCard({
         </section>
         {activeCard ? (
           <section className={styles.cardFooter}>
-            <button className={styles.button}>edit</button>
-            <button className={styles.button}>upgrade</button>
+            <Link className={`${styles.link} ${styles.button}`} href={`/units/edit/${unit.id}`}>
+              edit
+            </Link>
             <button className={styles.button} onClick={handleDelete}>
               delete
             </button>

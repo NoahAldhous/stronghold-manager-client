@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { useAuth } from "contexts/AuthContext";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
@@ -11,27 +11,34 @@ import type {
     UnitType
 } from "types";
 import Tooltip from "components/Tooltip/Tooltip";
-import CreateUnitModal from "components/Modal/CreateUnitModal/CreateUnitModal";
+import UnitModal from "components/Modal/UnitModal/UnitModal";
 
 interface StrongholdName {
     id: number; 
     name: string;
 }
 
-export default function UnitEditor({unit, setUnit}) {
+interface UnitEditorProps {
+    unit: Unit;
+    setUnit: React.Dispatch<SetStateAction<Unit>>;
+    mode: "create" | "edit";
+}
+
+export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
     //Get user id from auth context
     const { userId } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [sendingData, setSendingData] = useState<boolean>(false);
+  const [responseOk, setResponseOk] = useState<boolean>(false)
   const [displayModal, setDisplayModal] = useState<boolean>(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
   const [hovered, setHovered] = useState<boolean>(false);
 
   //changes the ui between a 'create a new unit' menu and 'edit existing unit' menu
-  const [editorSettings, setEditorSettings] = useState({
-    headerText: "create a unit",
-  });
+  const editorSettings = {
+    headerText: `${mode === "create" ? "create a unit" : "edit unit"}`
+  }
 
   const [ancestries, setAncestries] = useState<Ancestry[] | null>(null);
   const [experienceLevels, setExperienceLevels] = useState<
@@ -208,30 +215,34 @@ export default function UnitEditor({unit, setUnit}) {
   //Set initial values of the select inputs
 
   function setInitialUnitValues() {
-    setUnit({
-      ...unit,
-      ancestry: {
-        ...unit.ancestry,
-        name: "human",
-      },
-      experience: {
-        ...unit.experience,
-        name: "green",
-      },
-      equipment: {
-        ...unit.equipment,
-        name: "light",
-      },
-      type: {
-        ...unit.type,
-        name: "infantry",
-      },
-      size: {
-        ...unit.size,
-        unitSize: 4,
-      },
-      isMercenary: false,
-    });
+    if ( mode === "edit") {
+        return;
+    } else if ( mode === "create") {
+        setUnit({
+          ...unit,
+          ancestry: {
+            ...unit.ancestry,
+            name: "human",
+          },
+          experience: {
+            ...unit.experience,
+            name: "green",
+          },
+          equipment: {
+            ...unit.equipment,
+            name: "light",
+          },
+          type: {
+            ...unit.type,
+            name: "infantry",
+          },
+          size: {
+            ...unit.size,
+            unitSize: 4,
+          },
+          isMercenary: false,
+        });
+    }
   }
 
   //INPUT VALUE CHANGES
@@ -288,7 +299,7 @@ export default function UnitEditor({unit, setUnit}) {
   //TODO: Refactor to either create or edit unit- different urls
 
   async function handleSubmit() {
-    setSendingData(true);
+    setSendingData(true)
     setDisplayModal(true);
 
     try {
@@ -302,19 +313,51 @@ export default function UnitEditor({unit, setUnit}) {
 
       if (!res.ok) {
         throw new Error("Error: Could not create unit.");
+      } else {
+        setResponseOk(true)
       }
 
       const data = await res.json();
       console.log(data);
       //TODO: capture data for navigation to unit page or stronghold page?
     } catch (err) {
-      console.log(err.message);
+        setResponseOk(false)
+      console.error(err.message);
     } finally {
-      setSendingData(false);
+      setSendingData(false)
     }
   }
 
-  // USE EFFECT
+  async function handleUpdate(){
+    setSendingData(true);
+    setDisplayModal(true);
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/units/edit/${unit.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(newUnitData),
+        });
+  
+        if (!res.ok) {
+          throw new Error("Error: Could not edit unit.");
+        }
+
+        setResponseOk(res.ok);
+  
+        const data = await res.json();
+        //TODO: capture data for navigation to unit page or stronghold page?
+      } catch (err) {
+      console.error(err.message)
+      } finally {
+        setSendingData(false);
+      }
+    }
+
+    
+  // USE EFFECTS
 
   useEffect(() => {
     if (
@@ -591,20 +634,33 @@ export default function UnitEditor({unit, setUnit}) {
                 }
                 onMouseLeave={() => setHovered(false)}
               >
+                { mode === "create" ?
+                    <button
+                    disabled={isButtonDisabled}
+                    className={styles.button}
+                    onClick={handleSubmit}
+                    >
+                    <Tooltip visible={hovered}>unit needs name</Tooltip>
+                    Create unit
+                    </button>
+                :
                 <button
                   disabled={isButtonDisabled}
                   className={styles.button}
-                  onClick={handleSubmit}
+                  onClick={handleUpdate}
                 >
                   <Tooltip visible={hovered}>unit needs name</Tooltip>
-                  Create unit
+                  Save Changes
                 </button>
+                }
               </span>
             </section>
-            <CreateUnitModal
+            <UnitModal
                 visible={displayModal}
                 setVisible={setDisplayModal}
+                responseOk={responseOk}
                 sendingData={sendingData}
+                mode={mode}
             />
     </section>
   );

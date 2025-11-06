@@ -55,8 +55,8 @@ export default function Page() {
   return (
     <main className={styles.main}>
       <section className={styles.container}>
-        <UnitEditor unit={unit} setUnit={setUnit} />
-        <UnitCard unit={unit} />
+        <UnitEditor unit={unit} setUnit={setUnit} mode={"create"}/>
+        <UnitCard unit={unit} clickable={false}/>
       </section>
     </main>
   );

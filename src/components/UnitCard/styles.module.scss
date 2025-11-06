@@ -1,5 +1,9 @@
 @use "../../app/variables" as *;
 
+.notClickable{
+    pointer-events: none;
+}
+
 .card{
     // width: 27.5%;
     // height: 60%;
@@ -375,10 +379,19 @@
         align-items: center;
         justify-content: space-around;
 
+        .link{
+            @include linkAsButton;
+        }
+
         .button{
             min-width: 25%;
             height: 60%;
             text-transform: capitalize;
+            font-size: medium;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }

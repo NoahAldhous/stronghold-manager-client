@@ -1,26 +1,41 @@
 "use client";
-
 import styles from "./styles.module.scss";
 import ModalBackground from "../ModalBackground/ModalBackground";
-import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 import LoadingBar from "components/LoadingUI/LoadingBar/LoadingBar";
+import { SetStateAction } from "react";
 
-export default function CreateUnitModal({
+interface UnitModalProps {
+    visible: boolean;
+    setVisible: React.Dispatch<SetStateAction<boolean>>;
+    sendingData: boolean;
+    responseOk: boolean;
+    mode: "create" | "edit";
+}
+
+export default function UnitModal({
     visible,
     setVisible,
+    responseOk,
     sendingData,
-}) {
+    mode
+}: UnitModalProps) {
+
+
     return visible ? (
         <ModalBackground>
             { sendingData ? (
                 <section className={styles.modalMenu}>
-                    <section className={styles.cardHeader}>create unit</section>
-                    <p>creating unit...</p>
+                    <section className={styles.cardHeader}>{mode === "create" ? "create unit" : "save unit"}</section>
+                    <p>{mode === "create" ? "creating unit..." : "saving unit..."}</p>
                     <LoadingBar colour="dark"/>
                 </section>
             ) : (
                 <section className={styles.modalMenu}>
-                    <p>unit created!</p>
+                    {
+                        responseOk ?
+                            <p>{mode === "create" ? "unit created!" : "unit saved!"}</p>
+                        : <p>Oops, something went wrong.</p>
+                    }
                     <section className={styles.buttonContainer}>
                         <button
                             className={styles.button}

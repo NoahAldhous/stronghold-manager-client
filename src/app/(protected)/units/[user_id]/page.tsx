@@ -156,7 +156,7 @@ export default function Page({
       ) : (
         <section className={styles.unitBody}>
           {filteredUnits?.map((unit) => (
-            <UnitCard key={unit.id} unit={unit} deleteModalSettings={deleteModalSettings} setDeleteModalSettings={setDeleteModalSettings}/>
+            <UnitCard key={unit.id} unit={unit} deleteModalSettings={deleteModalSettings} setDeleteModalSettings={setDeleteModalSettings} clickable={true}/>
           ))}
         </section>
       )}
