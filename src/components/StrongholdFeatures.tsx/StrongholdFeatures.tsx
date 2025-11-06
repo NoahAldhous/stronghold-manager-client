@@ -175,7 +175,7 @@ export default function StrongholdFeatures({
                     case "card":
                         return <div className={styles.unitCardContainer}>
                             {unitsList?.map(( unit =>
-                                <UnitCard key={unit.id} unit={unit}/>
+                                <UnitCard key={unit.id} unit={unit} clickable={false}/>
                             ))}
                         </div>
                 }
