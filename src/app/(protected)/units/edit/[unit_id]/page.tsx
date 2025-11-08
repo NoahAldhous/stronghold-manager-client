@@ -40,11 +40,11 @@ export default function Page({ params } : { params: Promise<{unit_id: string}> }
             fetchUnit(unit_id)
         }
         console.log("Unit", unit)
-    }, [unit])
+    }, [])
 
     return <main className={styles.main}>
         {
-            unit ?
+            !loading && unit ?
                 <div>
                     Unit:
                     <p>{unit.name}</p>
@@ -58,12 +58,12 @@ export default function Page({ params } : { params: Promise<{unit_id: string}> }
                 : null
         }
         {
-            unit ?
+            !loading && unit ?
                 <UnitEditor unit={unit} setUnit={setUnit} mode={"edit"}/>
             : null
         }
         {
-            unit ?
+            !loading && unit ?
                 <UnitCard unit={unit} clickable={false}/>
             : null
         }
