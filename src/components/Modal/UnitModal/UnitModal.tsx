@@ -3,6 +3,8 @@ import styles from "./styles.module.scss";
 import ModalBackground from "../ModalBackground/ModalBackground";
 import LoadingBar from "components/LoadingUI/LoadingBar/LoadingBar";
 import { SetStateAction } from "react";
+import Link from "next/link";
+import { useAuth } from "contexts/AuthContext";
 
 interface UnitModalProps {
     visible: boolean;
@@ -20,6 +22,7 @@ export default function UnitModal({
     mode
 }: UnitModalProps) {
 
+    const { userId } = useAuth();
 
     return visible ? (
         <ModalBackground>
@@ -41,13 +44,14 @@ export default function UnitModal({
                             className={styles.button}
                             onClick={() => setVisible(false)}
                         >
-                            back
+                            close
                         </button>
-                        <button
-                            className={styles.button}
+                        <Link
+                            href={`/units/${userId}`}
+                            className={`${styles.link} ${styles.button}`}
                         >
                             go to my units
-                        </button>
+                        </Link>
                     </section>
                 </section>
             ) }
