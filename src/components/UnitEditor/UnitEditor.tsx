@@ -619,6 +619,7 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
               <p className={styles.label}>mercenary?:</p>
               <input
                 className={styles.input}
+                checked={unit?.isMercenary}
                 onChange={handleMercenaryChange}
                 type="checkbox"
               />

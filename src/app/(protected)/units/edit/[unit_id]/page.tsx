@@ -30,6 +30,7 @@ export default function Page({ params } : { params: Promise<{unit_id: string}> }
                 console.log(err.message);
             } finally {
                 setLoading(false);
+                
             }
         }
     }
@@ -38,9 +39,20 @@ export default function Page({ params } : { params: Promise<{unit_id: string}> }
         if (!unit) {
             fetchUnit(unit_id)
         }
+        console.log("Unit", unit)
     }, [unit])
 
     return <main className={styles.main}>
+        {
+            unit ?
+                <div>
+                    Unit:
+                    <p>{unit.name}</p>
+                    <p>{unit.isMercenary.toString()}</p>
+                    <p>{unit.ancestry.name}</p>
+                </div>
+                : null
+        }
         {
             unit ?
                 <UnitEditor unit={unit} setUnit={setUnit} mode={"edit"}/>
