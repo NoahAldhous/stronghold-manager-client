@@ -48,20 +48,6 @@ export default function Page({ params } : { params: Promise<{unit_id: string}> }
     return <main className={styles.main}>
         {
             !loading && unit ?
-                <div>
-                    Unit:
-                    <p>{unit.name}</p>
-                    <p>{unit.isMercenary.toString()}</p>
-                    <p>{unit.ancestry.name}</p>
-                    <p>sizes</p>
-                    <p>{unit.size.sizeLevel}</p>
-                    <p>{unit.size.unitSize}</p>
-                    <p>{unit.size.costModifier}</p>
-                </div>
-                : null
-        }
-        {
-            !loading && unit ?
                 <UnitEditor unit={unit} setUnit={setUnit} mode={"edit"}/>
             : null
         }
