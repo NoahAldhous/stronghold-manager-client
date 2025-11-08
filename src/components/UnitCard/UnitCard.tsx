@@ -5,21 +5,7 @@ import type { Unit, Stronghold, DeleteModalSettings } from "types";
 import { useState, useEffect, useRef, SetStateAction } from "react";
 import Image from "next/image";
 import star from "../../../public/images/star_formation.svg";
-import cavalry from "../../../public/images/cavalry_type.svg";
-import archers from "../../../public/images/archers_type.svg";
-import flying from "../../../public/images/flying_type.svg";
-import infantry from "../../../public/images/infantry_type.svg";
-import levies from "../../../public/images/levies_type.svg";
-import siegeEngine from "../../../public/images/siege_engine_type.svg";
 import shield from "../../../public/images/shield.svg";
-import dragonborn from "../../../public/images/dragonborn.svg";
-import dwarf from "../../../public/images/dwarf.svg";
-import elf from "../../../public/images/elf.svg";
-import human from "../../../public/images/human.svg";
-import goblinoid from "../../../public/images/goblinoid.svg";
-import gnoll from "../../../public/images/gnoll.svg";
-import orc from "../../../public/images/orc.svg";
-import undead from "../../../public/images/undead.svg";
 import Link from "next/link";
 
 type UnitCardProps = {
@@ -29,7 +15,6 @@ type UnitCardProps = {
   clickable: boolean;
 };
 
-//TODO: Add prop 'in edit mode' which disables the onClick focus behaviour
 export default function UnitCard({
   unit,
   deleteModalSettings,
@@ -41,6 +26,16 @@ export default function UnitCard({
   const [stronghold, setStronghold] = useState<Stronghold | null>(null);
   const [calc, setCalc] = useState(StatsCalculator.fromUnit(unit, stronghold));
   const [stats, setStats] = useState(calc.getStats(true));
+  const [ancestryIcon, setAncestryIcon] = useState({
+      source: "defaultAncestry",
+      placeholder: "default ancestry icon"
+    })
+  const [unitTypeIcon, setUnitTypeIcon] = useState({
+    source: "",
+    placeholder: ""
+  })
+
+
 
   const cardRef = useRef<HTMLDivElement | null>(null);
 
@@ -93,6 +88,79 @@ export default function UnitCard({
     }
   }, [unit.stronghold_id, stronghold?.stronghold_type]);
 
+  useEffect(() => {
+    switch(unit.ancestry.name){
+      case "human":
+        setAncestryIcon({source: "human", placeholder: "human icon"})
+        break;
+      case "dragonborn":
+      case "kobold":
+      case "lizardfolk":
+        setAncestryIcon({source: "draconic", placeholder:"draconic icon"})
+        break;
+      case "dwarf":
+        setAncestryIcon({source: "dwarf", placeholder:" dwarf icon"})
+        break;
+      case "elf":
+      case "elf (winged)":
+        setAncestryIcon({source: "elf", placeholder: "elf icon"})
+        break;
+      case "gnoll":
+        setAncestryIcon({source: "gnoll", placeholder: "gnoll icon"})
+        break;
+      case "gnome":
+        setAncestryIcon({source: "defaultAncestry", placeholder: "default icon"})
+        break;
+      case "goblin":
+      case "hobgoblin":
+      case "bugbear":
+        setAncestryIcon({source: "goblinoid", placeholder: "goblinoid icon"})
+        break;
+      case "orc":
+      case "ogre":
+      case "troll":
+        setAncestryIcon({source: "brute", placeholder:"brute icon"})
+        break;
+      case "treant":
+        setAncestryIcon({source: "leaf", placeholder:"leaf icon"})
+        break;
+      case "skeleton":
+      case "ghoul":
+      case "zombie":
+        setAncestryIcon({source: "undead", placeholder:"undead icon"})
+        break;
+      default:
+        return;
+        // setImageSource({...imageSource, ancestry:{source: "defaultAncestry", placeholder: "default icon"}})
+        // break;
+    }
+  }, [unit.ancestry.name])
+
+  useEffect(() => {
+    switch(unit.type.name){
+      case "infantry":
+        setUnitTypeIcon({source: "infantry", placeholder: "infantry icon"})
+        break;
+      case "archers":
+        setUnitTypeIcon({source: "archers", placeholder: "archers icon"})
+        break;
+      case "cavalry":
+        setUnitTypeIcon({source: "cavalry", placeholder: "cavalry icon"})
+        break;
+      case "flying":
+        setUnitTypeIcon({source: "flying", placeholder: "flying icon"})
+        break;
+      case "levies":
+        setUnitTypeIcon({source: "levies", placeholder: "levies icon"})
+        break;
+      case "siege engine":
+        setUnitTypeIcon({source: "siegeEngine", placeholder: "siege engine icon"})
+        break;
+      default:
+        return;
+    }
+  }, [unit.type.name])
+
   return (
     <>
       <div ref={cardRef}
@@ -108,47 +176,7 @@ export default function UnitCard({
             <div className={styles.bannerContainer}>  
               <div className={`${styles.banner} ${styles.experience}`}>
                 <div className={styles.ancestryImageContainer}>
-                  {
-                    unit.ancestry.name === "human" ?
-                      <Image src={human} alt="human icon" fill/>
-                    : null
-                  }
-                  {
-                    ["dragonborn", "kobold", "lizardfolk"].includes(unit.ancestry.name) ?
-                      <Image src={dragonborn} alt="dragonborn icon" fill/>
-                    : null
-                  }
-                  {
-                    unit.ancestry.name === "dwarf" ?
-                      <Image src={dwarf} alt="dwarf icon" fill/>
-                    : null
-                  }
-                  {
-                    ["elf", "elf (winged)"].includes(unit.ancestry.name) ?
-                      <Image src={elf} alt="elf icon" fill/>
-                    : null
-                  }
-                  {
-                    unit.ancestry.name === "gnoll" ?
-                      <Image src={gnoll} alt="gnoll icon" fill/>
-                    : null
-                  }
-                  {
-                    ["goblin", "hobgoblin", "bugbear"].includes(unit.ancestry.name) ?
-                      <Image src={goblinoid} alt="goblinoid icon" fill/>
-                    : null
-                  }
-                  {
-                    ["orc", "ogre", "troll"].includes(unit.ancestry.name) ?
-                      <Image src={orc} alt="orc icon" fill/>
-                    : null
-                  }
-                  {
-                    ["skeleton", "zombie", "ghoul"].includes(unit.ancestry.name) ?
-                      <Image src={undead} alt="skelton icon" fill/>
-                    : null
-                  }
-                    
+                  <Image src={`/images/ancestries/${ancestryIcon.source}.svg`} alt={ancestryIcon.placeholder} fill loading="eager"/>
                 </div>
                 {
                   ["green", "regular", "seasoned", "veteran", "elite", "super-elite"].includes(unit?.experience.name) ?
@@ -186,42 +214,11 @@ export default function UnitCard({
                 }
               </div>
             </div>
-            
             <div className={styles.bannerContainer}>
               <div className={`${styles.banner} ${styles.equipment}`}>
                 <section className={styles.iconContainer}>
-
                   <div className={styles.typeImageContainer}>
-                    {
-                      unit.type.name === "archers" ?
-                        <Image src={archers} alt="archers icon" fill/>
-                      : null
-                    }
-                    {
-                      unit.type.name === "cavalry" ?
-                        <Image src={cavalry} alt="cavalry icon" fill/>
-                      : null
-                    }
-                    {
-                      unit.type.name === "flying" ?
-                        <Image src={flying} alt="flying icon" fill/>
-                      : null
-                    }
-                    {
-                      unit.type.name === "infantry" ?
-                        <Image src={infantry} alt="infantry icon" fill/>
-                      : null
-                    }
-                    {
-                      unit.type.name === "levies" ?
-                        <Image src={levies} alt="levies icon" fill/>
-                      : null
-                    }
-                    {
-                      unit.type.name === "siege engine" ?
-                        <Image src={siegeEngine} alt="siege engine icon" fill/>
-                      : null
-                    }
+                    <Image src={`/images/unitTypes/${unitTypeIcon.source}.svg`} alt={unitTypeIcon.placeholder} fill/>
                   </div>
             <div className={styles.equipmentImageContainer}>
                 {["light", "medium", "heavy", "super-heavy"].includes(

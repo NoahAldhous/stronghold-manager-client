@@ -28,7 +28,7 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
     //Get user id from auth context
     const { userId } = useAuth();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [sendingData, setSendingData] = useState<boolean>(false);
   const [responseOk, setResponseOk] = useState<boolean>(false)
   const [displayModal, setDisplayModal] = useState<boolean>(false);
@@ -213,6 +213,7 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
     if ( mode === "edit") {
         return;
     } else if ( mode === "create") {
+      setLoading(true)
         setUnit({
           ...unit,
           ancestry: {
@@ -237,6 +238,7 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
           },
           isMercenary: false,
         });
+      setLoading(false);
     }
   }
 
