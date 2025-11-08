@@ -83,7 +83,6 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
         }
 
         const data = await res.json();
-        console.log(data);
         setAncestries(data.ancestries);
       } catch (err) {
         console.log(err.message);
@@ -107,7 +106,6 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
         }
 
         const data = await res.json();
-        console.log(data);
         setExperienceLevels(data.experience_levels);
       } catch (err) {
         console.log(err.message);
@@ -131,7 +129,6 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
         }
 
         const data = await res.json();
-        console.log(data);
         setEquipmentLevels(data.equipment_levels);
       } catch (err) {
         console.log(err.message);
@@ -155,7 +152,6 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
         }
 
         const data = await res.json();
-        console.log(data);
         setTypes(data.types);
       } catch (err) {
         console.log(err.message);
@@ -179,7 +175,6 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
         }
 
         const data = await res.json();
-        console.log(data);
         setSizeLevels(data.sizes);
       } catch (err) {
         console.log(err.message);
@@ -318,7 +313,6 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
       }
 
       const data = await res.json();
-      console.log(data);
       //TODO: capture data for navigation to unit page or stronghold page?
     } catch (err) {
         setResponseOk(false)
@@ -379,88 +373,95 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
   }, [ancestries, experienceLevels, equipmentLevels, sizeLevels, types]);
 
   useEffect(() => {
-    setUnit((prev) => {
-      const next = { ...prev };
+    if(ancestries && experienceLevels && equipmentLevels && sizeLevels && types){
+      setUnit((prev) => {
+        const next = { ...prev };
 
-      if (prev.ancestry.name !== "") {
-        const newAncestry = ancestries?.find(
-          (item) => item.name === prev.ancestry.name
-        );
-        next.ancestry = {
-          ...next.ancestry,
-          attackBonus: newAncestry?.attackBonus ?? 0,
-          powerBonus: newAncestry?.powerBonus ?? 0,
-          defenseBonus: newAncestry?.defenseBonus ?? 0,
-          toughnessBonus: newAncestry?.toughnessBonus ?? 0,
-          moraleBonus: newAncestry?.moraleBonus ?? 0,
-        };
-        next.traits = newAncestry?.traits ?? [];
-      }
-
-      if (prev.experience.name !== "") {
-        const newExperienceLevel = experienceLevels?.find(
-          (item) => item.levelName == prev.experience.name
-        );
-        next.experience = {
-          ...next.experience,
-          attackBonus: newExperienceLevel?.attackBonus ?? 0,
-          toughnessBonus: newExperienceLevel?.toughnessBonus ?? 0,
-          moraleBonus: newExperienceLevel?.moraleBonus ?? 0,
-        };
-      }
-
-      if (prev.equipment.name !== "") {
-        const newEquipmentLevel = equipmentLevels?.find(
-          (item) => item.levelName == prev.equipment.name
-        );
-        next.equipment = {
-          ...next.equipment,
-          defenseBonus: newEquipmentLevel?.defenseBonus ?? 0,
-          powerBonus: newEquipmentLevel?.powerBonus ?? 0,
-        };
-      }
-
-      if (prev.type.name !== "") {
-        if (prev.type.name == "levies") {
-          next.equipment.name = "levies";
-          next.experience.name = "levies";
-        } else if (
-          prev.equipment.name == "levies" ||
-          prev.experience.name == "levies"
-        ) {
-          next.equipment.name = "light";
-          next.experience.name = "green";
+        if (prev.ancestry.name !== "") {
+          const newAncestry = ancestries?.find(
+            (item) => item.name === prev.ancestry.name
+          );
+          next.ancestry = {
+            ...next.ancestry,
+            attackBonus: newAncestry?.attackBonus ?? 0,
+            powerBonus: newAncestry?.powerBonus ?? 0,
+            defenseBonus: newAncestry?.defenseBonus ?? 0,
+            toughnessBonus: newAncestry?.toughnessBonus ?? 0,
+            moraleBonus: newAncestry?.moraleBonus ?? 0,
+          };
+          next.traits = newAncestry?.traits ?? [];
         }
-        const newType = types?.find((item) => item.name == prev.type.name);
-        next.type = {
-          ...next.type,
-          attackBonus: newType?.attackBonus ?? 0,
-          powerBonus: newType?.powerBonus ?? 0,
-          defenseBonus: newType?.defenseBonus ?? 0,
-          toughnessBonus: newType?.toughnessBonus ?? 0,
-          moraleBonus: newType?.moraleBonus ?? 0,
-          costModifier: newType?.costModifier ?? 0,
-        };
-        next.traits = [...next.traits, ...(newType?.traits ?? [])];
-      }
-      if (prev.size.unitSize !== 0) {
-        const newSize = sizeLevels?.find(
-          (item) => item.size == prev.size.unitSize
-        );
-        next.size = {
-          ...next.size,
-          costModifier: newSize?.costModifier ?? 0,
-          sizeLevel: newSize?.levelName ?? 0,
-        };
-      }
-      return next;
-    });
+
+        if (prev.experience.name !== "") {
+          const newExperienceLevel = experienceLevels?.find(
+            (item) => item.levelName == prev.experience.name
+          );
+          next.experience = {
+            ...next.experience,
+            attackBonus: newExperienceLevel?.attackBonus ?? 0,
+            toughnessBonus: newExperienceLevel?.toughnessBonus ?? 0,
+            moraleBonus: newExperienceLevel?.moraleBonus ?? 0,
+          };
+        }
+
+        if (prev.equipment.name !== "") {
+          const newEquipmentLevel = equipmentLevels?.find(
+            (item) => item.levelName == prev.equipment.name
+          );
+          next.equipment = {
+            ...next.equipment,
+            defenseBonus: newEquipmentLevel?.defenseBonus ?? 0,
+            powerBonus: newEquipmentLevel?.powerBonus ?? 0,
+          };
+        }
+
+        if (prev.type.name !== "") {
+          if (prev.type.name == "levies") {
+            next.equipment.name = "levies";
+            next.experience.name = "levies";
+          } else if (
+            prev.equipment.name == "levies" ||
+            prev.experience.name == "levies"
+          ) {
+            next.equipment.name = "light";
+            next.experience.name = "green";
+          }
+          const newType = types?.find((item) => item.name == prev.type.name);
+          next.type = {
+            ...next.type,
+            attackBonus: newType?.attackBonus ?? 0,
+            powerBonus: newType?.powerBonus ?? 0,
+            defenseBonus: newType?.defenseBonus ?? 0,
+            toughnessBonus: newType?.toughnessBonus ?? 0,
+            moraleBonus: newType?.moraleBonus ?? 0,
+            costModifier: newType?.costModifier ?? 0,
+          };
+          next.traits = [...next.traits, ...(newType?.traits ?? [])];
+        }
+        if (prev.size.unitSize !== 0) {
+          const newSize = sizeLevels?.find(
+            (item) => item.size == prev.size.unitSize
+          );
+          next.size = {
+            ...next.size,
+            costModifier: newSize?.costModifier ?? 0,
+            sizeLevel: newSize?.levelName ?? 0,
+          };
+        }
+        return next;
+      });
+    }
   }, [
     unit.ancestry.name,
     unit.experience.name,
     unit.equipment.name,
     unit.type.name,
     unit.size.unitSize,
+    ancestries,
+    equipmentLevels,
+    sizeLevels,
+    experienceLevels,
+    types
   ]);
 
   useEffect(() => {
