@@ -654,6 +654,9 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
                   Save Changes
                 </button>
                 }
+                <div>
+                  {newUnitData.size_level}
+                </div>
               </span>
             </section>
             <UnitModal
