@@ -450,7 +450,7 @@ export default function UnitEditor({unit, setUnit, mode}: UnitEditorProps) {
         next.size = {
           ...next.size,
           costModifier: newSize?.costModifier ?? 0,
-          sizeLevel: Number(newSize?.levelName) ?? 0,
+          sizeLevel: newSize?.levelName ?? 0,
         };
       }
       return next;

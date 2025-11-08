@@ -91,7 +91,7 @@ export interface EquipmentLevel extends Omit<EquipmentStats, "name">{
 export interface SizeLevel {
     costModifier: number;
     id: number;
-    levelName:string;
+    levelName: number;
     size: number;
 };
 

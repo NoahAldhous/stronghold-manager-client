@@ -37,10 +37,13 @@ export default function Page({ params } : { params: Promise<{unit_id: string}> }
 
     useEffect(() => {
         if (!unit) {
+            console.log('fetching unit', unit_id)
             fetchUnit(unit_id)
         }
-        console.log("Unit", unit)
-    }, [])
+        if (unit){
+            console.log("Unit", unit)
+        }
+    }, [unit])
 
     return <main className={styles.main}>
         {
