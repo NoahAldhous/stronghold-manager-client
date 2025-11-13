@@ -66,6 +66,30 @@
     background-color: $offwhite;
     border: 1px solid $text-transparent
   }
+
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    aspect-ratio: 1/1;
+    background-color: $offwhite;
+    border: 1px solid $selected;
+    height: 1rem;
+    max-width: 1rem;
+
+    &:hover, :focus{
+      background-color: $mid;
+      border: 1px solid $dark;
+    }
+
+  }
+
+  input:checked{
+    background-color: $selected;
+    color: $dark;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'><path d='M6.173 12.727l-3.9-3.9 1.414-1.415L6.173 9.9l6.364-6.364 1.414 1.414z'/></svg>");
+  }
   
   html,
   body {
