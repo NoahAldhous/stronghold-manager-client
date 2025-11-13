@@ -3,10 +3,7 @@
 
 
 .card{
-    // width: 27.5%;
-    // height: 60%;
-    height: 65vh;
-    aspect-ratio: 4/5;
+    @include unitCardDimensions;
     display: flex;
     flex-direction: column;
     padding: 0 1.5rem;

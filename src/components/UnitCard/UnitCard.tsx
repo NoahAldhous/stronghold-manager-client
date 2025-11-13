@@ -131,8 +131,6 @@ export default function UnitCard({
         break;
       default:
         return;
-        // setImageSource({...imageSource, ancestry:{source: "defaultAncestry", placeholder: "default icon"}})
-        // break;
     }
   }, [unit.ancestry.name])
 

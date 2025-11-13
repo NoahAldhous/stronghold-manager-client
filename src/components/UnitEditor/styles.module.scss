@@ -1,13 +1,12 @@
 @use "../../app/variables" as *;
 
 .form{
-    height: 65vh;
-    aspect-ratio: 4/5;
+    @include unitCardDimensions;
+    @include cardContainer;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    @include cardContainer;
     box-shadow: $boxShadow;
     // background-color: yellow;
 

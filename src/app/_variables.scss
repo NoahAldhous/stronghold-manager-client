@@ -82,7 +82,17 @@ $textShadow: 3px 3px 0 rgba($text, .3);
 //Bottom Border
 $bottomBorder: 2px solid $selected;
 
+//Unit Card Styling
+$unitCardHeight: 65vh;
+$unitCardRatio: 4/5;
+
 //MIXINS
+
+//Unit Card
+@mixin unitCardDimensions {
+    height: $unitCardHeight;
+    aspect-ratio: $unitCardRatio;
+}
 
 //Hide desktop content
 @mixin mobile-only {

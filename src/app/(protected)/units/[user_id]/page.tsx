@@ -8,6 +8,7 @@ import UnitCard from "components/UnitCard/UnitCard";
 import Link from "next/link";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 import DeleteItemModal from "components/DeleteItemModal/DeleteItemModal";
+import LoadingBar from "components/LoadingUI/LoadingBar/LoadingBar";
 
 interface StrongholdName {
   id: number;
@@ -24,6 +25,7 @@ export default function Page({
     StrongholdName[] | null
   >(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasNoUnits, setHasNoUnits] = useState<boolean | undefined>(undefined);
   const [units, setUnits] = useState<Units | null>(null);
   const [filteredUnits, setFilteredUnits] = useState<Units | null>(null);
   const [deleteModalSettings, setDeleteModalSettings] =
@@ -36,6 +38,8 @@ export default function Page({
 
   const router = useRouter();
   const { isLoggedIn, userId } = useAuth();
+
+  // USE EFFECTS
 
   //redirect user to login/signup page if no token
   useEffect(() => {
@@ -55,6 +59,16 @@ export default function Page({
         setFilteredUnits(units)
     }
   }, [deleteModalSettings.isVisible])
+
+  useEffect(() => {
+    if(units && units.length == 0){
+      setHasNoUnits(true)
+    } else if (units && units.length >= 0){
+      setHasNoUnits(false);
+    }
+  }, [units])
+
+  // FUNCTIONS
 
   function handleFilterChange(e: { target: { value: string } }) {
     const filter = e.target.value;
@@ -116,7 +130,7 @@ export default function Page({
   }
 
   return (
-    <main className={styles.main}>
+    <main className={`${styles.main} ${hasNoUnits ? styles.noUnitsMain : ""}`}>
       <section className={styles.unitNav}>
         <section className={styles.filterContainer}>
           <p>
@@ -147,20 +161,36 @@ export default function Page({
       </section>
       {loading ? (
         <section className={styles.unitBody}>
-          {Array.from({ length: 6 }).map((_, index) => (
-            <span key={index} className={styles.loading}>
-              <LoadingCard />
-            </span>
-          ))}
+          <div className={styles.loadingContainer}>
+            <p className={styles.text}> Loading </p>  
+            <LoadingBar colour={"dark"}/>
+          </div>
         </section>
-      ) : (
+      ) : 
+        hasNoUnits ?
+      (
+        <section className={styles.noUnitBody}>
+          <section className={styles.box}>
+            <p>You have no units</p>
+            <Link className={styles.link} href="/units/create">
+              create a unit
+            </Link>
+          </section>
+        </section>
+      ) :
+      (
         <section className={styles.unitBody}>
           {filteredUnits?.map((unit) => (
             <UnitCard key={unit.id} unit={unit} deleteModalSettings={deleteModalSettings} setDeleteModalSettings={setDeleteModalSettings} clickable={true}/>
           ))}
         </section>
-      )}
-      <section className={styles.footer}></section>
+      )
+    }
+      {hasNoUnits ? null :
+      (
+        <footer className={styles.footer}></footer>
+      )
+      }
       {deleteModalSettings.isVisible ? (
         <DeleteItemModal
           deleteModalSettings={deleteModalSettings}
