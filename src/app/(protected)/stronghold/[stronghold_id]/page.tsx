@@ -11,6 +11,7 @@ import Stats from "components/StrongholdSheet/Stats/Stats";
 import Benefits from "components/StrongholdSheet/Benefits/Benefits";
 import FeatureImprovement from "components/StrongholdSheet/FeatureImprovement/FeatureImprovement";
 import Treasury from "components/StrongholdSheet/Treasury/Treasury";
+import Link from "next/link";
 
 export default function Page({
   params,
@@ -288,6 +289,15 @@ export default function Page({
                           ))
                         : null
                     )}
+                    {activeButton.category === "units" ? (
+                      <button className={styles.button}>manage units</button>
+                      //TODO: Manage units button:
+                      //Upgrade Existing Units
+                      //Remove Existing Units from Stronghold
+                      //Add Existing Units to Stronghold
+                      //Create a New Unit and Add to Stronghold
+                    ): null
+                  }
                   </section>
                 </section>
                 <section className={styles.strongholdMenuText}>

@@ -432,6 +432,7 @@
               flex-direction: row;
               justify-content: flex-start;
               align-items: center;
+              position: relative;
               @include screen("small") {
                 flex-wrap: wrap;
                 justify-content: space-around;
@@ -452,6 +453,16 @@
                   padding: 0.2rem;
                   height: 40%;
                 }
+              }
+
+              .button{
+                height: 60%;
+                min-width: 15%;
+                padding: 0 0.4rem;
+                font-size: x-small;
+                text-transform: capitalize;
+                position: absolute;
+                right: 0;
               }
             }
 
