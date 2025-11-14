@@ -84,7 +84,7 @@ export default function CurrencyElement({
           onMouseDown={() => adjustCurrency("decrease", currency)}
           className={styles.button}
         >
-          remove
+          -
         </button>
         <input
           disabled={updatingTreasury}
@@ -106,7 +106,7 @@ export default function CurrencyElement({
           onMouseDown={() => adjustCurrency("increase", currency)}
           className={styles.button}
         >
-          add
+          +
         </button>
       </section>
     </div>

@@ -8,16 +8,12 @@
   align-items: flex-start;
   border-bottom: 1px solid $selected;
   font-size: medium;
-
+  
   &:hover {
     background-color: $highlight;
     cursor: pointer;
   }
-
-  &:first-child {
-    border: none;
-  }
-
+  
   &:last-child {
     border: none;
   }
@@ -49,21 +45,26 @@
       }
     }
     .button {
-      width: 30%;
-      font-size: x-small;
+      height: 60%;
+      aspect-ratio: 1/1;
+      font-size: medium;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: none;
     }
 
     .input {
-      width: 35%;
+      width: 40%;
       font-size: small;
     }
   }
 
   .textDivider{
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
     width: 30%;
   }
 

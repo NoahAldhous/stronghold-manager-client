@@ -40,7 +40,7 @@ export default function Page({
     },
     {
       category: "units",
-      subCategories: ["list", "card", "icon"],
+      subCategories: ["overview", "stats", "costs"],
     },
     {
       category: "artisans",
@@ -235,6 +235,7 @@ export default function Page({
               id={stronghold?.id ?? null}
               stronghold={stronghold ?? null}
               setStronghold={setStronghold}
+              userId={userId}
             />
             {loading || !stronghold ? (
               <section className={styles.strongholdMenu}>

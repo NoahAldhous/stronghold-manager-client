@@ -8,22 +8,47 @@
 
     .revenueContainer{
         width: 100%;
-        height: 20%;
-        border-bottom: $bottomBorder;
+        height: 50%;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-evenly;
+
+        .info{
+            height: 60%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .item{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                height: 33%;
+                border-bottom: 1px solid $selected;
+            }
+        }
+
+        .buttonContainer{
+            width: 100%;
+            height: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            .button{
+                font-size: x-small;
+                padding: 0.5rem;
+                width: 45%;
+                text-transform: capitalize;
+            }
+        }
 
         .season{
-            font-size: small;
+            font-size: x-small;
         }
 
-        .button{
-            font-size: x-small;
-            padding: 0.5rem;
-            width: 40%;
-            text-transform: capitalize;
-        }
     }
 
     .sectionHeader{
@@ -37,7 +62,7 @@
     }
 
     .currencyContainer{
-        height: 70%;
+        height: 50%;
         width: 100%;
         font-size: small;
         display: flex;
@@ -45,5 +70,9 @@
         justify-content: space-between;
         border-bottom: $bottomBorder;
 
+        .currencyHeader{
+            border-bottom: 1px solid $selected;
+        }
     }
+
 }

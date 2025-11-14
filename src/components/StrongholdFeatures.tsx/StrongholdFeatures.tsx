@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { Units } from "types";
 import UnitCard from "components/UnitCard/UnitCard";
+import { StatsCalculator } from "lib/StatsCalculator";
 
 interface StrongholdFeaturesType {
     userId: string | null;
@@ -78,6 +79,12 @@ export default function StrongholdFeatures({
         }
     }, [activeButton.category])
 
+    function getUnitStats(unit){
+        todo: pass stronghold down here 
+        const newCalc = StatsCalculator.fromUnit(unit, stronghold);
+        const unitStats = newCalc.getStats(false);
+    }
+
     function renderText(){
         switch(activeButton.category) {
             case "stronghold":
@@ -148,7 +155,7 @@ export default function StrongholdFeatures({
                 }
             case "units":
                 switch(activeButton.subCategory){
-                    case "list":
+                    case "overview":
                         return <div className={styles.unitListContainer}>
                             <section className={styles.unitCategories}>
                                 <div className={styles.largeCategory}>name</div>
@@ -172,12 +179,35 @@ export default function StrongholdFeatures({
                                 )}
                             </section>
                         </div>;
-                    case "card":
-                        return <div className={styles.unitCardContainer}>
-                            {unitsList?.map(( unit =>
+                    case "stats":
+                        return <div className={styles.unitListContainer}>
+                            <section className={styles.unitCategories}>
+                                <div className={styles.largeCategory}>name</div>
+                                <div className={styles.smallCategory}>attack</div>
+                                <div className={styles.smallCategory}>power</div>
+                                <div className={styles.smallCategory}>defense</div>
+                                <div className={styles.smallCategory}>toughness</div>
+                                <div className={styles.smallCategory}>morale</div>
+                            </section>
+                            <section className={styles.unitList}>
+                                {unitsList?.map((unit) => (
+                                    <div key={unit.id} className={styles.unit}>
+                                        <p className={styles.largeCategory}>{unit.name}</p>
+                                        <p className={styles.smallCategory}>{unit.}</p>
+                                        <p className={styles.smallCategory}>{unit.experience.name}</p>  
+                                        <p className={styles.smallCategory}>{unit.equipment.name} </p>
+                                        <p className={styles.smallCategory}>{unit.type.name}</p>
+                                        <p className={styles.smallCategory}>{unit.size.unitSize}</p>
+                                    </div>
+                                )
+                                )}
+                            </section>
+                            {/* {unitsList?.map(( unit =>
                                 <UnitCard key={unit.id} unit={unit} clickable={false}/>
-                            ))}
-                        </div>
+                            ))} */}
+                        </div>;
+                    case "costs":
+                        return <div>unit costs</div>
                 }
             case "artisans":
                 return <p>artisans</p>;

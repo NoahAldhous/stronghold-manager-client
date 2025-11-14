@@ -2,9 +2,10 @@
 
 import styles from "./styles.module.scss";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
-import type { Stronghold, Currency } from "types";
+import type { Stronghold, Currency, Units } from "types";
 import { useState, useEffect, JSX } from "react";
 import CurrencyElement from "./Currency/CurrencyElement";
+import { StatsCalculator } from "lib/StatsCalculator";
 
 interface TreasuryProps {
     loading: boolean;
@@ -16,31 +17,66 @@ interface TreasuryProps {
     setStronghold: React.Dispatch<
         React.SetStateAction<Stronghold | null>
     >;
+    userId: string | null;
 }
 
-export default function Treasury({ loading, treasury, level, type, id, stronghold, setStronghold } : TreasuryProps): JSX.Element {
+export default function Treasury({ loading, treasury, level, type, id, stronghold, setStronghold, userId } : TreasuryProps): JSX.Element {
 
     //State
     const [revenue, setRevenue] = useState<number>(0)
+    const [armyUpkeep, setArmyUpkeep] = useState<number>(0);
+    const [net, setNet] = useState<number>(0);
     const [updatingTreasury, setUpdatingTreasury] = useState<boolean>(false);
     const [animatedCurrency, setAnimatedCurrency] = useState<Currency>("");
     const [activeCurrency, setActiveCurrency] =useState<Currency>("");
+    const [unitsList, setUnitsList] = useState<Units | null>(null);
+    // const [calc, setCalc] = useState(StatsCalculator.fromUnit(unit, stronghold));
+
     //array of currencies
     const currencyList = ["pp", "gp", "sp", "ep", "cp"];
 
     //useEffects
     useEffect(() => {
-        if (type){
-            if (type == "establishment"){
-                calculateStrongholdRevenue();
-            }
+        calculateStrongholdRevenue();
+        calculateStrongholdNet();
+    }, [level, armyUpkeep]);
+
+    useEffect(() => {
+        if(unitsList){
+            let totalUpkeep = 0
+            unitsList?.map(unit => {
+                const newCalc = StatsCalculator.fromUnit(unit, stronghold);
+                const unitCost = newCalc.getCost(unit);
+                totalUpkeep += unitCost.upkeep;
+                console.log("upkeep", totalUpkeep)
+            })
+            setArmyUpkeep(totalUpkeep);
         }
-    }, [level]);
+      }, [unitsList, stronghold, loading]);
+
+    useEffect(() => {
+        if( userId && stronghold){
+            fetchUnits();
+        }
+    },[userId, id, loading])
 
     //Functions
     function calculateStrongholdRevenue(){
-        if(level){
-            setRevenue(1000 * level)
+        var newRevenue = 0;
+        if(level && type){
+            if(type === "establishment"){
+                newRevenue = (1000 * level);
+            }
+            setRevenue(newRevenue);
+        }
+        return newRevenue;
+    }
+
+    function calculateStrongholdNet(){
+        var newNet = 0;
+        if (revenue && armyUpkeep){
+            newNet = (calculateStrongholdRevenue() - armyUpkeep);
+            setNet(newNet);
         }
     }
 
@@ -92,6 +128,31 @@ export default function Treasury({ loading, treasury, level, type, id, stronghol
 
     }
 
+    //fetch units to calculate unit upkeep
+    async function fetchUnits(): Promise<void>{
+        if(!unitsList) {
+
+            if(userId){
+                try {
+                    const res = await fetch(
+                        `${process.env.NEXT_PUBLIC_API_URL}/units/?user_id=${userId}&stronghold_id=${id}`
+                    );
+    
+                    if(!res.ok) {
+                        throw new Error("There was a problem fetching this Stronghold's units. Pleas try again")
+                    }
+    
+                    const data = await res.json();
+                    setUnitsList(data.units);
+                } catch (err) {
+                    console.log(err.message);
+                } finally {
+                    // setLoading(false);
+                }
+            }
+        }
+    }
+
     return <section>
         {loading || !treasury ? (
             <section className={styles.treasuryContainer}>
@@ -100,27 +161,8 @@ export default function Treasury({ loading, treasury, level, type, id, stronghol
         ) : (
             <section className={styles.treasuryContainer}>
                 <section className={styles.cardHeader}>treasury</section>
-                <section className={styles.revenueContainer}>
-                    <div>
-                        <div className={styles.sectionHeader}>revenue</div>
-                        <p>{revenue}gp<span className={styles.season}> /Season</span></p>
-                    </div>
-                    <button
-                        disabled={updatingTreasury}
-                        onClick={() => {
-                            updateTreasury(
-                                "gp",
-                                revenue,
-                                "increase"
-                            )
-                        }}
-                        className={styles.button}
-                    >
-                        receive revenue
-                    </button>
-                </section>
+                
                 <section className={styles.currencyContainer}>
-                    <div className={styles.sectionHeader}>currency</div>
                     {currencyList.map((item: Currency, index) => 
                         <CurrencyElement
                             key={index}
@@ -133,6 +175,37 @@ export default function Treasury({ loading, treasury, level, type, id, stronghol
                             updatingTreasury={updatingTreasury}
                         />
                     )}
+                </section>
+                <section className={styles.revenueContainer}>
+                    <div className={styles.info}>
+                        <div className={styles.item}>
+                            <div className={styles.sectionHeader}>revenue</div>
+                            <p>{revenue}gp<span className={styles.season}>/Season</span></p>
+                        </div>
+                        <div className={styles.item}>
+                            <div className={styles.sectionHeader}>army upkeep</div>
+                            <p>{armyUpkeep}gp<span className={styles.season}>/Season</span></p>
+                        </div>
+                        <div className={styles.item}>            
+                            <div className={styles.sectionHeader}>net</div>
+                            <p>{net}gp<span className={styles.season}>/Season</span></p>
+                        </div>
+                    </div>
+                    <section className={styles.buttonContainer}>
+                        <button
+                            disabled={updatingTreasury}
+                            onClick={() => {
+                                updateTreasury(
+                                    "gp",
+                                    net,
+                                    "increase"
+                                )
+                            }}
+                            className={styles.button}
+                        >
+                            receive revenue
+                        </button>
+                    </section>
                 </section>
             </section>
         )

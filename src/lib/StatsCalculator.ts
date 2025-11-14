@@ -45,7 +45,7 @@ export class StatsCalculator {
     }
 
     // compute and get Unit cost object
-    private getCost(unit: Unit){
+    public getCost(unit: Unit){
         const attack = this.sumBonus("attackBonus");
         const power = this.sumBonus("powerBonus");
         const morale = this.sumBonus("moraleBonus");
