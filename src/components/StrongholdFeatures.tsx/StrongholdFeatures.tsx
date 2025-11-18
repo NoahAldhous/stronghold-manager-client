@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
-import { Units } from "types";
+import { Stronghold, Units } from "types";
 import UnitCard from "components/UnitCard/UnitCard";
 import { StatsCalculator } from "lib/StatsCalculator";
 
 interface StrongholdFeaturesType {
     userId: string | null;
+    stronghold: Stronghold;
     strongholdId: string ;
     activeButton : {
         category: string,
@@ -34,6 +35,7 @@ interface StrongholdFeaturesType {
 
 export default function StrongholdFeatures({
     userId,
+    stronghold,
     strongholdId,
     activeButton, 
     strongholdActions,
@@ -50,7 +52,6 @@ export default function StrongholdFeatures({
     async function fetchUnits(): Promise<void>{
         if(!unitsList) {
             setLoading(true);
-
             if(userId){
                 try {
                     const res = await fetch(
@@ -80,9 +81,15 @@ export default function StrongholdFeatures({
     }, [activeButton.category])
 
     function getUnitStats(unit){
-        todo: pass stronghold down here 
         const newCalc = StatsCalculator.fromUnit(unit, stronghold);
         const unitStats = newCalc.getStats(false);
+        return unitStats;
+    }
+
+    function getUnitCosts(unit){
+        const newCalc = StatsCalculator.fromUnit(unit, stronghold);
+        const unitStats = newCalc.getCost(unit);
+        return unitStats;
     }
 
     function renderText(){
@@ -159,21 +166,21 @@ export default function StrongholdFeatures({
                         return <div className={styles.unitListContainer}>
                             <section className={styles.unitCategories}>
                                 <div className={styles.largeCategory}>name</div>
+                                <div className={styles.smallCategory}>size</div>
                                 <div className={styles.mediumCategory}>ancestry</div>
                                 <div className={styles.mediumCategory}>experience</div>
                                 <div className={styles.mediumCategory}>equipment</div>
                                 <div className={styles.smallCategory}>type</div>
-                                <div className={styles.smallCategory}>size</div>
                             </section>
                             <section className={styles.unitList}>
                                 {unitsList?.map((unit) => (
                                     <div key={unit.id} className={styles.unit}>
                                         <p className={styles.largeCategory}>{unit.name}</p>
+                                            <p className={styles.smallCategory}>{unit.size.unitSize}</p>
                                         <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
                                             <p className={styles.mediumCategory}>{unit.experience.name}</p>  
                                             <p className={styles.mediumCategory}>{unit.equipment.name} </p>
                                             <p className={styles.smallCategory}>{unit.type.name}</p>
-                                            <p className={styles.smallCategory}>{unit.size.unitSize}</p>
                                     </div>
                                 )
                                 )}
@@ -183,31 +190,50 @@ export default function StrongholdFeatures({
                         return <div className={styles.unitListContainer}>
                             <section className={styles.unitCategories}>
                                 <div className={styles.largeCategory}>name</div>
-                                <div className={styles.smallCategory}>attack</div>
-                                <div className={styles.smallCategory}>power</div>
-                                <div className={styles.smallCategory}>defense</div>
-                                <div className={styles.smallCategory}>toughness</div>
-                                <div className={styles.smallCategory}>morale</div>
+                                <div className={`${styles.smallCategory} ${styles.stats}`}>attack</div>
+                                <div className={`${styles.smallCategory} ${styles.stats}`}>power</div>
+                                <div className={`${styles.smallCategory} ${styles.stats}`}>defense</div>
+                                <div className={`${styles.smallCategory} ${styles.stats}`}>toughness</div>
+                                <div className={`${styles.smallCategory} ${styles.stats}`}>morale</div>
                             </section>
                             <section className={styles.unitList}>
-                                {unitsList?.map((unit) => (
-                                    <div key={unit.id} className={styles.unit}>
-                                        <p className={styles.largeCategory}>{unit.name}</p>
-                                        <p className={styles.smallCategory}>{unit.}</p>
-                                        <p className={styles.smallCategory}>{unit.experience.name}</p>  
-                                        <p className={styles.smallCategory}>{unit.equipment.name} </p>
-                                        <p className={styles.smallCategory}>{unit.type.name}</p>
-                                        <p className={styles.smallCategory}>{unit.size.unitSize}</p>
+                                {unitsList?.map((unit) => {
+
+                                    const stats = getUnitStats(unit);
+
+                                    return <div key={unit.id} className={`${styles.unit}`}>
+                                        <p className={`${styles.largeCategory}`}>{unit.name}</p>
+                                        <p className={`${styles.smallCategory} ${styles.stats}`}>+{stats.attack}</p>
+                                        <p className={`${styles.smallCategory} ${styles.stats}`}>+{stats.power}</p>  
+                                        <p className={`${styles.smallCategory} ${styles.stats}`}>{stats.defense} </p>
+                                        <p className={`${styles.smallCategory} ${styles.stats}`}>{stats.toughness}</p>
+                                        <p className={`${styles.smallCategory} ${styles.stats}`}>+{stats.morale}</p>
                                     </div>
-                                )
+                                }
                                 )}
                             </section>
-                            {/* {unitsList?.map(( unit =>
-                                <UnitCard key={unit.id} unit={unit} clickable={false}/>
-                            ))} */}
                         </div>;
                     case "costs":
-                        return <div>unit costs</div>
+                        return <div className={styles.unitListContainer}>
+                            <section className={styles.unitCategories}>
+                                <div className={styles.largeCategory}>name</div>
+                                <div className={`${styles.smallCategory} ${styles.stats}`}>cost</div>
+                                <div className={`${styles.smallCategory} ${styles.stats}`}>upkeep</div>
+                            </section>
+                            <section className={styles.unitList}>
+                                {unitsList?.map((unit) => {
+
+                                    const costs = getUnitCosts(unit);
+
+                                    return <div key={unit.id} className={`${styles.unit}`}>
+                                        <p className={`${styles.largeCategory}`}>{unit.name}</p>
+                                        <p className={`${styles.smallCategory} ${styles.stats}`}>{costs.cost}gp</p>
+                                        <p className={`${styles.smallCategory} ${styles.stats}`}>{costs.upkeep}gp</p>  
+                                    </div>
+                                }
+                                )}
+                            </section>
+                        </div>;
                 }
             case "artisans":
                 return <p>artisans</p>;

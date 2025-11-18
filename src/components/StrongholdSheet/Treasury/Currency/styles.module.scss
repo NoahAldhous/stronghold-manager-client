@@ -8,6 +8,7 @@
   align-items: flex-start;
   border-bottom: 1px solid $selected;
   font-size: medium;
+  flex: auto;
   
   &:hover {
     background-color: $highlight;

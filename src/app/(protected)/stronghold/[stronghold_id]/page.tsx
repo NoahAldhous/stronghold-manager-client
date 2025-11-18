@@ -304,6 +304,7 @@ export default function Page({
                 <section className={styles.strongholdMenuText}>
                   <StrongholdFeatures
                   userId={userId}
+                  stronghold={stronghold}
                   strongholdId={stronghold_id}
                     activeButton={activeButton}
                     strongholdActions={
