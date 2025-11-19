@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
-import { Stronghold, Units } from "types";
+import { Stronghold, Units, RaisingUnitRow } from "types";
 import UnitCard from "components/UnitCard/UnitCard";
 import { StatsCalculator } from "lib/StatsCalculator";
 
@@ -52,6 +52,8 @@ export default function StrongholdFeatures({
   characterClass,
 }: StrongholdFeaturesType) {
   const [unitsList, setUnitsList] = useState<Units | null>(null);
+  const [unitsRaisedList, setUnitsRaisedList] = useState<RaisingUnitRow[] | null>(null);
+  const [keepType, setKeepType] = useState<"keep" | "camp">("keep")
   const [loading, setLoading] = useState<boolean>(false);
 
   async function fetchUnits(): Promise<void> {
@@ -77,6 +79,29 @@ export default function StrongholdFeatures({
         } finally {
           setLoading(false);
         }
+      }
+    }
+  }
+
+  async function fetchUnitsRaised(): Promise<void> {
+    if (!unitsRaisedList) {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/strongholds/raising_units/get/${keepType}`
+        );
+
+        if (!res.ok) {
+          throw new Error(
+            "There was a problem fetching data. Pleas try again"
+          );
+        }
+
+        const data = await res.json();
+        setUnitsRaisedList(data.units);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        return;
       }
     }
   }
@@ -174,10 +199,25 @@ export default function StrongholdFeatures({
               </>
             );
           case `${strongholdType} benefits`:
+            if (strongholdType === "keep"){
+              fetchUnitsRaised();
+            }
             return typeBenefits?.map((feature, index) => (
               <div key={index} className={styles.textItem}>
                 <p className={styles.itemName}>{feature.title}</p>
                 <p className={styles.itemInfo}>{feature.description}</p>
+                {
+                  feature.title === "raising units" && unitsRaisedList ? (
+                    <div className={styles.raisingUnitsList}>
+                      {unitsRaisedList?.map((row, index) => (
+                        <div key={index} className={styles.unitRow}>
+                          <p>{row.lowNumber}-{row.highNumber}</p>
+                          <p>{row.unit.experience} {row.unit.equipment} {row.unit.type}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null
+                }
               </div>
             ));
           case "class feature improvement":

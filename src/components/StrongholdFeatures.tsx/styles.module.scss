@@ -47,6 +47,27 @@
         .itemInfo{
             font-size: small;
         }
+
+        .raisingUnitsList{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .unitRow{
+                width: 50%;
+                display: flex;
+                justify-content: space-between;
+                border-bottom: $bottomBorder;
+                padding: 0.5rem;
+                font-size: small;
+                text-transform: capitalize;
+
+                &:nth-child(even){
+                    background-color: $highlight;
+                }
+            }
+        }
     }
 
     .unitListContainer{
