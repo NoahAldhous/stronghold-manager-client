@@ -62,7 +62,7 @@ export default function Treasury({ loading, treasury, level, type, id, stronghol
 
     //Functions
     function calculateStrongholdRevenue(){
-        var newRevenue = 0;
+        let newRevenue = 0;
         if(level && type){
             if(type === "establishment"){
                 newRevenue = (1000 * level);
@@ -73,7 +73,7 @@ export default function Treasury({ loading, treasury, level, type, id, stronghol
     }
 
     function calculateStrongholdNet(){
-        var newNet = 0;
+        let newNet = 0;
         if (revenue && armyUpkeep){
             newNet = (calculateStrongholdRevenue() - armyUpkeep);
             setNet(newNet);
