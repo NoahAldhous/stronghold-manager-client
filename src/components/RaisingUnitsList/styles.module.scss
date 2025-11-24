@@ -1,0 +1,24 @@
+@use "../../app/variables" as *;
+
+//TODO: Separate into component
+.raisingUnitsList{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: flex-start;
+    align-items: center;
+
+    .unitRow{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: $bottomBorder;
+        padding: 0.5rem;
+        font-size: small;
+        text-transform: capitalize;
+
+        &:nth-child(even){
+            background-color: $highlight;
+        }
+    }
+}

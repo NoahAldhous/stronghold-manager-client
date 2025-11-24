@@ -4,6 +4,7 @@ import styles from "./styles.module.scss";
 import { Stronghold, Units, RaisingUnitRow } from "types";
 import UnitCard from "components/UnitCard/UnitCard";
 import { StatsCalculator } from "lib/StatsCalculator";
+import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
 
 interface StrongholdFeaturesType {
   userId: string | null;
@@ -52,9 +53,10 @@ export default function StrongholdFeatures({
   characterClass,
 }: StrongholdFeaturesType) {
   const [unitsList, setUnitsList] = useState<Units | null>(null);
-  const [unitsRaisedList, setUnitsRaisedList] = useState<RaisingUnitRow[] | null>(null);
-  const [keepType, setKeepType] = useState<"keep" | "camp">("keep")
   const [loading, setLoading] = useState<boolean>(false);
+  //TODO: separate into units raised list component
+  const [keepType, setKeepType] = useState<"keep" | "camp">("keep")
+  const [unitsRaisedList, setUnitsRaisedList] = useState<RaisingUnitRow[] | null>(null);
 
   async function fetchUnits(): Promise<void> {
     if (!unitsList) {
@@ -82,7 +84,7 @@ export default function StrongholdFeatures({
       }
     }
   }
-
+  //TODO: Extract this out into a separate component
   async function fetchUnitsRaised(): Promise<void> {
     if (!unitsRaisedList) {
       try {
@@ -199,23 +201,22 @@ export default function StrongholdFeatures({
               </>
             );
           case `${strongholdType} benefits`:
-            if (strongholdType === "keep"){
-              fetchUnitsRaised();
-            }
             return typeBenefits?.map((feature, index) => (
               <div key={index} className={styles.textItem}>
                 <p className={styles.itemName}>{feature.title}</p>
                 <p className={styles.itemInfo}>{feature.description}</p>
                 {
-                  feature.title === "raising units" && unitsRaisedList ? (
-                    <div className={styles.raisingUnitsList}>
-                      {unitsRaisedList?.map((row, index) => (
-                        <div key={index} className={styles.unitRow}>
-                          <p>{row.lowNumber}-{row.highNumber}</p>
-                          <p>{row.unit.experience} {row.unit.equipment} {row.unit.type}</p>
-                        </div>
-                      ))}
-                    </div>
+                  feature.title === "raising units" && strongholdType ? (
+                    //TODO: Extract this out into a separate component
+                    <RaisingUnitsList keepType={strongholdType}/>
+                    // <div className={styles.raisingUnitsList}>
+                    //   {unitsRaisedList?.map((row, index) => (
+                    //     <div key={index} className={styles.unitRow}>
+                    //       <p>{row.lowNumber}-{row.highNumber}</p>
+                    //       <p>{row.unit.experience} {row.unit.equipment} {row.unit.type}</p>
+                    //     </div>
+                    //   ))}
+                    // </div>
                   ) : null
                 }
               </div>
