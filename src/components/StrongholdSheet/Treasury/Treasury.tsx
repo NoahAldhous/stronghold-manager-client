@@ -74,10 +74,8 @@ export default function Treasury({ loading, treasury, level, type, id, stronghol
 
     function calculateStrongholdNet(){
         let newNet = 0;
-        if (revenue && armyUpkeep){
             newNet = (calculateStrongholdRevenue() - armyUpkeep);
             setNet(newNet);
-        }
     }
 
     async function updateTreasury(
