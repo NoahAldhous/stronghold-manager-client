@@ -40,12 +40,16 @@ export default function RaisingUnitsList({ keepType }: { keepType: string }) {
 
   return (
     <div className={styles.raisingUnitsList}>
+      <div className={styles.unitRow}>
+        <p className={`${styles.text} ${styles.bold}`}>d100 roll</p>
+        <p className={`${styles.text} ${styles.bold}`}>unit raised</p>
+      </div>
       {unitsRaisedList?.map((row, index) => (
         <div key={index} className={styles.unitRow}>
-          <p>
+          <p className={styles.text}>
             {row.lowNumber}-{row.highNumber}
           </p>
-          <p>
+          <p className={styles.text}>
             {row.unit.experience} {row.unit.equipment} {row.unit.type}
           </p>
         </div>

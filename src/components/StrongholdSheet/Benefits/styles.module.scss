@@ -14,4 +14,24 @@
         padding: 0.5rem;
         text-transform: capitalize;
     }
+
+    .raisingUnits{
+        border: 1px solid $warning;
+        position: relative;
+    }
+
+    .notification{
+        width: 20%;
+        aspect-ratio: 1/1;
+        position: absolute;
+        transform: translate(50%, -50%);
+        border-radius: 50%;
+        top: 0;
+        right: 0;
+        background-color: $warning;
+        color: $offwhite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }

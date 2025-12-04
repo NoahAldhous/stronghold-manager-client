@@ -94,7 +94,7 @@ export default function StrongholdFeatures({
 
         if (!res.ok) {
           throw new Error(
-            "There was a problem fetching data. Pleas try again"
+            "There was a problem fetching data. Please try again"
           );
         }
 
@@ -207,16 +207,11 @@ export default function StrongholdFeatures({
                 <p className={styles.itemInfo}>{feature.description}</p>
                 {
                   feature.title === "raising units" && strongholdType ? (
-                    //TODO: Extract this out into a separate component
-                    <RaisingUnitsList keepType={strongholdType}/>
-                    // <div className={styles.raisingUnitsList}>
-                    //   {unitsRaisedList?.map((row, index) => (
-                    //     <div key={index} className={styles.unitRow}>
-                    //       <p>{row.lowNumber}-{row.highNumber}</p>
-                    //       <p>{row.unit.experience} {row.unit.equipment} {row.unit.type}</p>
-                    //     </div>
-                    //   ))}
-                    // </div>
+                    <>
+                      <br/>
+                      <RaisingUnitsList keepType={strongholdType}/>
+                    </>
+
                   ) : null
                 }
               </div>

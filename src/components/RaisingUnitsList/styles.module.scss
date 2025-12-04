@@ -17,6 +17,18 @@
         font-size: small;
         text-transform: capitalize;
 
+        .text{
+            // background-color: paleturquoise;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .bold{
+            font-weight: 600;
+        }
+
         &:nth-child(odd){
             background-color: $highlight;
         }

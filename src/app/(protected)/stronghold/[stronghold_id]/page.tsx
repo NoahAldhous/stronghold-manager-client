@@ -214,6 +214,7 @@ export default function Page({
             <Stats loading={loading} stats={stronghold?.stats ?? null} />
             <Benefits
               loading={loading}
+              stronghold_id={stronghold_id}
               type={stronghold?.stronghold_type ?? null}
               benefits={stronghold?.features ?? null}
               setContextualInfo={setContextualInfo}
