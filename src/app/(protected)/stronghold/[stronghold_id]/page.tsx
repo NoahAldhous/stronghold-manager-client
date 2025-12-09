@@ -12,6 +12,7 @@ import Benefits from "components/StrongholdSheet/Benefits/Benefits";
 import FeatureImprovement from "components/StrongholdSheet/FeatureImprovement/FeatureImprovement";
 import Treasury from "components/StrongholdSheet/Treasury/Treasury";
 import Link from "next/link";
+import ContextualPanel from "components/StrongholdSheet/ContextualPanel/ContextualPanel";
 
 export default function Page({
   params,
@@ -329,11 +330,12 @@ export default function Page({
             <LoadingCard />
           </section>
         ) : (
-          <section className={styles.contextualPanel}>
-            <div className={styles.cardHeader}>contextual information</div>
-            <p className={styles.infoTitle}>{contextualInfo.title}</p>
-            <p className={styles.info}>{contextualInfo.description}</p>
-          </section>
+          <ContextualPanel/>
+          // <section className={styles.contextualPanel}>
+          //   <div className={styles.cardHeader}>contextual information</div>
+          //   <p className={styles.infoTitle}>{contextualInfo.title}</p>
+          //   <p className={styles.info}>{contextualInfo.description}</p>
+          // </section>
         )}
         <UpgradeStrongholdModal
           stronghold={stronghold}
