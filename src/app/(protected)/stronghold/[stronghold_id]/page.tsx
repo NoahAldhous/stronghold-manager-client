@@ -61,13 +61,7 @@ export default function Page({
 
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
-  const [contextualInfo, setContextualInfo] = useState<{
-    title: string | null;
-    description: string | null;
-  }>({
-    title: null,
-    description: null,
-  });
+  const [infoType, setInfoType] = useState<string>("default");
 
   const router = useRouter();
   const { isLoggedIn, userId } = useAuth();
@@ -218,13 +212,13 @@ export default function Page({
               stronghold_id={stronghold_id}
               type={stronghold?.stronghold_type ?? null}
               benefits={stronghold?.features ?? null}
-              setContextualInfo={setContextualInfo}
+              setInfoType={setInfoType}
             />
             <FeatureImprovement
               loading={loading}
               level={stronghold?.stronghold_level ?? null}
               improvement={stronghold?.class?.class_feature_improvement ?? null}
-              setContextualInfo={setContextualInfo}
+              setInfoType={setInfoType}
               updateUses={updateClassFeatureImprovementUses}
             />
           </section>
@@ -330,11 +324,11 @@ export default function Page({
             <LoadingCard />
           </section>
         ) : (
-          <ContextualPanel/>
+          <ContextualPanel infoType={infoType}/>
           // <section className={styles.contextualPanel}>
           //   <div className={styles.cardHeader}>contextual information</div>
-          //   <p className={styles.infoTitle}>{contextualInfo.title}</p>
-          //   <p className={styles.info}>{contextualInfo.description}</p>
+          //   <p className={styles.infoTitle}>{InfoType.title}</p>
+          //   <p className={styles.info}>{InfoType.description}</p>
           // </section>
         )}
         <UpgradeStrongholdModal

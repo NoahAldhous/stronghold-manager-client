@@ -19,10 +19,11 @@
     .cube{
         width: $column-width;
         height: $column-width;
-        background-color: beige;
+        box-sizing:content-box;
+        background-color: rgba(245, 220, 220, 0.471);
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid black;
+        border: 2px solid green;
     }
 }

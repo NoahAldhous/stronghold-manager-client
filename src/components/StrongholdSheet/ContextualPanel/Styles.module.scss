@@ -1,14 +1,21 @@
 @use "../../../app/variables" as *;
 
 .contextualPanel {
-    width: $two-and-half-column-width;
+    width: $three-and-quarter-column-width;
     height: 100%;
     // background-color: aliceblue;
     @include cardContainer;
     box-shadow: $boxShadow;
-    overflow-y: auto;
+    // overflow-y: auto;
+
+    .cardHeader{
+        position: absolute;
+        top: 0;
+    }
 
     .content{
-        background-color: red;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
     }
 }

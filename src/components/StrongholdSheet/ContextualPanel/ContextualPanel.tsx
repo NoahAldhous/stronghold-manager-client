@@ -1,16 +1,20 @@
 import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
 import styles from "./Styles.module.scss";
 
-export default function ContextualMenu(){
+export default function ContextualMenu({infoType}:{infoType: string}){
 
     function renderText(){
-        return <section className={styles.content}>hello world
-            <RaisingUnitsList keepType="keep"/>
-        </section>
+                switch(infoType){
+                    case "raising units":
+                        return <RaisingUnitsList keepType="keep"/>
+                    break;
+                }
     }
 
     return <div className={styles.contextualPanel}>
-        <section className={styles.cardHeader}>header</section>
-        {renderText()}
+        <section className={styles.cardHeader}>{infoType}</section>
+        <section className={styles.content}>
+            { renderText() }
+        </section>
     </div>
 }

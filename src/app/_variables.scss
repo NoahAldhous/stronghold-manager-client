@@ -1,18 +1,27 @@
 //1/15th column widths
 $column-width: 100vw / 15;
+$quarter-column-width: $column-width / 4;
 $half-column-width: $column-width / 2;
 $two-column-width: $column-width * 2;
 $two-and-half-column-width: $column-width * 2.5;
 $three-column-width: $column-width * 3;
+$three-and-quarter-column-width: $column-width * 3.25;
 $three-and-half-column-width: $column-width * 3.5;
+$three-and-three-quarters-column-width: $column-width * 3.75;
 $four-column-width: $column-width * 4;
 $five-column-width: $column-width * 5;
 $six-column-width: $column-width * 6;
 $six-and-half-column-width: $column-width * 6.5;
 $seven-and-half-column-width: $column-width * 7.5;
+$seven-and-five-eighth-column-width: $column-width * 7.625;
+$seven-and-three-quarter-column-width: $column-width * 7.75;
 $eleven-column-width: $column-width * 11;
+$eleven-and-half-column-width: $column-width * 11.5;
+$twelve-column-width: $column-width * 12;
 $thirteen-column-width: $column-width * 13;
+$thirteen-and-half-column-width: $column-width * 13.5;
 $fourteen-column-width: $column-width * 14;
+$fourteen-and-half-column-width: $column-width * 14.5;
 
 // Navbar height
 $navbar-height: 10vh;
@@ -21,7 +30,8 @@ $navbar-height: 10vh;
 $scrollbar-width: 0.75rem;
 
 //Main page padding
-$main-padding: $half-column-width;
+// $main-padding: $half-column-width;
+$main-padding: $quarter-column-width;
 
 // Page height
 $page-height: 90vh;

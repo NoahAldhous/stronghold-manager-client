@@ -10,8 +10,8 @@ interface BenefitsProps {
   stronghold_id: string;
   type: Stronghold["stronghold_type"] | null;
   benefits: Stronghold["features"] | null;
-  setContextualInfo: React.Dispatch<
-    React.SetStateAction<{ title: string; description: string }>
+  setInfoType: React.Dispatch<
+    React.SetStateAction<string>
   >;
 }
 
@@ -28,7 +28,7 @@ export default function Benefits({
   stronghold_id,
   type,
   benefits,
-  setContextualInfo,
+  setInfoType,
 }: BenefitsProps): JSX.Element {
   const [raisingUnitsStatus, setRaisingUnitsStatus] =
     useState<RaisingUnitsStatus | null>(null);
@@ -82,17 +82,16 @@ export default function Benefits({
                     : ""
                 }`}
                 onClick={() =>
-                  setContextualInfo({
-                    title: item.title,
-                    description: item.description,
-                  })
+                  setInfoType(
+                    item.title
+                  )
                 }
                 key={index}
               >
                 {type === "keep" &&
                 item.title === "raising units" &&
                 !raisingUnitsStatus?.has_raised_all_units ? (
-                  <span className={styles.notification}>{(raisingUnitsStatus?.max_units ?? 0) - (raisingUnitsStatus?.current_units ?? 0)}</span>
+                  <span className={styles.notification}><p className={styles.number}>{(raisingUnitsStatus?.max_units ?? 0) - (raisingUnitsStatus?.current_units ?? 0)}</p></span>
                 ) : null}
                 {item.title}
               </button>
