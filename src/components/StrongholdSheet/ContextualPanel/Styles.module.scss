@@ -1,7 +1,7 @@
 @use "../../../app/variables" as *;
 
 .contextualPanel {
-    width: $three-and-quarter-column-width;
+    width: $three-and-three-eighth-column-width;
     height: 100%;
     // background-color: aliceblue;
     @include cardContainer;
@@ -17,5 +17,17 @@
         width: 100%;
         height: 100%;
         overflow-y: auto;
+
+        .buttonContainer{
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+
+            .button{
+                text-transform: capitalize;
+                padding: 0.5rem;
+            }
+        }
     }
 }

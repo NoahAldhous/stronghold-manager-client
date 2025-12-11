@@ -17,12 +17,19 @@
         font-size: small;
         text-transform: capitalize;
 
-        .text{
+        .rollText{
+            // background-color: palevioletred;
+            height: 100%;
+            width: 25%;
+            text-align: center;
+
+        }
+        .unitText{
             // background-color: paleturquoise;
-            width: 50%;
+            width: 75%;
             height: 100%;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
         }
 
         .bold{
@@ -32,5 +39,6 @@
         &:nth-child(odd){
             background-color: $highlight;
         }
+
     }
 }
