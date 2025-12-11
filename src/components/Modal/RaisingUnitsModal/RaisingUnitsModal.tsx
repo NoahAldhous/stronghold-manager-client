@@ -18,7 +18,7 @@ export default function RaisingUnitsModal({
   setVisible,
   keepType,
   strongholdId,
-  userId
+  userId,
 }: RaisingUnitsModalProps) {
   const [activeUnitRow, setActiveUnitRow] = useState<RaisingUnitRow>();
   const [d100roll, setD100Roll] = useState<number>(0);
@@ -38,7 +38,7 @@ export default function RaisingUnitsModal({
     type: activeUnitRow?.unit.type,
     sizeLevel: 1,
     casualties: 0,
-    isMercenary: false
+    isMercenary: false,
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [allFieldsComplete, setAllFieldsComplete] = useState<boolean>(false);
@@ -126,11 +126,51 @@ export default function RaisingUnitsModal({
 
   async function handleSubmit() {
     const newUnitId = await addUnit();
-    
+    const data = await addUnitRaised(newUnitId, strongholdId, activeUnitRow?.id);
+
+  //  TODO: after adding unit raised, we need to updated the 'raising units status' so that the current units increases by one
+  // TODO: and if the current units is equal to or exceeds max units, sets the 'has raised all units' to true
+
+    if(data){
+      console.log("unit has been added to units raised table")
+    }
   }
 
-  async function addUnit(){
-    setSendingData(true)
+  async function addUnitRaised(newUnitId, strongholdId, raisingUnitId) {
+    const unitRaised = {
+      strongholdId: strongholdId,
+      unitId: newUnitId,
+      raisingUnitId: raisingUnitId,
+    };
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/raising_units/units_raised/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(unitRaised),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Error: Could not add unit.");
+      }
+
+      const data = await res.json();
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.error(err.message);
+    } finally {
+      setSendingData(false);
+    }
+  }
+
+  async function addUnit() {
+    setSendingData(true);
 
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/units/add`, {
@@ -144,26 +184,27 @@ export default function RaisingUnitsModal({
       if (!res.ok) {
         throw new Error("Error: Could not create unit.");
       } else {
-        setResponseOk(true)
+        setResponseOk(true);
       }
 
       const data = await res.json();
-      return data
+      return data.id;
+
       //TODO: capture data for navigation to unit page or stronghold page?
     } catch (err) {
-        setResponseOk(false)
+      setResponseOk(false);
       console.error(err.message);
     } finally {
-      setSendingData(false)
+      setSendingData(false);
     }
   }
 
   //USE EFFECTS
   useEffect(() => {
-    if(!ancestries){
-      fetchUnitAncestries()
+    if (!ancestries) {
+      fetchUnitAncestries();
     }
-  },[ancestries])
+  }, [ancestries]);
 
   useEffect(() => {
     if (unitsRaisedList) {
@@ -176,16 +217,26 @@ export default function RaisingUnitsModal({
   }, [d100roll, unitsRaisedList]);
 
   useEffect(() => {
-    setUnit({...unit, experience: activeUnitRow?.unit.experience, equipment: activeUnitRow?.unit.equipment, type: activeUnitRow?.unit.type})
-  }, [activeUnitRow])
+    setUnit({
+      ...unit,
+      experience: activeUnitRow?.unit.experience,
+      equipment: activeUnitRow?.unit.equipment,
+      type: activeUnitRow?.unit.type,
+    });
+  }, [activeUnitRow]);
 
   useEffect(() => {
-    if(newUnitData.unit_name !== "" && newUnitData.equipment && newUnitData.experience && newUnitData.unit_type){
+    if (
+      newUnitData.unit_name !== "" &&
+      newUnitData.equipment &&
+      newUnitData.experience &&
+      newUnitData.unit_type
+    ) {
       setAllFieldsComplete(true);
-    } else if (allFieldsComplete){
+    } else if (allFieldsComplete) {
       setAllFieldsComplete(false);
     }
-  }, [newUnitData])
+  }, [newUnitData]);
 
   return visible ? (
     <ModalBackground>
@@ -204,25 +255,30 @@ export default function RaisingUnitsModal({
           </section>
         </section>
         <section className={styles.diceRoller}>
-          <input type="text" value={unit.name} onChange={handleInputChange} placeholder="enter a name..."></input>
+          <input
+            type="text"
+            value={unit.name}
+            onChange={handleInputChange}
+            placeholder="enter a name..."
+          ></input>
           <section className={styles.formSection}>
-              <label className={styles.label} htmlFor="ancestry-select">
-                ancestry:
-              </label>
-              <select
-                value={unit?.ancestry}
-                className={styles.select}
-                onChange={(e) => handleSelectChange("ancestry", e.target.value)}
-                name="ancestries"
-                id="ancestry-select"
-              >
-                {ancestries?.map((ancestry, index) => (
-                  <option key={index} value={ancestry.name}>
-                    {ancestry.name}
-                  </option>
-                ))}
-              </select>
-            </section>
+            <label className={styles.label} htmlFor="ancestry-select">
+              ancestry:
+            </label>
+            <select
+              value={unit?.ancestry}
+              className={styles.select}
+              onChange={(e) => handleSelectChange("ancestry", e.target.value)}
+              name="ancestries"
+              id="ancestry-select"
+            >
+              {ancestries?.map((ancestry, index) => (
+                <option key={index} value={ancestry.name}>
+                  {ancestry.name}
+                </option>
+              ))}
+            </select>
+          </section>
           <div>{d100roll}</div>
           <div>
             {activeUnitRow?.unit?.experience} {activeUnitRow?.unit?.equipment}{" "}
@@ -230,14 +286,16 @@ export default function RaisingUnitsModal({
           </div>
           <button onClick={rollOnTable}>Roll d100</button>
           <p>
-            {newUnitData.unit_name} <br/>
-            {newUnitData.ancestry} <br/>
-            {newUnitData.equipment} <br/>
-            {newUnitData.experience} <br/>
-            {newUnitData.unit_type} <br/>
+            {newUnitData.unit_name} <br />
+            {newUnitData.ancestry} <br />
+            {newUnitData.equipment} <br />
+            {newUnitData.experience} <br />
+            {newUnitData.unit_type} <br />
             {newUnitData.stronghold_id}
           </p>
-          <button disabled={!allFieldsComplete} onClick={(handleSubmit)}>add unit to stronghold</button>
+          <button disabled={!allFieldsComplete} onClick={handleSubmit}>
+            add unit to stronghold
+          </button>
         </section>
       </section>
     </ModalBackground>
