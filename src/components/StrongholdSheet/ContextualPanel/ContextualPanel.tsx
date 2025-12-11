@@ -7,9 +7,10 @@ import RaisingUnitsModal from "components/Modal/RaisingUnitsModal/RaisingUnitsMo
 interface ContextualPanelProps {
     infoType: string;
     strongholdId: number;
+    userId: string | null;
 }
 
-export default function ContextualMenu({infoType, strongholdId}:ContextualPanelProps){
+export default function ContextualMenu({infoType, strongholdId, userId}:ContextualPanelProps){
 
     const [visible, setVisible] = useState<boolean>(false);
 
@@ -25,7 +26,7 @@ export default function ContextualMenu({infoType, strongholdId}:ContextualPanelP
                             <div className={styles.buttonContainer}>
                                 <button onClick={displayModal} className={styles.button}>roll on table</button>
                             </div>
-                            <RaisingUnitsModal visible={visible} setVisible={setVisible} keepType="keep" strongholdId={strongholdId}/>
+                            <RaisingUnitsModal visible={visible} setVisible={setVisible} keepType="keep" strongholdId={strongholdId} userId={userId}/>
                         </>
                 }
     }

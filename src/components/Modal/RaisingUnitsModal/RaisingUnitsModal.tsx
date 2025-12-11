@@ -10,13 +10,15 @@ interface RaisingUnitsModalProps {
   setVisible: React.Dispatch<SetStateAction<boolean>>;
   keepType: string;
   strongholdId: number;
+  userId: string | null;
 }
 
 export default function RaisingUnitsModal({
   visible,
   setVisible,
   keepType,
-  strongholdId
+  strongholdId,
+  userId
 }: RaisingUnitsModalProps) {
   const [activeUnitRow, setActiveUnitRow] = useState<RaisingUnitRow>();
   const [d100roll, setD100Roll] = useState<number>(0);
@@ -24,8 +26,10 @@ export default function RaisingUnitsModal({
     RaisingUnitRow[] | null
   >(null);
   const [ancestries, setAncestries] = useState<Ancestry[] | null>(null);
+  const [sendingData, setSendingData] = useState<boolean>(false);
+  const [responseOk, setResponseOk] = useState<boolean>(false);
   const [unit, setUnit] = useState({
-    user_id: 0,
+    user_id: userId,
     name: "",
     stronghold_id: strongholdId,
     ancestry: "human",
@@ -37,6 +41,7 @@ export default function RaisingUnitsModal({
     isMercenary: false
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const [allFieldsComplete, setAllFieldsComplete] = useState<boolean>(false);
 
   //Data object to be sent to DB
   const newUnitData = {
@@ -61,6 +66,13 @@ export default function RaisingUnitsModal({
     setUnit({
       ...unit,
       [objectKey]: objectValue,
+    });
+  }
+
+  function handleInputChange(e: { target: { value: string } }) {
+    setUnit({
+      ...unit,
+      name: e.target.value,
     });
   }
 
@@ -112,6 +124,40 @@ export default function RaisingUnitsModal({
 
   fetchUnitsRaised(keepType);
 
+  async function handleSubmit() {
+    const newUnitId = await addUnit();
+    
+  }
+
+  async function addUnit(){
+    setSendingData(true)
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/units/add`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(newUnitData),
+      });
+
+      if (!res.ok) {
+        throw new Error("Error: Could not create unit.");
+      } else {
+        setResponseOk(true)
+      }
+
+      const data = await res.json();
+      return data
+      //TODO: capture data for navigation to unit page or stronghold page?
+    } catch (err) {
+        setResponseOk(false)
+      console.error(err.message);
+    } finally {
+      setSendingData(false)
+    }
+  }
+
   //USE EFFECTS
   useEffect(() => {
     if(!ancestries){
@@ -133,6 +179,14 @@ export default function RaisingUnitsModal({
     setUnit({...unit, experience: activeUnitRow?.unit.experience, equipment: activeUnitRow?.unit.equipment, type: activeUnitRow?.unit.type})
   }, [activeUnitRow])
 
+  useEffect(() => {
+    if(newUnitData.unit_name !== "" && newUnitData.equipment && newUnitData.experience && newUnitData.unit_type){
+      setAllFieldsComplete(true);
+    } else if (allFieldsComplete){
+      setAllFieldsComplete(false);
+    }
+  }, [newUnitData])
+
   return visible ? (
     <ModalBackground>
       <section className={styles.modal}>
@@ -150,7 +204,7 @@ export default function RaisingUnitsModal({
           </section>
         </section>
         <section className={styles.diceRoller}>
-          <input type="text" placeholder="enter a name..."></input>
+          <input type="text" value={unit.name} onChange={handleInputChange} placeholder="enter a name..."></input>
           <section className={styles.formSection}>
               <label className={styles.label} htmlFor="ancestry-select">
                 ancestry:
@@ -176,13 +230,14 @@ export default function RaisingUnitsModal({
           </div>
           <button onClick={rollOnTable}>Roll d100</button>
           <p>
-            {newUnitData.unit_name}
-            {newUnitData.ancestry}
-            {newUnitData.equipment}
-            {newUnitData.experience}
-            {newUnitData.unit_type}
+            {newUnitData.unit_name} <br/>
+            {newUnitData.ancestry} <br/>
+            {newUnitData.equipment} <br/>
+            {newUnitData.experience} <br/>
+            {newUnitData.unit_type} <br/>
             {newUnitData.stronghold_id}
           </p>
+          <button disabled={!allFieldsComplete} onClick={(handleSubmit)}>add unit to stronghold</button>
         </section>
       </section>
     </ModalBackground>

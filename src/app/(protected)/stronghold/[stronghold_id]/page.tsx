@@ -324,7 +324,7 @@ export default function Page({
             <LoadingCard />
           </section>
         ) : (
-          <ContextualPanel infoType={infoType} strongholdId={stronghold.id}/>
+          <ContextualPanel infoType={infoType} strongholdId={stronghold.id} userId={userId}/>
           // <section className={styles.contextualPanel}>
           //   <div className={styles.cardHeader}>contextual information</div>
           //   <p className={styles.infoTitle}>{InfoType.title}</p>
