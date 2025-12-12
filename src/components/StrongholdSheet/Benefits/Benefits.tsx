@@ -9,7 +9,6 @@ interface BenefitsProps {
   loading: boolean;
   type: string | null;
   raisingUnitsStatus: RaisingUnitsStatus | null;
-  setRaisingUnitsStatus: React.Dispatch<React.SetStateAction<RaisingUnitsStatus>>;
   benefits: Stronghold["features"] | null;
   setInfoType: React.Dispatch<
     React.SetStateAction<string>
@@ -21,10 +20,8 @@ export default function Benefits({
   benefits,
   setInfoType,
   type,
-  raisingUnitsStatus,
-  setRaisingUnitsStatus
+  raisingUnitsStatus
 }: BenefitsProps): JSX.Element {
-
 
   return (
     <section>

@@ -242,7 +242,6 @@ export default function Page({
               loading={loading}
               type={stronghold?.stronghold_type ?? null}
               raisingUnitsStatus={raisingUnitsStatus}
-              setRaisingUnitsStatus={setRaisingUnitsStatus}
               benefits={stronghold?.features ?? null}
               setInfoType={setInfoType}
             />
@@ -356,7 +355,13 @@ export default function Page({
             <LoadingCard />
           </section>
         ) : (
-          <ContextualPanel infoType={infoType} strongholdId={stronghold.id} userId={userId}/>
+          <ContextualPanel 
+            infoType={infoType} 
+            strongholdId={stronghold.id} 
+            userId={userId}
+            raisingUnitsStatus={raisingUnitsStatus}
+            setRaisingUnitsStatus={setRaisingUnitsStatus}
+          />
           // <section className={styles.contextualPanel}>
           //   <div className={styles.cardHeader}>contextual information</div>
           //   <p className={styles.infoTitle}>{InfoType.title}</p>

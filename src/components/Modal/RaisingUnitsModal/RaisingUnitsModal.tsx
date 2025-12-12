@@ -3,7 +3,7 @@ import { act, SetStateAction, useEffect, useState } from "react";
 import ModalBackground from "../ModalBackground/ModalBackground";
 import styles from "./styles.module.scss";
 import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
-import { Ancestry, RaisingUnitRow, Unit } from "types";
+import { Ancestry, RaisingUnitRow, RaisingUnitsStatus, Unit } from "types";
 
 interface RaisingUnitsModalProps {
   visible: boolean;
@@ -11,6 +11,8 @@ interface RaisingUnitsModalProps {
   keepType: string;
   strongholdId: number;
   userId: string | null;
+  raisingUnitsStatus: RaisingUnitsStatus | null;
+  setRaisingUnitsStatus: React.Dispatch<React.SetStateAction<RaisingUnitsStatus>>;
 }
 
 export default function RaisingUnitsModal({
@@ -19,6 +21,8 @@ export default function RaisingUnitsModal({
   keepType,
   strongholdId,
   userId,
+  raisingUnitsStatus,
+  setRaisingUnitsStatus
 }: RaisingUnitsModalProps) {
   const [activeUnitRow, setActiveUnitRow] = useState<RaisingUnitRow>();
   const [d100roll, setD100Roll] = useState<number>(0);
