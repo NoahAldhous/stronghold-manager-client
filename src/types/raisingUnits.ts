@@ -9,3 +9,11 @@ export interface RaisingUnitRow {
         type: string;
     }
 }
+
+export interface RaisingUnitsStatus {
+    current_units: number;
+    has_raised_all_units: boolean;
+    id: number;
+    max_units: number;
+    stronghold_id: number;
+  }

@@ -3,7 +3,7 @@ import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
-import type { Stronghold } from "types";
+import type { RaisingUnitsStatus, Stronghold } from "types";
 import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 import UpgradeStrongholdModal from "components/Modal/UpgradeStrongholdModal/UpgradeStrongholdModal";
@@ -62,6 +62,8 @@ export default function Page({
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
   const [infoType, setInfoType] = useState<string>("default");
+  const [raisingUnitsStatus, setRaisingUnitsStatus] =
+  useState<RaisingUnitsStatus | null>(null);
 
   const router = useRouter();
   const { isLoggedIn, userId } = useAuth();
@@ -82,6 +84,14 @@ export default function Page({
       setStrongholdIsUpgraded(false);
     }
   }, [stronghold?.stronghold_level]);
+
+  useEffect(() => {
+    if(!raisingUnitsStatus){
+      if (stronghold?.stronghold_type === "keep") {
+        fetchKeepUnitsRaisedStatus();
+      }
+    }
+  }, [stronghold?.stronghold_type, raisingUnitsStatus]);
 
   async function fetchStrongholdById() {
     if (!stronghold) {
@@ -152,6 +162,27 @@ export default function Page({
     }
   }
 
+  async function fetchKeepUnitsRaisedStatus(): Promise<void> {
+    console.log("fetching unit status for keep...");
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/raising_units/status/get/${stronghold_id}`
+      );
+  
+      if (!res.ok) {
+        throw new Error("There was a problem fetching data. Please try again");
+      }
+  
+      const data = await res.json();
+      setRaisingUnitsStatus(data.status);
+      console.log(raisingUnitsStatus);
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      return;
+    }
+  }
+
   return (
     <main className={styles.main}>
       <section className={styles.strongholdSheetContainer}>
@@ -209,8 +240,9 @@ export default function Page({
             <Stats loading={loading} stats={stronghold?.stats ?? null} />
             <Benefits
               loading={loading}
-              stronghold_id={stronghold_id}
               type={stronghold?.stronghold_type ?? null}
+              raisingUnitsStatus={raisingUnitsStatus}
+              setRaisingUnitsStatus={setRaisingUnitsStatus}
               benefits={stronghold?.features ?? null}
               setInfoType={setInfoType}
             />
