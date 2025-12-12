@@ -4,6 +4,7 @@ import ModalBackground from "../ModalBackground/ModalBackground";
 import styles from "./styles.module.scss";
 import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
 import { Ancestry, RaisingUnitRow, RaisingUnitsStatus, Unit } from "types";
+import { data } from "jquery";
 
 interface RaisingUnitsModalProps {
   visible: boolean;
@@ -132,11 +133,58 @@ export default function RaisingUnitsModal({
     const newUnitId = await addUnit();
     const data = await addUnitRaised(newUnitId, strongholdId, activeUnitRow?.id);
 
-  //  TODO: after adding unit raised, we need to updated the 'raising units status' so that the current units increases by one
-  // TODO: and if the current units is equal to or exceeds max units, sets the 'has raised all units' to true
-
     if(data){
-      console.log("unit has been added to units raised table")
+      const newStatus = updateRaisingUnitsStatus("increment")
+      setRaisingUnitsStatus(await newStatus);
+    }
+  }
+
+  async function updateRaisingUnitsStatus(incrementOrDecrement){
+    const newValue = (
+      incrementOrDecrement === "increment" ? 
+        (raisingUnitsStatus?.current_units ?? 0) + 1
+      : (raisingUnitsStatus?.current_units ?? 0) + 1
+    )
+    const newBoolean = (
+      newValue >= (raisingUnitsStatus?.max_units ?? 0) ?
+      true
+      : false
+    )
+    
+    const newStatus = await patchRaisingUnitsStatusRow(newValue, newBoolean);
+
+    return newStatus;
+  }
+
+  async function patchRaisingUnitsStatusRow(newValue: number, newBoolean: boolean){
+    const dataObject = {
+      currentUnits: newValue,
+      hasRaisedAllUnits: newBoolean
+    }
+
+    try{
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/raising_units/status/update/${strongholdId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-type" : "application/json",
+          },
+          body: JSON.stringify(dataObject),
+        }
+      );
+
+      if (!res.ok){
+        throw new Error("Error: could not update status row")
+      }
+
+      const data = await res.json();
+      console.log(data.updatedRow);
+      return data.updatedRow;
+    } catch(err){
+      console.error(err.message);
+    } finally{
+      setSendingData(false);
     }
   }
 
