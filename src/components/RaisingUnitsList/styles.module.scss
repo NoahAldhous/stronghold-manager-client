@@ -18,14 +18,13 @@
         text-transform: capitalize;
 
         .rollText{
-            // background-color: palevioletred;
             height: 100%;
             width: 25%;
             text-align: center;
-
+            background-color: transparent;
         }
+
         .unitText{
-            // background-color: paleturquoise;
             width: 75%;
             height: 100%;
             display: flex;
@@ -40,5 +39,20 @@
             background-color: $highlight;
         }
 
+    }
+
+    .unitRow.highlight{
+        background-color: $background;
+        color: $offwhite;
+
+        :nth-child(odd){
+            background-color: $background;
+            color: $offwhite;
+
+        }
+
+        .rollText{
+            background-color: transparent;
+        }
     }
 }

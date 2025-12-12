@@ -302,15 +302,19 @@ export default function RaisingUnitsModal({
       <section className={styles.modal}>
         <section className={styles.cardHeader}>Roll on Table</section>
         <section className={styles.list}>
-          <RaisingUnitsList keepType="keep" />
+          <RaisingUnitsList keepType="keep" highlightNumber={d100roll}/>
           <section className={styles.buttonContainer}>
             <button
+              className={styles.button}
               onClick={() => {
                 setVisible(false);
               }}
             >
               close{" "}
             </button>
+
+            <button className={styles.button} onClick={rollOnTable}>Roll d100</button>
+
           </section>
         </section>
         <section className={styles.diceRoller}>
@@ -353,9 +357,7 @@ export default function RaisingUnitsModal({
               </button>
             </section>
           </section>
-          <section className={styles.rollContainer}>
-            <button className={styles.rollButton} onClick={rollOnTable}>Roll d100</button>
-          </section>
+
         </section>
       </section>
     </ModalBackground>

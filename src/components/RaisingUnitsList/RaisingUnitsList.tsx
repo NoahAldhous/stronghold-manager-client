@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { RaisingUnitRow } from "types";
 
-export default function RaisingUnitsList({ keepType }: { keepType: string }) {
+interface RaisingUnitsListProps {
+  keepType: string;
+  highlightNumber: number;
+}
+
+export default function RaisingUnitsList({ keepType, highlightNumber }: RaisingUnitsListProps) {
   const [unitsRaisedList, setUnitsRaisedList] = useState<
     RaisingUnitRow[] | null
   >(null);
@@ -45,7 +50,7 @@ export default function RaisingUnitsList({ keepType }: { keepType: string }) {
         <p className={`${styles.unitText} ${styles.bold}`}>unit raised</p>
       </div>
       {unitsRaisedList?.map((row, index) => (
-        <div key={index} className={styles.unitRow}>
+        <div key={row.id} className={`${styles.unitRow} ${(highlightNumber <= row.highNumber) && (highlightNumber >= row.lowNumber) ? styles.highlight : ""}`}>
           <p className={styles.rollText}>
             {row.lowNumber}-{row.highNumber}
           </p>
