@@ -13,7 +13,9 @@ interface RaisingUnitsModalProps {
   strongholdId: number;
   userId: string | null;
   raisingUnitsStatus: RaisingUnitsStatus | null;
-  setRaisingUnitsStatus: React.Dispatch<React.SetStateAction<RaisingUnitsStatus>>;
+  setRaisingUnitsStatus: React.Dispatch<
+    React.SetStateAction<RaisingUnitsStatus>
+  >;
 }
 
 export default function RaisingUnitsModal({
@@ -23,7 +25,7 @@ export default function RaisingUnitsModal({
   strongholdId,
   userId,
   raisingUnitsStatus,
-  setRaisingUnitsStatus
+  setRaisingUnitsStatus,
 }: RaisingUnitsModalProps) {
   const [activeUnitRow, setActiveUnitRow] = useState<RaisingUnitRow>();
   const [d100roll, setD100Roll] = useState<number>(0);
@@ -131,59 +133,64 @@ export default function RaisingUnitsModal({
 
   async function handleSubmit() {
     const newUnitId = await addUnit();
-    const data = await addUnitRaised(newUnitId, strongholdId, activeUnitRow?.id);
+    const data = await addUnitRaised(
+      newUnitId,
+      strongholdId,
+      activeUnitRow?.id
+    );
 
-    if(data){
-      const newStatus = updateRaisingUnitsStatus("increment")
+    if (data) {
+      const newStatus = updateRaisingUnitsStatus("increment");
       setRaisingUnitsStatus(await newStatus);
     }
   }
 
-  async function updateRaisingUnitsStatus(incrementOrDecrement){
-    const newValue = (
-      incrementOrDecrement === "increment" ? 
-        (raisingUnitsStatus?.current_units ?? 0) + 1
-      : (raisingUnitsStatus?.current_units ?? 0) + 1
-    )
-    const newBoolean = (
-      newValue >= (raisingUnitsStatus?.max_units ?? 0) ?
-      true
-      : false
-    )
-    
+  async function updateRaisingUnitsStatus(
+    incrementOrDecrement: "increment" | "decrement"
+  ) {
+    const newValue =
+      incrementOrDecrement === "increment"
+        ? (raisingUnitsStatus?.current_units ?? 0) + 1
+        : (raisingUnitsStatus?.current_units ?? 0) + 1;
+    const newBoolean =
+      newValue >= (raisingUnitsStatus?.max_units ?? 0) ? true : false;
+
     const newStatus = await patchRaisingUnitsStatusRow(newValue, newBoolean);
 
     return newStatus;
   }
 
-  async function patchRaisingUnitsStatusRow(newValue: number, newBoolean: boolean){
+  async function patchRaisingUnitsStatusRow(
+    newValue: number,
+    newBoolean: boolean
+  ) {
     const dataObject = {
       currentUnits: newValue,
-      hasRaisedAllUnits: newBoolean
-    }
+      hasRaisedAllUnits: newBoolean,
+    };
 
-    try{
+    try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/strongholds/raising_units/status/update/${strongholdId}`,
         {
           method: "PATCH",
           headers: {
-            "Content-type" : "application/json",
+            "Content-type": "application/json",
           },
           body: JSON.stringify(dataObject),
         }
       );
 
-      if (!res.ok){
-        throw new Error("Error: could not update status row")
+      if (!res.ok) {
+        throw new Error("Error: could not update status row");
       }
 
       const data = await res.json();
       console.log(data.updatedRow);
       return data.updatedRow;
-    } catch(err){
+    } catch (err) {
       console.error(err.message);
-    } finally{
+    } finally {
       setSendingData(false);
     }
   }
@@ -307,47 +314,48 @@ export default function RaisingUnitsModal({
           </section>
         </section>
         <section className={styles.diceRoller}>
-          <input
-            type="text"
-            value={unit.name}
-            onChange={handleInputChange}
-            placeholder="enter a name..."
-          ></input>
-          <section className={styles.formSection}>
-            <label className={styles.label} htmlFor="ancestry-select">
-              ancestry:
-            </label>
-            <select
-              value={unit?.ancestry}
-              className={styles.select}
-              onChange={(e) => handleSelectChange("ancestry", e.target.value)}
-              name="ancestries"
-              id="ancestry-select"
-            >
-              {ancestries?.map((ancestry, index) => (
-                <option key={index} value={ancestry.name}>
-                  {ancestry.name}
-                </option>
-              ))}
-            </select>
+          
+          <section className={styles.rolledUnit}>
+            <p className={styles.resultText}>Result: {d100roll}</p>
+            <p className={styles.unitText}>
+                {d100roll === 0 ? "" : newUnitData.ancestry} {newUnitData.equipment}{" "}
+                {newUnitData.experience} {newUnitData.unit_type}
+            </p>
+            <section className={styles.inputContainer}>
+              <input
+                type="text"
+                value={unit.name}
+                onChange={handleInputChange}
+                placeholder="enter a name..."
+              ></input>
+              <section className={styles.formSection}>
+                <label className={styles.label} htmlFor="ancestry-select">
+                  ancestry:
+                </label>
+                <select
+                  value={unit?.ancestry}
+                  className={styles.select}
+                  onChange={(e) => handleSelectChange("ancestry", e.target.value)}
+                  name="ancestries"
+                  id="ancestry-select"
+                >
+                  {ancestries?.map((ancestry, index) => (
+                    <option key={index} value={ancestry.name}>
+                      {ancestry.name}
+                    </option>
+                  ))}
+                </select>
+              </section>
+            </section>
+            <section className={styles.buttonContainer}>
+              <button className={styles.button} disabled={!allFieldsComplete} onClick={handleSubmit}>
+                add unit to stronghold
+              </button>
+            </section>
           </section>
-          <div>{d100roll}</div>
-          <div>
-            {activeUnitRow?.unit?.experience} {activeUnitRow?.unit?.equipment}{" "}
-            {activeUnitRow?.unit?.type}
-          </div>
-          <button onClick={rollOnTable}>Roll d100</button>
-          <p>
-            {newUnitData.unit_name} <br />
-            {newUnitData.ancestry} <br />
-            {newUnitData.equipment} <br />
-            {newUnitData.experience} <br />
-            {newUnitData.unit_type} <br />
-            {newUnitData.stronghold_id}
-          </p>
-          <button disabled={!allFieldsComplete} onClick={handleSubmit}>
-            add unit to stronghold
-          </button>
+          <section className={styles.rollContainer}>
+            <button className={styles.rollButton} onClick={rollOnTable}>Roll d100</button>
+          </section>
         </section>
       </section>
     </ModalBackground>

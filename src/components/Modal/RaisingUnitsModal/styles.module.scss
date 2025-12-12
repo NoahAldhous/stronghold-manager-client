@@ -1,15 +1,16 @@
 @use "../../../app/variables" as *;
 
 .modal{
-    width: 75vw;
-    height: 75vh;
+    width: 80vw;
+    height: 80vh;
     background-color: aliceblue;
     @include cardContainer;
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
 
     .list{
-        width: 50%;
+        width: 45%;
         // height: 100%;
         overflow-y: auto;
         display: flex;
@@ -24,11 +25,79 @@
     }
 
     .diceRoller{
-        width: 50%;
+        width: 45%;
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
+
+        .rollContainer{
+            width: 100%;
+            height: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            border-top: $bottomBorder;
+        }
+
+
+        .rollButton{
+            padding: 0.5rem;
+            font-weight: 600;
+        }
+
+        .rolledUnit{
+            width: 90%;
+            height: 50%;
+            border: 1px solid $selected;
+            box-shadow: $boxShadow;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            position: relative;
+            @include cardContainer;
+
+            .resultText{
+                width: 100%;
+                height: 10%;
+                // background-color: blue;
+            }
+
+            .unitText{
+                width: 100%;
+                // background-color: red;
+                height: 15%;
+                font-size: large;
+                text-transform: capitalize;
+                font-weight: 500;
+                border-bottom: $bottomBorder;
+                display: flex;
+                align-items: center;
+            }
+
+            .inputContainer{
+                width: 100%;
+                height: 55%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: flex-start;
+            }
+
+            .buttonContainer{
+                width: 100%;
+                height: 20%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .button{
+                    padding: 0.5rem;
+                    text-transform: capitalize;
+                }
+            }
+        }
     }
 }
