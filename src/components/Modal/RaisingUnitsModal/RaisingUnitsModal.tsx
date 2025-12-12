@@ -69,6 +69,11 @@ export default function RaisingUnitsModal({
     setD100Roll(roll);
   }
 
+  function handleClose(){
+    setD100Roll(0);
+    setVisible(false);
+  }
+
   function handleSelectChange(objectKey: string, objectValue: string) {
     setUnit({
       ...unit,
@@ -300,14 +305,15 @@ export default function RaisingUnitsModal({
   return visible ? (
     <ModalBackground>
       <section className={styles.modal}>
-        <section className={styles.cardHeader}>Roll on Table</section>
+        <section className={styles.cardHeader}>Roll on Table <button onClick={handleClose} className={styles.closeButton}>X</button></section>
         <section className={styles.list}>
+          <p className={styles.listTitle}>units raised by {keepType}</p>
           <RaisingUnitsList keepType="keep" highlightNumber={d100roll}/>
           <section className={styles.buttonContainer}>
             <button
               className={styles.button}
               onClick={() => {
-                setVisible(false);
+                handleClose()
               }}
             >
               close{" "}

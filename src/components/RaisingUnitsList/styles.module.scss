@@ -4,9 +4,11 @@
 .raisingUnitsList{
     width: 100%;
     display: flex;
-    flex-flow: column wrap;
+    flex-direction: column;
+    // flex-flow: column wrap;
     align-items: flex-start;
     align-items: center;
+    overflow-y: auto;
 
     .unitRow{
         width: 100%;
@@ -16,6 +18,8 @@
         padding: 0.5rem;
         font-size: small;
         text-transform: capitalize;
+        transition: background-color, color;
+        transition-duration: 100ms;
 
         .rollText{
             height: 100%;
