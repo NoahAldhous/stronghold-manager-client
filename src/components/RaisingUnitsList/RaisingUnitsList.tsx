@@ -55,7 +55,7 @@ export default function RaisingUnitsList({ keepType, highlightNumber, setd100Rol
         loading ? 
         <div className={styles.loadingList}>
           {Array.from({ length: 13}).map((_, i) => (
-            <div className={styles.loadingRow}>loading...</div>
+            <div key={i} className={styles.loadingRow}>loading...</div>
           ))}
         </div>
         :
