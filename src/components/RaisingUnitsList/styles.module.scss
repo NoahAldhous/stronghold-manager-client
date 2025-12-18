@@ -10,6 +10,53 @@
     align-items: center;
     overflow-y: auto;
 
+    .loadingList{
+        width: 100%;
+
+        .loadingRow {
+            background: linear-gradient(
+              to right,
+              $mid 8%,
+              $highlight 18%,
+              $mid 33%
+            );
+            background-size: 1000px 100%;
+            animation: shimmer 1.5s infinite linear forwards;
+            height: 100%;
+            width: 100%;
+            opacity: 50%;
+            padding: 0.5rem;
+            font-size: small;
+            display: flex;
+            justify-content: center;
+            border-bottom: $bottomBorder;
+
+            &:nth-child(odd){
+            background: linear-gradient(
+              to right,
+              $selected 8%,
+              $mid 18%,
+              $selected 33%
+            );
+            background-size: 1000px 100%;
+            animation: shimmer 1.5s infinite linear forwards;
+            height: 100%;
+            width: 100%;
+            opacity: 50%;
+            color: $offwhite
+            }
+          }
+      
+        @keyframes shimmer {
+            0% {
+            background-position: -1000px 0;
+            }
+            100% {
+            background-position: 1000px 0;
+            }
+        }
+    }
+
     .unitRow{
         width: 100%;
         display: flex;
@@ -18,14 +65,23 @@
         padding: 0.5rem;
         font-size: small;
         text-transform: capitalize;
-        transition: background-color, color;
-        transition-duration: 100ms;
+
+        &:hover{
+            background-color: $offwhite;
+            cursor: pointer;
+            color: $text;
+        }
 
         .rollText{
             height: 100%;
             width: 25%;
             text-align: center;
             background-color: transparent;
+            &:hover{
+                background-color: $offwhite;
+                cursor: pointer;
+                color: $text;
+            }
         }
 
         .unitText{
@@ -38,20 +94,30 @@
         .bold{
             font-weight: 600;
         }
-
+        
+        
         &:nth-child(odd){
             background-color: $highlight;
+            
+            &:hover{
+                background-color: $offwhite;
+                cursor: pointer;
+                color: $text;
+            }
         }
-
+        
+    }
+    .title{
+        pointer-events: none;
     }
 
     .unitRow.highlight{
-        background-color: $background;
-        color: $offwhite;
+        background-color: $background !important;
+        color: $offwhite !important;
 
         :nth-child(odd){
-            background-color: $background;
-            color: $offwhite;
+            background-color: $background !important;
+            color: $offwhite !important;
 
         }
 

@@ -6,16 +6,18 @@ import { RaisingUnitRow } from "types";
 interface RaisingUnitsListProps {
   keepType: string;
   highlightNumber: number;
+  setd100Roll: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function RaisingUnitsList({ keepType, highlightNumber }: RaisingUnitsListProps) {
+export default function RaisingUnitsList({ keepType, highlightNumber, setd100Roll }: RaisingUnitsListProps) {
   const [unitsRaisedList, setUnitsRaisedList] = useState<
     RaisingUnitRow[] | null
   >(null);
-  // const [type, setType] = useState(keepType)
+  const [loading, setLoading] = useState<boolean>(true);
 
   async function fetchUnitsRaised(keepOrCamp): Promise<void> {
-    if (!unitsRaisedList && keepType) {
+    if (!unitsRaisedList) {
+      setLoading(true);
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/strongholds/raising_units/get/${keepOrCamp}`
@@ -30,35 +32,44 @@ export default function RaisingUnitsList({ keepType, highlightNumber }: RaisingU
       } catch (err) {
         console.log(err.message);
       } finally {
+        setLoading(false);
         return;
       }
     }
   }
 
-  // useEffect(() => {
-  //   if(type){
-  //       fetchUnitsRaised(type);
-  //   }
-  // }, [keepType]);
+  useEffect(() => {
+    if(keepType){
+        fetchUnitsRaised(keepType);
+    }
+  }, [keepType]);
 
-  fetchUnitsRaised(keepType);
 
   return (
     <div className={styles.raisingUnitsList}>
-      <div className={styles.unitRow}>
+      <div className={`${styles.unitRow} ${styles.title}`}>
         <p className={`${styles.rollText} ${styles.bold}`}>d100 roll</p>
         <p className={`${styles.unitText} ${styles.bold}`}>unit raised</p>
       </div>
-      {unitsRaisedList?.map((row, index) => (
-        <div key={row.id} className={`${styles.unitRow} ${(highlightNumber <= row.highNumber) && (highlightNumber >= row.lowNumber) ? styles.highlight : ""}`}>
-          <p className={styles.rollText}>
-            {row.lowNumber}-{row.highNumber}
-          </p>
-          <p className={styles.unitText}>
-            {row.unit.experience} {row.unit.equipment} {row.unit.type}
-          </p>
+      {
+        loading ? 
+        <div className={styles.loadingList}>
+          {Array.from({ length: 13}).map((_, i) => (
+            <div className={styles.loadingRow}>loading...</div>
+          ))}
         </div>
-      ))}
+        :
+        unitsRaisedList?.map((row, index) => (
+          <div key={row.id} onClick={() => {setd100Roll(row.lowNumber)}} className={`${styles.unitRow} ${(highlightNumber <= row.highNumber) && (highlightNumber >= row.lowNumber) ? styles.highlight : ""}`}>
+            <p className={styles.rollText}>
+              {row.lowNumber}-{row.highNumber}
+            </p>
+            <p className={styles.unitText}>
+              {row.unit.experience} {row.unit.equipment} {row.unit.type}
+            </p>
+          </div>
+        ))
+      }
     </div>
   );
 }

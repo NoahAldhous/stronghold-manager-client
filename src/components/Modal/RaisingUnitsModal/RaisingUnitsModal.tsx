@@ -286,6 +286,7 @@ const [types, setTypes] = useState<UnitType[] | null>(null);
   fetchUnitsRaised(keepType);
 
   async function handleSubmit() {
+    setSendingData(true);
     const newUnitId = await addUnit();
     const data = await addUnitRaised(
       newUnitId,
@@ -571,8 +572,10 @@ const [types, setTypes] = useState<UnitType[] | null>(null);
       <section className={styles.modal}>
         <section className={styles.cardHeader}>Roll on Table <button onClick={handleClose} className={styles.closeButton}>X</button></section>
         <section className={styles.list}>
-          <p className={styles.listTitle}>units raised by {keepType}</p>
-          <RaisingUnitsList keepType="keep" highlightNumber={d100roll}/>
+          <p className={styles.listTitle}>units raised by {keepType}- {(raisingUnitsStatus?.max_units ?? 0)- (raisingUnitsStatus?.current_units ?? 0)} remaining</p>
+          <div className={styles.listContainer}>
+            <RaisingUnitsList keepType="keep" highlightNumber={d100roll} setd100Roll={setD100Roll}/>
+          </div>
           <section className={styles.buttonContainer}>
             <button
               className={styles.button}
@@ -589,42 +592,50 @@ const [types, setTypes] = useState<UnitType[] | null>(null);
         </section>
         <section className={styles.unitDisplay}>
           <p className={styles.resultText}>Result: {d100roll}</p>
-          
           <section className={styles.container}>
-            <section className={styles.inputContainer}>
-              <input
-                type="text"
-                value={unit.name}
-                onChange={handleInputChange}
-                placeholder="enter a name..."
-              ></input>
-              <section className={styles.formSection}>
-                <label className={styles.label} htmlFor="ancestry-select">
-                  ancestry:
-                </label>
-                <select
-                  value={unit?.ancestry?.name}
-                  className={styles.select}
-                  onChange={(e) => handleSelectChange("ancestry", e.target.value)}
-                  name="ancestries"
-                  id="ancestry-select"
-                >
-                  {ancestries?.map((ancestry, index) => (
-                    <option key={index} value={ancestry.name}>
-                      {ancestry.name}
-                    </option>
-                  ))}
-                </select>
+            <div className={styles.card}>
+
+              <section className={styles.inputContainer}>
+                <input
+                  type="text"
+                  value={unit.name}
+                  onChange={handleInputChange}
+                  placeholder="enter a name..."
+                ></input>
+                <section className={styles.formSection}>
+                  <label className={styles.label} htmlFor="ancestry-select">
+                    ancestry:
+                  </label>
+                  <select
+                    value={unit?.ancestry?.name}
+                    className={styles.select}
+                    onChange={(e) => handleSelectChange("ancestry", e.target.value)}
+                    name="ancestries"
+                    id="ancestry-select"
+                  >
+                    {ancestries?.map((ancestry, index) => (
+                      <option key={index} value={ancestry.name}>
+                        {ancestry.name}
+                      </option>
+                    ))}
+                  </select>
+                </section>
               </section>
-            </section>
-            <section className={styles.buttonContainer}>
-              <button className={styles.button} disabled={!allFieldsComplete} onClick={handleSubmit}>
-                add unit to stronghold
-              </button>
-            </section>
+                <section className={styles.buttonContainer}>
+                  <button className={styles.button} disabled={!allFieldsComplete || sendingData} onClick={handleSubmit}>
+                    add unit to stronghold
+                  </button>
+                </section>
+            </div>
           </section>
           <section className={styles.unitCardContainer}>
+            {
+              !d100roll ? <div className={styles.placeholderUnitCard}>
+                <p>Roll to raise unit!</p>
+              </div>
+              :
             <UnitCard clickable={false} unit={unit} simplified={true}/>
+            }
           </section>
         </section>
       </section>
