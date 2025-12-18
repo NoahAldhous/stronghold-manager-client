@@ -56,6 +56,8 @@ $selected-transparent : rgba(148, 147, 147, 0.5);
 $text : #0E131B;
 $text-transparent : #0e131b7a;
 $warning : rgb(146, 47, 47);
+$warning-light : rgb(218, 71, 71);
+$bonus: rgb(38, 110, 50);
 
 //MATRIX MODE
 // $background: black;
@@ -98,12 +100,22 @@ $bottomBorder: 2px solid $selected;
 $unitCardHeight: 65vh;
 $unitCardRatio: 4/5;
 
+$simplifiedCardHeight: 65vh;
+$simplifiedCardRatio: 1/1;
+
 //MIXINS
 
 //Unit Card
 @mixin unitCardDimensions {
     height: $unitCardHeight;
     aspect-ratio: $unitCardRatio;
+}
+
+@mixin simplifiedUnitCardDimensions {
+    height: auto;
+    width: 90%;
+    aspect-ratio: 5/4;
+
 }
 
 //Hide desktop content

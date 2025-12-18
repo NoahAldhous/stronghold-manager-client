@@ -13,13 +13,15 @@ type UnitCardProps = {
   deleteModalSettings?: DeleteModalSettings;
   setDeleteModalSettings?: React.Dispatch<SetStateAction<DeleteModalSettings>>;
   clickable: boolean;
+  simplified?: boolean
 };
 
 export default function UnitCard({
   unit,
   deleteModalSettings,
   setDeleteModalSettings,
-  clickable
+  clickable,
+  simplified
 }: UnitCardProps) {
   const [activeCard, setActiveCard] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -167,7 +169,7 @@ export default function UnitCard({
           clickable ? setActiveCard(true) : null;
         }}
         key={unit?.id}
-        className={`${styles.card} ${!clickable ? styles.notClickable : ""} ${activeCard ? styles.activeCard : ""}`}
+        className={`${styles.card} ${!clickable ? styles.notClickable : ""} ${activeCard ? styles.activeCard : ""} ${simplified ? styles.simplified : ""}`}
       >
         <section className={styles.cardTop}>
           <section className={styles.cardBanners}>
@@ -326,9 +328,9 @@ export default function UnitCard({
             {unit?.traits?.map((trait, index) => (
               <div key={index}>
                 <p className={styles.traitName}>{trait.traitName}</p>
-                <p className={styles.traitDescription}>
+                {simplified? null :<p className={styles.traitDescription}>
                   {trait.traitDescription}
-                </p>
+                </p>}
               </div>
             ))}
           </section>

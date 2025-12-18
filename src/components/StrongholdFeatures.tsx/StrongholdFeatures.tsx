@@ -209,7 +209,7 @@ export default function StrongholdFeatures({
                   feature.title === "raising units" && strongholdType ? (
                     <>
                       <br/>
-                      <RaisingUnitsList keepType={strongholdType}/>
+                      <RaisingUnitsList keepType={strongholdType} highlightNumber={0}/>
                     </>
 
                   ) : null

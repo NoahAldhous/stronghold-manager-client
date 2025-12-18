@@ -361,6 +361,7 @@ export default function Page({
             userId={userId}
             raisingUnitsStatus={raisingUnitsStatus}
             setRaisingUnitsStatus={setRaisingUnitsStatus}
+            strongholdBenefits={stronghold?.features ?? null}
           />
           // <section className={styles.contextualPanel}>
           //   <div className={styles.cardHeader}>contextual information</div>
