@@ -6,7 +6,7 @@ import { RaisingUnitRow } from "types";
 interface RaisingUnitsListProps {
   keepType: string;
   highlightNumber: number;
-  setd100Roll: React.Dispatch<React.SetStateAction<number>>;
+  setd100Roll?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function RaisingUnitsList({ keepType, highlightNumber, setd100Roll }: RaisingUnitsListProps) {
@@ -60,7 +60,7 @@ export default function RaisingUnitsList({ keepType, highlightNumber, setd100Rol
         </div>
         :
         unitsRaisedList?.map((row, index) => (
-          <div key={row.id} onClick={() => {setd100Roll(row.lowNumber)}} className={`${styles.unitRow} ${(highlightNumber <= row.highNumber) && (highlightNumber >= row.lowNumber) ? styles.highlight : ""}`}>
+          <div key={row.id} onClick={() => {setd100Roll ? setd100Roll(row.lowNumber) : null}} className={`${styles.unitRow} ${(highlightNumber <= row.highNumber) && (highlightNumber >= row.lowNumber) ? styles.highlight : ""}`}>
             <p className={styles.rollText}>
               {row.lowNumber}-{row.highNumber}
             </p>
