@@ -5,6 +5,7 @@ import { Stronghold, Units, RaisingUnitRow } from "types";
 import UnitCard from "components/UnitCard/UnitCard";
 import { StatsCalculator } from "lib/StatsCalculator";
 import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
+import ArtisanFeatures from "./ArtisanFeatures/ArtisanFeatures";
 
 interface StrongholdFeaturesType {
   userId: string | null;
@@ -362,6 +363,14 @@ export default function StrongholdFeatures({
             );
         }
       case "artisans":
+        switch(activeButton.subCategory){
+          case "all":
+            return <ArtisanFeatures strongholdId = {strongholdId}/>
+          case "acquired":
+            return <p>acquired</p>
+          case "unacquired":
+            return <p>unacquired</p>
+        }
         return <p>artisans</p>;
       case "followers":
         return <p>followers</p>;
