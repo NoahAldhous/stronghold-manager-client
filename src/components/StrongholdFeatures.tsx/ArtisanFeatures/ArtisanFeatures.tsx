@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ArtisanCard from "./ArtisanCard/ArtisanCard";
 import styles from "./styles.module.scss";
+import { ArtisanShops } from "types";
 
 interface ArtisanFeaturesType {
     strongholdId: string;
@@ -9,7 +10,7 @@ interface ArtisanFeaturesType {
 
 export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
 
-    const [artisanShopsList, setArtisanShopsList] = useState()
+    const [artisanShopsList, setArtisanShopsList] = useState<ArtisanShops| null>(null);
     const [strongholdArtisansList, setStrongholdArtisansList] = useState()
     const [loading, setLoading] = useState<boolean>(false)
 
@@ -37,7 +38,7 @@ export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
         }
     }  
 
-    async function fetchArtisans(): Promise<void> {
+    async function fetchStrongholdArtisans(): Promise<void> {
         if(!strongholdArtisansList) {
             setLoading(true)
             if(strongholdId){
@@ -69,7 +70,7 @@ export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
             fetchArtisanShops();
         }
         if(!strongholdArtisansList){
-            fetchArtisans();
+            fetchStrongholdArtisans();
         }
     }, [artisanShopsList])
 
@@ -79,7 +80,7 @@ export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
         : 
         <div className={styles.cardContainer}>
             {artisanShopsList?.map((item, index) => (
-                <ArtisanCard key={index} artisan={item}/>
+                <ArtisanCard key={index} artisan={item} level={strongholdArtisansList?.[item.artisan_name]}/>
             )
             )}
         </div>    
