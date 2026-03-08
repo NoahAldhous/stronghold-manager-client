@@ -367,7 +367,7 @@ export default function StrongholdFeatures({
       case "artisans":
         switch(activeButton.subCategory){
           case "all":
-            return <ArtisanFeatures strongholdId = {strongholdId}/>
+            return <ArtisanFeatures strongholdId = {strongholdId} setContextualPanelType={setContextualPanelType}/>
           case "acquired":
             return <p>acquired</p>
           case "unacquired":

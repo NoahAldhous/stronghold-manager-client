@@ -1,9 +1,10 @@
 "use client";
 import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
 import styles from "./Styles.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RaisingUnitsModal from "components/Modal/RaisingUnitsModal/RaisingUnitsModal";
-import { RaisingUnitsStatus } from "types";
+import { ArtisanShop, RaisingUnitsStatus } from "types";
+import ArtisanContextualPanel from "./ArtisanContextualPanel/ArtisanContextualPanel";
 
 interface ContextualPanelProps {
   contextualPanelType: {type: string, subtype: string};
@@ -30,7 +31,7 @@ export default function ContextualMenu({
   strongholdBenefits,
 }: ContextualPanelProps) {
   const [visible, setVisible] = useState<boolean>(false);
-
+  
   function displayModal() {
     setVisible(true);
   }
@@ -70,6 +71,10 @@ export default function ContextualMenu({
               </>
             );
         }
+      case "artisan":
+        return <ArtisanContextualPanel contextualPanelType={contextualPanelType}/>
+          
+
     }
   }
 

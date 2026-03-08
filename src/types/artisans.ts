@@ -1,7 +1,8 @@
 export type ArtisanShop = {
+    id: number,
     artisan_name: string,
     shop_name: string,
-    description: string,
+    shop_description: string,
     upgradeable: boolean
 }
 

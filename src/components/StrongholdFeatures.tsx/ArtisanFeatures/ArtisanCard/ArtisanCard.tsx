@@ -3,10 +3,17 @@ import { useState } from "react";
 import styles from "./styles.module.scss";
 import Image from "next/image";
 
-export default function ArtisanCard({artisan, level}){
+export default function ArtisanCard({artisan, level, setContextualPanelType}){
+
+    function handleClick(){
+        setContextualPanelType({
+            type: "artisan",
+            subtype: artisan.artisan_name
+        })
+    }
 
     return <div className={`${styles.card} ${level == 0 ? styles.disabled : ""}`}>
-        <section className={styles.content}>
+        <section className={styles.content} onClick={handleClick}>
             <div className={styles.imageContainer}>
                 <Image 
                     src={`/images/artisans/${artisan.artisan_name}.svg`} 

@@ -6,9 +6,10 @@ import { ArtisanShops } from "types";
 
 interface ArtisanFeaturesType {
     strongholdId: string;
+    setContextualPanelType: React.Dispatch<React.SetStateAction<{type: string, subtype:string}>>;
 }
 
-export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
+export default function ArtisanFeatures({strongholdId, setContextualPanelType}: ArtisanFeaturesType){
 
     const [artisanShopsList, setArtisanShopsList] = useState<ArtisanShops| null>(null);
     const [strongholdArtisansList, setStrongholdArtisansList] = useState()
@@ -80,7 +81,12 @@ export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
         : 
         <div className={styles.cardContainer}>
             {artisanShopsList?.map((item, index) => (
-                <ArtisanCard key={index} artisan={item} level={strongholdArtisansList?.[item.artisan_name]}/>
+                <ArtisanCard 
+                    key={index} 
+                    artisan={item} 
+                    level={strongholdArtisansList?.[item.artisan_name]}
+                    setContextualPanelType={setContextualPanelType}
+                />
             )
             )}
         </div>    
