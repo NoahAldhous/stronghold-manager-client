@@ -16,7 +16,7 @@ export default function ArtisanCard({artisan, level}){
                 />
             </div>
             <section className={styles.textContainer}>
-                <p className={styles.text}>{artisan.artisan_name}'s {artisan.shop_name}</p>
+                <p className={styles.text}>{artisan.artisan_name}&apos;s {artisan.shop_name}</p>
                 <p className={styles.text}>level {level}</p>
             </section>
         </section>
