@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import ArtisanCard from "./ArtisanCard/ArtisanCard";
+import styles from "./styles.module.scss";
 
 interface ArtisanFeaturesType {
     strongholdId: string;
@@ -7,11 +9,36 @@ interface ArtisanFeaturesType {
 
 export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
 
-    const [artisansList, setArtisansList] = useState()
+    const [artisanShopsList, setArtisanShopsList] = useState()
+    const [strongholdArtisansList, setStrongholdArtisansList] = useState()
     const [loading, setLoading] = useState<boolean>(false)
 
+    async function fetchArtisanShops(): Promise<void> {
+        setLoading(true)
+        try {
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/strongholds/artisans/shops`
+            );
+
+            if (!res.ok) {
+                throw new Error(
+                    "There was a problem fetching Artisan Shops."
+                );
+            }
+
+            const data = await res.json();
+            setArtisanShopsList(data.artisanShops)
+            console.log(data.artisanShops)
+
+        } catch (err) {
+            console.log(err.message)
+        } finally {
+            setLoading(false);
+        }
+    }  
+
     async function fetchArtisans(): Promise<void> {
-        if(!artisansList) {
+        if(!strongholdArtisansList) {
             setLoading(true)
             if(strongholdId){
                 try {
@@ -26,7 +53,7 @@ export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
                     }
 
                     const data = await res.json();
-                    setArtisansList(data.artisans);
+                    setStrongholdArtisansList(data.artisans);
                     console.log(data.artisans)
                 } catch (err) {
                     console.log(err.message);
@@ -38,21 +65,21 @@ export default function ArtisanFeatures({strongholdId}: ArtisanFeaturesType){
     }
 
     useEffect(() => {
-        if(!artisansList){
+        if(!artisanShopsList){
+            fetchArtisanShops();
+        }
+        if(!strongholdArtisansList){
             fetchArtisans();
         }
-    }, [artisansList])
+    }, [artisanShopsList])
 
     return <div>
-        {loading || !artisansList ?
+        {loading || !artisanShopsList ?
         <p>loading</p>
         : 
-        <div>
-            artisans:
-            {Object.entries(artisansList).map(([key, value]) => (
-                <div key={key}>
-                    <span>{key}</span>: <span>{value}</span>
-                </div>
+        <div className={styles.cardContainer}>
+            {artisanShopsList?.map((item, index) => (
+                <ArtisanCard key={index} artisan={item}/>
             )
             )}
         </div>    
