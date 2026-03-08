@@ -108,6 +108,10 @@ const [types, setTypes] = useState<UnitType[] | null>(null);
   }
 
   function handleClose(){
+    setUnit({
+      ...unit,
+      name: ""
+    })
     setD100Roll(0);
     setVisible(false);
   }

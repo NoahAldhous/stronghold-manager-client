@@ -24,7 +24,7 @@ export default function RaisingUnitsList({ keepType, highlightNumber, setd100Rol
         );
 
         if (!res.ok) {
-          throw new Error("There was a problem fetching data. Pleas try again");
+          throw new Error("There was a problem fetching data. Please try again");
         }
 
         const data = await res.json();
