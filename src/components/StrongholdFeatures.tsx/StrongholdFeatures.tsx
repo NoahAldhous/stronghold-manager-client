@@ -39,6 +39,7 @@ interface StrongholdFeaturesType {
   } | null;
   strongholdType: string | null;
   characterClass: string | null;
+  setContextualPanelType: React.Dispatch<React.SetStateAction<{type: string, subtype:string}>>;
 }
 
 export default function StrongholdFeatures({
@@ -52,6 +53,7 @@ export default function StrongholdFeatures({
   classFeatureImprovement,
   strongholdType,
   characterClass,
+  setContextualPanelType
 }: StrongholdFeaturesType) {
   const [unitsList, setUnitsList] = useState<Units | null>(null);
   const [loading, setLoading] = useState<boolean>(false);

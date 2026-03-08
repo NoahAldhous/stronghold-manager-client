@@ -6,7 +6,7 @@ import RaisingUnitsModal from "components/Modal/RaisingUnitsModal/RaisingUnitsMo
 import { RaisingUnitsStatus } from "types";
 
 interface ContextualPanelProps {
-  infoType: string;
+  contextualPanelType: {type: string, subtype: string};
   strongholdId: number;
   userId: string | null;
   raisingUnitsStatus: RaisingUnitsStatus | null;
@@ -22,7 +22,7 @@ interface ContextualPanelProps {
 }
 
 export default function ContextualMenu({
-  infoType,
+  contextualPanelType,
   strongholdId,
   userId,
   raisingUnitsStatus,
@@ -36,43 +36,46 @@ export default function ContextualMenu({
   }
 
   function renderContent() {
-    switch (infoType) {
-      case "raising units":
-        const feature = strongholdBenefits?.filter(
-          (item) => item?.title === "raising units"
-        );
-        return (
-          <>
-            <p>{feature ? feature[0].description : ""}</p>
-            {
-                raisingUnitsStatus?.has_raised_all_units ? null :
-                    <div>
-                        <p>you have <span>{(raisingUnitsStatus?.max_units ?? 0) - (raisingUnitsStatus?.current_units ?? 0)}</span> units left to raise</p>
-                    </div>
-
-            }
-            <div className={styles.buttonContainer}>
-              <button onClick={displayModal} className={styles.button}>
-                roll on table
-              </button>
-            </div>
-            <RaisingUnitsModal
-              visible={visible}
-              setVisible={setVisible}
-              keepType="keep"
-              strongholdId={strongholdId}
-              userId={userId}
-              raisingUnitsStatus={raisingUnitsStatus}
-              setRaisingUnitsStatus={setRaisingUnitsStatus}
-            />
-          </>
-        );
+    switch (contextualPanelType.type) {
+      case "stronghold benefits":
+        switch (contextualPanelType.subtype){
+          case "raising units":
+            const feature = strongholdBenefits?.filter(
+              (item) => item?.title === "raising units"
+            );
+            return (
+              <>
+                <p>{feature ? feature[0].description : ""}</p>
+                {
+                    raisingUnitsStatus?.has_raised_all_units ? null :
+                        <div>
+                            <p>you have <span>{(raisingUnitsStatus?.max_units ?? 0) - (raisingUnitsStatus?.current_units ?? 0)}</span> units left to raise</p>
+                        </div>
+    
+                }
+                <div className={styles.buttonContainer}>
+                  <button onClick={displayModal} className={styles.button}>
+                    roll on table
+                  </button>
+                </div>
+                <RaisingUnitsModal
+                  visible={visible}
+                  setVisible={setVisible}
+                  keepType="keep"
+                  strongholdId={strongholdId}
+                  userId={userId}
+                  raisingUnitsStatus={raisingUnitsStatus}
+                  setRaisingUnitsStatus={setRaisingUnitsStatus}
+                />
+              </>
+            );
+        }
     }
   }
 
   return (
     <div className={styles.contextualPanel}>
-      <section className={styles.cardHeader}>{infoType}</section>
+      <section className={styles.cardHeader}>{contextualPanelType.subtype}</section>
       <section className={styles.content}>{renderContent()}</section>
     </div>
   );

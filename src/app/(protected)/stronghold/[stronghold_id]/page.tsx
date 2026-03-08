@@ -61,7 +61,8 @@ export default function Page({
 
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
-  const [infoType, setInfoType] = useState<string>("default");
+  const [contextualPanelType, setContextualPanelType] = useState<{type: string, subtype: string}>({type: "default", subtype: "default"});
+
   const [raisingUnitsStatus, setRaisingUnitsStatus] =
   useState<RaisingUnitsStatus | null>(null);
 
@@ -190,8 +191,8 @@ export default function Page({
           {loading || !stronghold ? (
             <section className={styles.sheetFirstRow}>
               <div className={styles.loadingName}></div>
-              <div className={styles.loadingInfo}></div>
-              <div className={styles.loadingInfo}></div>
+              <div className={styles.loadingContextualPanel}></div>
+              <div className={styles.loadingContextualPanel}></div>
             </section>
           ) : (
             <section className={styles.sheetFirstRow}>
@@ -210,7 +211,7 @@ export default function Page({
                   {stronghold?.class.stronghold_name}
                 </p>
               </section>
-              <section className={styles.strongholdInfo}>
+              <section className={styles.strongholdContextualPanel}>
                 <section className={styles.upgradeContainer}>
                   <button
                     className={styles.restButton}
@@ -223,7 +224,7 @@ export default function Page({
                     take extended rest
                   </button>
                   {stronghold?.stronghold_level === 5 ? null : (
-                    <div className={styles.upgradeInfo}>
+                    <div className={styles.upgradeContextualPanel}>
                       <p className={styles.upgradeText}>
                         Cost to Upgrade: {stronghold.upgrade_cost}gp
                       </p>
@@ -243,13 +244,13 @@ export default function Page({
               type={stronghold?.stronghold_type ?? null}
               raisingUnitsStatus={raisingUnitsStatus}
               benefits={stronghold?.features ?? null}
-              setInfoType={setInfoType}
+              setContextualPanelType={setContextualPanelType}
             />
             <FeatureImprovement
               loading={loading}
               level={stronghold?.stronghold_level ?? null}
               improvement={stronghold?.class?.class_feature_improvement ?? null}
-              setInfoType={setInfoType}
+              setContextualPanelType={setContextualPanelType}
               updateUses={updateClassFeatureImprovementUses}
             />
           </section>
@@ -344,6 +345,7 @@ export default function Page({
                     }
                     strongholdType={stronghold?.stronghold_type ?? null}
                     characterClass={stronghold?.class.name ?? null}
+                    setContextualPanelType={setContextualPanelType}
                   />
                 </section>
               </section>
@@ -356,7 +358,7 @@ export default function Page({
           </section>
         ) : (
           <ContextualPanel 
-            infoType={infoType} 
+            contextualPanelType={contextualPanelType} 
             strongholdId={stronghold.id} 
             userId={userId}
             raisingUnitsStatus={raisingUnitsStatus}
@@ -364,9 +366,9 @@ export default function Page({
             strongholdBenefits={stronghold?.features ?? null}
           />
           // <section className={styles.contextualPanel}>
-          //   <div className={styles.cardHeader}>contextual information</div>
-          //   <p className={styles.infoTitle}>{InfoType.title}</p>
-          //   <p className={styles.info}>{InfoType.description}</p>
+          //   <div className={styles.cardHeader}>contextual ContextualPanelrmation</div>
+          //   <p className={styles.ContextualPanelTitle}>{ContextualPanelType.title}</p>
+          //   <p className={styles.ContextualPanel}>{ContextualPanelType.description}</p>
           // </section>
         )}
         <UpgradeStrongholdModal

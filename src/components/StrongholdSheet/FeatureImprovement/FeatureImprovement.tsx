@@ -7,7 +7,7 @@ interface ImprovementProps {
   loading: boolean;
   improvement: Stronghold["class"]["class_feature_improvement"] | null;
   level: Stronghold["stronghold_level"] | null;
-  setInfoType: React.Dispatch<React.SetStateAction<string>>;
+  setContextualPanelType: React.Dispatch<React.SetStateAction<{type: string, subtype:string}>>;
   updateUses: (uses: number) => Promise<void>;
 }
 
@@ -15,7 +15,7 @@ export default function FeatureImprovement({
   loading,
   improvement,
   level,
-  setInfoType,
+  setContextualPanelType,
   updateUses,
 }: ImprovementProps): JSX.Element {
   return (
@@ -29,7 +29,7 @@ export default function FeatureImprovement({
           <div className={styles.cardHeader}>class feature improvement</div>
           <button
             className={styles.featureButton}
-            onClick={() => setInfoType(improvement?.name)}
+            onClick={() => setContextualPanelType({type: "class feature improvement", subtype: improvement?.name})}
           >
             {improvement.name}
           </button>

@@ -10,15 +10,15 @@ interface BenefitsProps {
   type: string | null;
   raisingUnitsStatus: RaisingUnitsStatus | null;
   benefits: Stronghold["features"] | null;
-  setInfoType: React.Dispatch<
-    React.SetStateAction<string>
+  setContextualPanelType: React.Dispatch<
+    React.SetStateAction<{type: string, subtype: string}>
   >;
 }
 
 export default function Benefits({
   loading,
   benefits,
-  setInfoType,
+  setContextualPanelType,
   type,
   raisingUnitsStatus
 }: BenefitsProps): JSX.Element {
@@ -43,8 +43,11 @@ export default function Benefits({
                     : ""
                 }`}
                 onClick={() =>
-                  setInfoType(
-                    item.title
+                  setContextualPanelType(
+                    {
+                      type: "stronghold benefits",
+                      subtype: item.title
+                    }
                   )
                 }
                 key={index}
