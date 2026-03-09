@@ -36,7 +36,7 @@ export default function ArtisanContextualPanel({contextualPanelType}){
 
   return <div>
     <p>{artisanShop?.shop_description}</p>
-    <p>hello</p>
+    <button>acquire</button> 
   </div>
 
 }
