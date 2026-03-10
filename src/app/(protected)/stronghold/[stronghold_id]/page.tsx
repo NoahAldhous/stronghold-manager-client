@@ -191,8 +191,8 @@ export default function Page({
           {loading || !stronghold ? (
             <section className={styles.sheetFirstRow}>
               <div className={styles.loadingName}></div>
-              <div className={styles.loadingContextualPanel}></div>
-              <div className={styles.loadingContextualPanel}></div>
+              <div className={styles.loadingInfo}></div>
+              <div className={styles.loadingInfo}></div>
             </section>
           ) : (
             <section className={styles.sheetFirstRow}>
@@ -211,7 +211,7 @@ export default function Page({
                   {stronghold?.class.stronghold_name}
                 </p>
               </section>
-              <section className={styles.strongholdContextualPanel}>
+              <section className={styles.strongholdInfo}>
                 <section className={styles.upgradeContainer}>
                   <button
                     className={styles.restButton}
@@ -224,7 +224,7 @@ export default function Page({
                     take extended rest
                   </button>
                   {stronghold?.stronghold_level === 5 ? null : (
-                    <div className={styles.upgradeContextualPanel}>
+                    <div className={styles.upgradeInfo}>
                       <p className={styles.upgradeText}>
                         Cost to Upgrade: {stronghold.upgrade_cost}gp
                       </p>
@@ -353,7 +353,7 @@ export default function Page({
           </section>
         </section>
         {loading || !stronghold ? (
-          <section className={styles.contextualPanel}>
+          <section className={styles.Info}>
             <LoadingCard />
           </section>
         ) : (
@@ -365,10 +365,10 @@ export default function Page({
             setRaisingUnitsStatus={setRaisingUnitsStatus}
             strongholdBenefits={stronghold?.features ?? null}
           />
-          // <section className={styles.contextualPanel}>
+          // <section className={styles.Info}>
           //   <div className={styles.cardHeader}>contextual ContextualPanelrmation</div>
           //   <p className={styles.ContextualPanelTitle}>{ContextualPanelType.title}</p>
-          //   <p className={styles.ContextualPanel}>{ContextualPanelType.description}</p>
+          //   <p className={styles.Info}>{ContextualPanelType.description}</p>
           // </section>
         )}
         <UpgradeStrongholdModal
