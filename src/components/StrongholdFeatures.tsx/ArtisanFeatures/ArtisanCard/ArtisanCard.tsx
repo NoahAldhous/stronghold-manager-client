@@ -1,9 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useMemo } from "react";
 import styles from "./styles.module.scss";
 import Image from "next/image";
+import React from "react";
+import { ArtisanShop } from "types";
 
-export default function ArtisanCard({artisan, setContextualPanelType}){
+interface ArtisanCardProps {
+    artisan: ArtisanShop;
+    level: number;
+    setContextualPanelType: React.Dispatch<React.SetStateAction<{type: string, subtype:string}>>;
+}
+
+const ArtisanCard = React.memo(function ArtisanCard({ artisan, setContextualPanelType, level }:ArtisanCardProps){
 
     function handleClick(){
         setContextualPanelType({
@@ -12,7 +20,7 @@ export default function ArtisanCard({artisan, setContextualPanelType}){
         })
     }
 
-    return <div className={`${styles.card} ${artisan.level == 0 ? styles.disabled : ""}`}>
+    return <div className={`${styles.card} ${level == 0 ? styles.disabled : ""}`}>
         <section className={styles.content} onClick={handleClick}>
             <div className={styles.imageContainer}>
                 <Image 
@@ -24,8 +32,10 @@ export default function ArtisanCard({artisan, setContextualPanelType}){
             </div>
             <section className={styles.textContainer}>
                 <p className={styles.text}>{artisan.artisan_name}&apos;s {artisan.shop_name}</p>
-                <p className={styles.text}>level {artisan.level}</p>
+                <p className={styles.text}>level {level}</p>
             </section>
         </section>
     </div>
-}
+});
+
+export default ArtisanCard;
