@@ -20,6 +20,12 @@ interface ContextualPanelProps {
         description: string;
       }[]
     | null;
+  needToUpdate: {
+    artisans: boolean
+  }
+  setNeedToUpdate: React.Dispatch<
+    React.SetStateAction<{artisans: boolean}>
+  >;
 }
 
 export default function ContextualMenu({
@@ -29,6 +35,8 @@ export default function ContextualMenu({
   raisingUnitsStatus,
   setRaisingUnitsStatus,
   strongholdBenefits,
+  needToUpdate,
+  setNeedToUpdate
 }: ContextualPanelProps) {
   const [visible, setVisible] = useState<boolean>(false);
   
@@ -72,7 +80,7 @@ export default function ContextualMenu({
             );
         }
       case "artisan":
-        return <ArtisanContextualPanel contextualPanelType={contextualPanelType}/>
+        return <ArtisanContextualPanel contextualPanelType={contextualPanelType} strongholdId={strongholdId} needToUpdate={needToUpdate} setNeedToUpdate={setNeedToUpdate}/>
           
 
     }

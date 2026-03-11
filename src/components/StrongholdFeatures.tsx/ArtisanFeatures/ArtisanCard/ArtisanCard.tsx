@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "./styles.module.scss";
 import Image from "next/image";
 
-export default function ArtisanCard({artisan, level, setContextualPanelType}){
+export default function ArtisanCard({artisan, setContextualPanelType}){
 
     function handleClick(){
         setContextualPanelType({
@@ -12,7 +12,7 @@ export default function ArtisanCard({artisan, level, setContextualPanelType}){
         })
     }
 
-    return <div className={`${styles.card} ${level == 0 ? styles.disabled : ""}`}>
+    return <div className={`${styles.card} ${artisan.level == 0 ? styles.disabled : ""}`}>
         <section className={styles.content} onClick={handleClick}>
             <div className={styles.imageContainer}>
                 <Image 
@@ -24,7 +24,7 @@ export default function ArtisanCard({artisan, level, setContextualPanelType}){
             </div>
             <section className={styles.textContainer}>
                 <p className={styles.text}>{artisan.artisan_name}&apos;s {artisan.shop_name}</p>
-                <p className={styles.text}>level {level}</p>
+                <p className={styles.text}>level {artisan.level}</p>
             </section>
         </section>
     </div>

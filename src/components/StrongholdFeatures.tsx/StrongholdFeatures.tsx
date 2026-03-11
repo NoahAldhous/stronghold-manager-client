@@ -39,7 +39,13 @@ interface StrongholdFeaturesType {
   } | null;
   strongholdType: string | null;
   characterClass: string | null;
-  setContextualPanelType: React.Dispatch<React.SetStateAction<{type: string, subtype:string}>>;
+  setContextualPanelType: React.Dispatch<
+    React.SetStateAction<{ type: string; subtype: string }>
+  >;
+  needToUpdate: {
+    artisans: boolean;
+  };
+  setNeedToUpdate: React.Dispatch<React.SetStateAction<{ artisans: boolean }>>;
 }
 
 export default function StrongholdFeatures({
@@ -53,13 +59,17 @@ export default function StrongholdFeatures({
   classFeatureImprovement,
   strongholdType,
   characterClass,
-  setContextualPanelType
+  setContextualPanelType,
+  needToUpdate,
+  setNeedToUpdate,
 }: StrongholdFeaturesType) {
   const [unitsList, setUnitsList] = useState<Units | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   //TODO: separate into units raised list component
-  const [keepType, setKeepType] = useState<"keep" | "camp">("keep")
-  const [unitsRaisedList, setUnitsRaisedList] = useState<RaisingUnitRow[] | null>(null);
+  const [keepType, setKeepType] = useState<"keep" | "camp">("keep");
+  const [unitsRaisedList, setUnitsRaisedList] = useState<
+    RaisingUnitRow[] | null
+  >(null);
 
   async function fetchUnits(): Promise<void> {
     if (!unitsList) {
@@ -208,15 +218,15 @@ export default function StrongholdFeatures({
               <div key={index} className={styles.textItem}>
                 <p className={styles.itemName}>{feature.title}</p>
                 <p className={styles.itemInfo}>{feature.description}</p>
-                {
-                  feature.title === "raising units" && strongholdType ? (
-                    <>
-                      <br/>
-                      <RaisingUnitsList keepType={strongholdType} highlightNumber={0}/>
-                    </>
-
-                  ) : null
-                }
+                {feature.title === "raising units" && strongholdType ? (
+                  <>
+                    <br />
+                    <RaisingUnitsList
+                      keepType={strongholdType}
+                      highlightNumber={0}
+                    />
+                  </>
+                ) : null}
               </div>
             ));
           case "class feature improvement":
@@ -365,13 +375,20 @@ export default function StrongholdFeatures({
             );
         }
       case "artisans":
-        switch(activeButton.subCategory){
+        switch (activeButton.subCategory) {
           case "all":
-            return <ArtisanFeatures strongholdId = {strongholdId} setContextualPanelType={setContextualPanelType}/>
+            return (
+              <ArtisanFeatures
+                strongholdId={strongholdId}
+                setContextualPanelType={setContextualPanelType}
+                needToUpdate={needToUpdate}
+                setNeedToUpdate={setNeedToUpdate}
+              />
+            );
           case "acquired":
-            return <p>acquired</p>
+            return <p>acquired</p>;
           case "unacquired":
-            return <p>unacquired</p>
+            return <p>unacquired</p>;
         }
         return <p>artisans</p>;
       case "followers":

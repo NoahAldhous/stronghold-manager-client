@@ -2,14 +2,24 @@
 import { useEffect, useState } from "react";
 import ArtisanCard from "./ArtisanCard/ArtisanCard";
 import styles from "./styles.module.scss";
-import { ArtisanShops, StrongholdArtisans } from "types";
+import { ArtisanShop, ArtisanShops, StrongholdArtisans } from "types";
 
 interface ArtisanFeaturesType {
     strongholdId: string;
     setContextualPanelType: React.Dispatch<React.SetStateAction<{type: string, subtype:string}>>;
+    needToUpdate: {
+        artisans: boolean
+      }
+      setNeedToUpdate: React.Dispatch<
+        React.SetStateAction<{artisans: boolean}>
+      >;
 }
 
-export default function ArtisanFeatures({strongholdId, setContextualPanelType}: ArtisanFeaturesType){
+type ArtisanShopWithLevel = ArtisanShop & {
+    level: number
+}
+
+export default function ArtisanFeatures({strongholdId, setContextualPanelType, needToUpdate, setNeedToUpdate}: ArtisanFeaturesType){
 
     const [artisanShopsList, setArtisanShopsList] = useState<ArtisanShops| null>(null);
     const [strongholdArtisansList, setStrongholdArtisansList] = useState<StrongholdArtisans | null>()
@@ -40,28 +50,26 @@ export default function ArtisanFeatures({strongholdId, setContextualPanelType}: 
     }  
 
     async function fetchStrongholdArtisans(): Promise<void> {
-        if(!strongholdArtisansList) {
-            setLoading(true)
-            if(strongholdId){
-                try {
-                    const res = await fetch(
-                        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/artisans/${strongholdId}`
+        setLoading(true)
+        if(strongholdId){
+            try {
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/strongholds/artisans/${strongholdId}`
+                );
+
+                if (!res.ok) {
+                    throw new Error(
+                        "There was a problem fetching this Stronghold's list of Artisans."
                     );
-
-                    if (!res.ok) {
-                        throw new Error(
-                            "There was a problem fetching this Stronghold's list of Artisans."
-                        );
-                    }
-
-                    const data = await res.json();
-                    setStrongholdArtisansList(data.artisans);
-                    console.log(data.artisans)
-                } catch (err) {
-                    console.log(err.message);
-                } finally {
-                    setLoading(false);
                 }
+
+                const data = await res.json();
+                setStrongholdArtisansList(data.artisans);
+                console.log(data.artisans)
+            } catch (err) {
+                console.log(err.message);
+            } finally {
+                setLoading(false);
             }
         }
     }
@@ -70,26 +78,36 @@ export default function ArtisanFeatures({strongholdId, setContextualPanelType}: 
         if(!artisanShopsList){
             fetchArtisanShops();
         }
-        if(!strongholdArtisansList){
+
+        if(!strongholdArtisansList || needToUpdate.artisans){
             fetchStrongholdArtisans();
+
+            setNeedToUpdate(prev => {
+                if (!prev.artisans) return prev;
+                return { ...prev, artisans: false };
+            });
         }
-    }, [artisanShopsList])
+    }, [artisanShopsList, needToUpdate])
 
     function findArtisanShopLevel(artisan){
         const strongholdArtisan = strongholdArtisansList?.find(strongholdArtisan => strongholdArtisan.name === artisan);
         return (strongholdArtisan ? strongholdArtisan.shop.level : 0)
     }
 
+    const localListOfArtisans = artisanShopsList?.map( artisan => ({
+        ...artisan,
+        level: findArtisanShopLevel(artisan.artisan_name)
+    }))
+
     return <div>
-        {loading || !artisanShopsList ?
+        {loading || !localListOfArtisans ?
         <p>loading</p>
         : 
         <div className={styles.cardContainer}>
-            {artisanShopsList?.map((item, index) => (
+            {localListOfArtisans?.map((item) => (
                 <ArtisanCard 
-                    key={index} 
+                    key={item.artisan_name} 
                     artisan={item} 
-                    level={findArtisanShopLevel(item.artisan_name)}
                     setContextualPanelType={setContextualPanelType}
                 />
             )

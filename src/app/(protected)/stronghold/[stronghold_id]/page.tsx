@@ -21,6 +21,9 @@ export default function Page({
 }) {
   const { stronghold_id } = use(params);
   const [loading, setLoading] = useState(false);
+  const [needToUpdate, setNeedToUpdate] = useState({
+    artisans: false
+  })
   const [strongholdIsUpgraded, setStrongholdIsUpgraded] = useState(false);
   const [activeButton, setActiveButton] = useState({
     category: "stronghold",
@@ -346,6 +349,8 @@ export default function Page({
                     strongholdType={stronghold?.stronghold_type ?? null}
                     characterClass={stronghold?.class.name ?? null}
                     setContextualPanelType={setContextualPanelType}
+                    needToUpdate={needToUpdate}
+                    setNeedToUpdate={setNeedToUpdate}
                   />
                 </section>
               </section>
@@ -364,6 +369,8 @@ export default function Page({
             raisingUnitsStatus={raisingUnitsStatus}
             setRaisingUnitsStatus={setRaisingUnitsStatus}
             strongholdBenefits={stronghold?.features ?? null}
+            needToUpdate={needToUpdate}
+            setNeedToUpdate={setNeedToUpdate}
           />
           // <section className={styles.Info}>
           //   <div className={styles.cardHeader}>contextual ContextualPanelrmation</div>
