@@ -22,7 +22,7 @@ export default function ArtisanContextualPanel({
 }: ArtisanContextualPanelProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [artisanShop, setArtisanShop] = useState<ArtisanShop | null>(null);
-  const [upgradeCosts, setUpgradeCosts] = useState<{cost: number, level: number}[] | null>(null);
+  const [upgradeCosts, setUpgradeCosts] = useState<{cost: number, artisan_level: number}[] | null>(null);
   const [strongholdArtisansList, setStrongholdArtisansList] =
   useState<StrongholdArtisans | null>();
 
@@ -73,15 +73,15 @@ export default function ArtisanContextualPanel({
 
   async function fetchArtisanUpgradeCosts(){
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stronghold/artisans/upgrade_costs`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/strongholds/artisans/upgrade_costs`)
         
         if (!res.ok) {
             throw new Error(
-              "There was a problem fetching this Stronghold's list of Artisans."
+              "There was a problem fetching this Stronghold's list of upgrade costs."
             );
         }
-
           const data = await res.json();
+        console.log(data)
           setUpgradeCosts(data.upgrades)
     } catch (err){
         console.log(err.message)
@@ -178,8 +178,8 @@ export default function ArtisanContextualPanel({
     }
 
     function findUpgradeCost(level: number){
-        const upgradeLevel = upgradeCosts?.find(upgrade => upgrade.level === (level + 1))
-        console.log("LEVE " + upgradeLevel)
+        const upgradeLevel = upgradeCosts?.find(upgrade => upgrade.artisan_level === (level + 1))
+        console.log("LEVEL " + upgradeLevel)
         return upgradeLevel?.cost ?? 0
     }
 
