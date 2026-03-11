@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import ArtisanCard from "./ArtisanCard/ArtisanCard";
 import styles from "./styles.module.scss";
-import { ArtisanShops } from "types";
+import { ArtisanShops, StrongholdArtisans } from "types";
 
 interface ArtisanFeaturesType {
     strongholdId: string;
@@ -12,7 +12,7 @@ interface ArtisanFeaturesType {
 export default function ArtisanFeatures({strongholdId, setContextualPanelType}: ArtisanFeaturesType){
 
     const [artisanShopsList, setArtisanShopsList] = useState<ArtisanShops| null>(null);
-    const [strongholdArtisansList, setStrongholdArtisansList] = useState()
+    const [strongholdArtisansList, setStrongholdArtisansList] = useState<StrongholdArtisans | null>()
     const [loading, setLoading] = useState<boolean>(false)
 
     async function fetchArtisanShops(): Promise<void> {
@@ -75,6 +75,11 @@ export default function ArtisanFeatures({strongholdId, setContextualPanelType}: 
         }
     }, [artisanShopsList])
 
+    function findArtisanShopLevel(artisan){
+        const strongholdArtisan = strongholdArtisansList?.find(strongholdArtisan => strongholdArtisan.name === artisan);
+        return (strongholdArtisan ? strongholdArtisan.shop.level : 0)
+    }
+
     return <div>
         {loading || !artisanShopsList ?
         <p>loading</p>
@@ -84,7 +89,7 @@ export default function ArtisanFeatures({strongholdId, setContextualPanelType}: 
                 <ArtisanCard 
                     key={index} 
                     artisan={item} 
-                    level={strongholdArtisansList?.[item.artisan_name]}
+                    level={findArtisanShopLevel(item.artisan_name)}
                     setContextualPanelType={setContextualPanelType}
                 />
             )
