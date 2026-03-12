@@ -10,7 +10,7 @@ export type ArtisanShop = {
         bonusMultiplier: string,
         bonusDescription: string,
         requiresExtendedRest: boolean
-    }
+    }[]
 }
 
 export type ArtisanShops = ArtisanShop[];

@@ -46,6 +46,7 @@ export default function ArtisanContextualPanel({
 
       const data = await res.json();
       setArtisanShop(data.artisan);
+      console.log(data)
     } catch (err) {
       console.log(err.message);
     } finally {
@@ -290,6 +291,12 @@ export default function ArtisanContextualPanel({
         />
         <span>disable costs</span>
       </p>
+      <p>{artisanShop?.bonuses?.map(item => (
+        <div>
+            <p>{item.bonusDescription}</p>
+            <p>current bonus: {(item.numericalBonus * shopLevel)} {item.bonusName}</p>
+        </div>
+      ))}</p>
     </div>
   );
 }
