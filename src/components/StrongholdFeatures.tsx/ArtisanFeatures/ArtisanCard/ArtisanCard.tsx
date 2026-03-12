@@ -16,7 +16,7 @@ const ArtisanCard = React.memo(function ArtisanCard({ artisan, setContextualPane
     function handleClick(){
         setContextualPanelType({
             type: "artisan",
-            subtype: artisan.artisan_name
+            subtype: artisan.artisanName
         })
     }
 
@@ -24,14 +24,14 @@ const ArtisanCard = React.memo(function ArtisanCard({ artisan, setContextualPane
         <section className={styles.content} onClick={handleClick}>
             <div className={styles.imageContainer}>
                 <Image 
-                    src={`/images/artisans/${artisan.artisan_name}.svg`} 
+                    src={`/images/artisans/${artisan.artisanName}.svg`} 
                     alt={"artisan icon"} 
                     fill
                     loading="eager"
                 />
             </div>
             <section className={styles.textContainer}>
-                <p className={styles.text}>{artisan.artisan_name}&apos;s {artisan.shop_name}</p>
+                <p className={styles.text}>{artisan.artisanName}&apos;s {artisan.shopName}</p>
                 <p className={styles.text}>level {level}</p>
             </section>
         </section>

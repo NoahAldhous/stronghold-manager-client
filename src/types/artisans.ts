@@ -1,9 +1,16 @@
 export type ArtisanShop = {
     id: number,
-    artisan_name: string,
-    shop_name: string,
-    shop_description: string,
-    upgradeable: boolean
+    artisanName: string,
+    shopName: string,
+    shopDescription: string,
+    upgradeable: boolean,
+    bonuses?:{
+        bonusName: string,
+        numericalBonus: number,
+        bonusMultiplier: string,
+        bonusDescription: string,
+        requiresExtendedRest: boolean
+    }
 }
 
 export type ArtisanShops = ArtisanShop[];

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArtisanShop, StrongholdArtisans } from "types";
+import { ArtisanShop, Currency, Stronghold, StrongholdArtisans } from "types";
 
 interface ArtisanContextualPanelProps {
   contextualPanelType: { type: string; subtype: string };
@@ -12,13 +12,21 @@ interface ArtisanContextualPanelProps {
   setNeedToUpdate: React.Dispatch<
     React.SetStateAction<{artisans: boolean}>
   >;
+  treasury: Stronghold["treasury"] | null;
+  stronghold: Stronghold;
+  setStronghold: React.Dispatch<
+        React.SetStateAction<Stronghold | null>
+    >;
 }
 
 export default function ArtisanContextualPanel({
   contextualPanelType,
   strongholdId,
   needToUpdate,
-  setNeedToUpdate
+  setNeedToUpdate,
+  treasury,
+  stronghold,
+  setStronghold
 }: ArtisanContextualPanelProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [artisanShop, setArtisanShop] = useState<ArtisanShop | null>(null);
@@ -122,7 +130,7 @@ export default function ArtisanContextualPanel({
     }
   }
 
-  async function upgradeArtisanShop(artisan) {
+  async function upgradeArtisanShop(artisan, cost) {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/strongholds/artisans/update`,
@@ -148,11 +156,60 @@ export default function ArtisanContextualPanel({
       console.log(err.message);
     } finally {
       setLoading(false);
+      updateTreasury("gp", cost, "decrease");
       setNeedToUpdate({
         ...needToUpdate, artisans: true
       })
     }
   }
+
+  async function updateTreasury(
+    currency: Currency,
+    valueChange: number,
+    method: "increase" | "decrease"
+): Promise<void> {
+    
+    if (!treasury) return;
+
+    // setUpdatingTreasury(true);
+    // setAnimatedCurrency("");
+
+    const newValue : number = method === "increase"
+    ? treasury[currency] + valueChange
+    : treasury[currency] - valueChange
+
+    const newTreasury = newValue < 0
+        ? {...treasury, [currency]: 0}
+        : {...treasury, [currency]: newValue}
+
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/strongholds/treasury/update/${strongholdId}`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(newTreasury),
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(
+                "The application encountered and error trying to update this value."
+            )
+        }
+        const data = await res.json();
+        console.log(data.message);
+    } catch (err) {
+        console.log(err.message);
+    } finally {
+        // setUpdatingTreasury(false);
+        // setAnimatedCurrency(currency);
+        setStronghold({...stronghold, treasury: newTreasury})
+    }
+
+}
 
   useEffect(() => {
     fetchArtisanShop(contextualPanelType.subtype);
@@ -183,13 +240,13 @@ export default function ArtisanContextualPanel({
         return upgradeLevel?.cost ?? 0
     }
 
-    const shopLevel = findArtisanShopLevel(artisanShop?.artisan_name)
+    const shopLevel = findArtisanShopLevel(artisanShop?.artisanName)
 
-    const upgrade = findUpgradeCost(shopLevel)
+    const upgradeCost = findUpgradeCost(shopLevel)
 
   return (
     <div>
-      <p>{artisanShop?.shop_description}</p>
+      <p>{artisanShop?.shopDescription}</p>
       <p>Level: <span>{shopLevel}</span></p>
       <button
       disabled={shopLevel > 0}
@@ -197,9 +254,9 @@ export default function ArtisanContextualPanel({
       >acquire</button>
       <button
       disabled={shopLevel < 1 || shopLevel > 4}
-      onClick={() => upgradeArtisanShop(contextualPanelType.subtype)}
+      onClick={() => upgradeArtisanShop(contextualPanelType.subtype, upgradeCost)}
       >upgrade</button>
-      <p>cost: <span>{upgrade}</span></p>
+      <p>cost: <span>{upgradeCost}</span></p>
     </div>
   );
 }

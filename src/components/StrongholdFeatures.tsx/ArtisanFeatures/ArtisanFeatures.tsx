@@ -126,9 +126,9 @@ export default function ArtisanFeatures({
         {
           artisanShopsList?.map((artisan) => (
             <ArtisanCard
-              key={artisan.artisan_name}
+              key={artisan.artisanName}
               artisan={artisan}
-              level={artisanLevelMap.get(artisan.artisan_name) ?? 0}
+              level={artisanLevelMap.get(artisan.artisanName) ?? 0}
               setContextualPanelType={setContextualPanelType}
             />
           ))

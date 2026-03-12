@@ -371,6 +371,9 @@ export default function Page({
             strongholdBenefits={stronghold?.features ?? null}
             needToUpdate={needToUpdate}
             setNeedToUpdate={setNeedToUpdate}
+            treasury={stronghold.treasury}
+            stronghold={stronghold}
+            setStronghold={setStronghold}
           />
           // <section className={styles.Info}>
           //   <div className={styles.cardHeader}>contextual ContextualPanelrmation</div>

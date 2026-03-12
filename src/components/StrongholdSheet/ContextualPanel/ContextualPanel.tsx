@@ -3,11 +3,11 @@ import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
 import styles from "./Styles.module.scss";
 import { useEffect, useState } from "react";
 import RaisingUnitsModal from "components/Modal/RaisingUnitsModal/RaisingUnitsModal";
-import { ArtisanShop, RaisingUnitsStatus } from "types";
+import { ArtisanShop, RaisingUnitsStatus, Stronghold } from "types";
 import ArtisanContextualPanel from "./ArtisanContextualPanel/ArtisanContextualPanel";
 
 interface ContextualPanelProps {
-  contextualPanelType: {type: string, subtype: string};
+  contextualPanelType: { type: string; subtype: string };
   strongholdId: number;
   userId: string | null;
   raisingUnitsStatus: RaisingUnitsStatus | null;
@@ -21,11 +21,12 @@ interface ContextualPanelProps {
       }[]
     | null;
   needToUpdate: {
-    artisans: boolean
-  }
-  setNeedToUpdate: React.Dispatch<
-    React.SetStateAction<{artisans: boolean}>
-  >;
+    artisans: boolean;
+  };
+  setNeedToUpdate: React.Dispatch<React.SetStateAction<{ artisans: boolean }>>;
+  treasury: Stronghold["treasury"] | null;
+  stronghold: Stronghold;
+  setStronghold: React.Dispatch<React.SetStateAction<Stronghold | null>>;
 }
 
 export default function ContextualMenu({
@@ -36,10 +37,13 @@ export default function ContextualMenu({
   setRaisingUnitsStatus,
   strongholdBenefits,
   needToUpdate,
-  setNeedToUpdate
+  setNeedToUpdate,
+  treasury,
+  stronghold,
+  setStronghold,
 }: ContextualPanelProps) {
   const [visible, setVisible] = useState<boolean>(false);
-  
+
   function displayModal() {
     setVisible(true);
   }
@@ -47,7 +51,7 @@ export default function ContextualMenu({
   function renderContent() {
     switch (contextualPanelType.type) {
       case "stronghold benefits":
-        switch (contextualPanelType.subtype){
+        switch (contextualPanelType.subtype) {
           case "raising units":
             const feature = strongholdBenefits?.filter(
               (item) => item?.title === "raising units"
@@ -55,13 +59,18 @@ export default function ContextualMenu({
             return (
               <>
                 <p>{feature ? feature[0].description : ""}</p>
-                {
-                    raisingUnitsStatus?.has_raised_all_units ? null :
-                        <div>
-                            <p>you have <span>{(raisingUnitsStatus?.max_units ?? 0) - (raisingUnitsStatus?.current_units ?? 0)}</span> units left to raise</p>
-                        </div>
-    
-                }
+                {raisingUnitsStatus?.has_raised_all_units ? null : (
+                  <div>
+                    <p>
+                      you have{" "}
+                      <span>
+                        {(raisingUnitsStatus?.max_units ?? 0) -
+                          (raisingUnitsStatus?.current_units ?? 0)}
+                      </span>{" "}
+                      units left to raise
+                    </p>
+                  </div>
+                )}
                 <div className={styles.buttonContainer}>
                   <button onClick={displayModal} className={styles.button}>
                     roll on table
@@ -80,15 +89,25 @@ export default function ContextualMenu({
             );
         }
       case "artisan":
-        return <ArtisanContextualPanel contextualPanelType={contextualPanelType} strongholdId={strongholdId} needToUpdate={needToUpdate} setNeedToUpdate={setNeedToUpdate}/>
-          
-
+        return (
+          <ArtisanContextualPanel
+            contextualPanelType={contextualPanelType}
+            strongholdId={strongholdId}
+            needToUpdate={needToUpdate}
+            setNeedToUpdate={setNeedToUpdate}
+            treasury={treasury}
+            stronghold={stronghold}
+            setStronghold={setStronghold}
+          />
+        );
     }
   }
 
   return (
     <div className={styles.contextualPanel}>
-      <section className={styles.cardHeader}>{contextualPanelType.subtype}</section>
+      <section className={styles.cardHeader}>
+        {contextualPanelType.subtype}
+      </section>
       <section className={styles.content}>{renderContent()}</section>
     </div>
   );
