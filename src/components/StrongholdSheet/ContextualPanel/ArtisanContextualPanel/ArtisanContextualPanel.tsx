@@ -257,6 +257,8 @@ export default function ArtisanContextualPanel({
 
   const upgradeCost = findUpgradeCost(shopLevel);
 
+  const goldNeededToUpgrade = (upgradeCost - (treasury?.gp ?? 0))
+
   return (
     <div>
       <p>{artisanShop?.shopDescription}</p>
@@ -270,7 +272,7 @@ export default function ArtisanContextualPanel({
         acquire
       </button>
       <button
-        disabled={shopLevel < 1 || shopLevel > 4}
+        disabled={shopLevel < 1 || shopLevel > 4 || (goldNeededToUpgrade > 0 && !costDisabled)}
         onClick={() =>
           upgradeArtisanShop(contextualPanelType.subtype, upgradeCost)
         }
@@ -279,6 +281,7 @@ export default function ArtisanContextualPanel({
       </button>
       <p>
         cost: <span>{costDisabled ? 0 : upgradeCost}</span>{" "}
+        <span>{goldNeededToUpgrade < 1 ? "" : `(${goldNeededToUpgrade}gp needed)`}</span>
         <input
           checked={costDisabled}
           type="checkbox"
