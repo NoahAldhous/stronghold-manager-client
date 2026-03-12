@@ -7,16 +7,12 @@ interface ArtisanContextualPanelProps {
   contextualPanelType: { type: string; subtype: string };
   strongholdId: number;
   needToUpdate: {
-    artisans: boolean
-  }
-  setNeedToUpdate: React.Dispatch<
-    React.SetStateAction<{artisans: boolean}>
-  >;
+    artisans: boolean;
+  };
+  setNeedToUpdate: React.Dispatch<React.SetStateAction<{ artisans: boolean }>>;
   treasury: Stronghold["treasury"] | null;
   stronghold: Stronghold;
-  setStronghold: React.Dispatch<
-        React.SetStateAction<Stronghold | null>
-    >;
+  setStronghold: React.Dispatch<React.SetStateAction<Stronghold | null>>;
 }
 
 export default function ArtisanContextualPanel({
@@ -26,13 +22,16 @@ export default function ArtisanContextualPanel({
   setNeedToUpdate,
   treasury,
   stronghold,
-  setStronghold
+  setStronghold,
 }: ArtisanContextualPanelProps) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [costDisabled, setCostsDisabled] = useState<boolean>(false);
   const [artisanShop, setArtisanShop] = useState<ArtisanShop | null>(null);
-  const [upgradeCosts, setUpgradeCosts] = useState<{cost: number, artisan_level: number}[] | null>(null);
+  const [upgradeCosts, setUpgradeCosts] = useState<
+    { cost: number; artisan_level: number }[] | null
+  >(null);
   const [strongholdArtisansList, setStrongholdArtisansList] =
-  useState<StrongholdArtisans | null>();
+    useState<StrongholdArtisans | null>();
 
   async function fetchArtisanShop(artisan): Promise<void> {
     setLoading(true);
@@ -79,24 +78,26 @@ export default function ArtisanContextualPanel({
     }
   }
 
-  async function fetchArtisanUpgradeCosts(){
+  async function fetchArtisanUpgradeCosts() {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/strongholds/artisans/upgrade_costs`)
-        
-        if (!res.ok) {
-            throw new Error(
-              "There was a problem fetching this Stronghold's list of upgrade costs."
-            );
-        }
-          const data = await res.json();
-        console.log(data)
-          setUpgradeCosts(data.upgrades)
-    } catch (err){
-        console.log(err.message)
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/artisans/upgrade_costs`
+      );
+
+      if (!res.ok) {
+        throw new Error(
+          "There was a problem fetching this Stronghold's list of upgrade costs."
+        );
+      }
+      const data = await res.json();
+      console.log(data);
+      setUpgradeCosts(data.upgrades);
+    } catch (err) {
+      console.log(err.message);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-  };
+  }
 
   async function addArtisanShop(artisan) {
     try {
@@ -125,8 +126,9 @@ export default function ArtisanContextualPanel({
     } finally {
       setLoading(false);
       setNeedToUpdate({
-        ...needToUpdate, artisans: true
-      })
+        ...needToUpdate,
+        artisans: true,
+      });
     }
   }
 
@@ -142,7 +144,7 @@ export default function ArtisanContextualPanel({
           body: JSON.stringify({
             strongholdId: strongholdId,
             artisan: artisan,
-            level: (shopLevel + 1)
+            level: shopLevel + 1,
           }),
         }
       );
@@ -156,10 +158,13 @@ export default function ArtisanContextualPanel({
       console.log(err.message);
     } finally {
       setLoading(false);
-      updateTreasury("gp", cost, "decrease");
+      if (!costDisabled) {
+        updateTreasury("gp", cost, "decrease");
+      }
       setNeedToUpdate({
-        ...needToUpdate, artisans: true
-      })
+        ...needToUpdate,
+        artisans: true,
+      });
     }
   }
 
@@ -167,96 +172,121 @@ export default function ArtisanContextualPanel({
     currency: Currency,
     valueChange: number,
     method: "increase" | "decrease"
-): Promise<void> {
-    
+  ): Promise<void> {
     if (!treasury) return;
 
     // setUpdatingTreasury(true);
     // setAnimatedCurrency("");
 
-    const newValue : number = method === "increase"
-    ? treasury[currency] + valueChange
-    : treasury[currency] - valueChange
+    const newValue: number =
+      method === "increase"
+        ? treasury[currency] + valueChange
+        : treasury[currency] - valueChange;
 
-    const newTreasury = newValue < 0
-        ? {...treasury, [currency]: 0}
-        : {...treasury, [currency]: newValue}
+    const newTreasury =
+      newValue < 0
+        ? { ...treasury, [currency]: 0 }
+        : { ...treasury, [currency]: newValue };
 
     try {
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/strongholds/treasury/update/${strongholdId}`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(newTreasury),
-            }
-        );
-
-        if (!res.ok) {
-            throw new Error(
-                "The application encountered and error trying to update this value."
-            )
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/treasury/update/${strongholdId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newTreasury),
         }
-        const data = await res.json();
-        console.log(data.message);
-    } catch (err) {
-        console.log(err.message);
-    } finally {
-        // setUpdatingTreasury(false);
-        // setAnimatedCurrency(currency);
-        setStronghold({...stronghold, treasury: newTreasury})
-    }
+      );
 
-}
+      if (!res.ok) {
+        throw new Error(
+          "The application encountered and error trying to update this value."
+        );
+      }
+      const data = await res.json();
+      console.log(data.message);
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      // setUpdatingTreasury(false);
+      // setAnimatedCurrency(currency);
+      setStronghold({ ...stronghold, treasury: newTreasury });
+    }
+  }
 
   useEffect(() => {
     fetchArtisanShop(contextualPanelType.subtype);
-    if(!upgradeCosts){
-        fetchArtisanUpgradeCosts();
+    if (!upgradeCosts) {
+      fetchArtisanUpgradeCosts();
     }
   }, [contextualPanelType.subtype]);
 
   useEffect(() => {
-    if(!strongholdArtisansList || needToUpdate.artisans){
-        fetchStrongholdArtisans();
+    if (!strongholdArtisansList || needToUpdate.artisans) {
+      fetchStrongholdArtisans();
 
-        setNeedToUpdate((prev) => {
-            if (!prev.artisans) return prev;
-            return { ...prev, artisans: false };
-          });
+      setNeedToUpdate((prev) => {
+        if (!prev.artisans) return prev;
+        return { ...prev, artisans: false };
+      });
     }
-  },[needToUpdate])
+  }, [needToUpdate]);
 
-    function findArtisanShopLevel(artisan){
-        const strongholdArtisan = strongholdArtisansList?.find(strongholdArtisan => strongholdArtisan.name === artisan);
-        return (strongholdArtisan ? strongholdArtisan.shop.level : 0)
-    }
+  function findArtisanShopLevel(artisan) {
+    const strongholdArtisan = strongholdArtisansList?.find(
+      (strongholdArtisan) => strongholdArtisan.name === artisan
+    );
+    return strongholdArtisan ? strongholdArtisan.shop.level : 0;
+  }
 
-    function findUpgradeCost(level: number){
-        const upgradeLevel = upgradeCosts?.find(upgrade => upgrade.artisan_level === (level + 1))
-        console.log("LEVEL " + upgradeLevel)
-        return upgradeLevel?.cost ?? 0
-    }
+  function findUpgradeCost(level: number) {
+    const upgradeLevel = upgradeCosts?.find(
+      (upgrade) => upgrade.artisan_level === level + 1
+    );
+    console.log("LEVEL " + upgradeLevel);
+    return upgradeLevel?.cost ?? 0;
+  }
 
-    const shopLevel = findArtisanShopLevel(artisanShop?.artisanName)
+  function handleCheck(e: {target: {checked: boolean}}) {
+    setCostsDisabled(e.target.checked);
+  }
 
-    const upgradeCost = findUpgradeCost(shopLevel)
+  const shopLevel = findArtisanShopLevel(artisanShop?.artisanName);
+
+  const upgradeCost = findUpgradeCost(shopLevel);
 
   return (
     <div>
       <p>{artisanShop?.shopDescription}</p>
-      <p>Level: <span>{shopLevel}</span></p>
+      <p>
+        Level: <span>{shopLevel}</span>
+      </p>
       <button
-      disabled={shopLevel > 0}
-      onClick={() => addArtisanShop(contextualPanelType.subtype)}
-      >acquire</button>
+        disabled={shopLevel > 0}
+        onClick={() => addArtisanShop(contextualPanelType.subtype)}
+      >
+        acquire
+      </button>
       <button
-      disabled={shopLevel < 1 || shopLevel > 4}
-      onClick={() => upgradeArtisanShop(contextualPanelType.subtype, upgradeCost)}
-      >upgrade</button>
-      <p>cost: <span>{upgradeCost}</span></p>
+        disabled={shopLevel < 1 || shopLevel > 4}
+        onClick={() =>
+          upgradeArtisanShop(contextualPanelType.subtype, upgradeCost)
+        }
+      >
+        upgrade
+      </button>
+      <p>
+        cost: <span>{costDisabled ? 0 : upgradeCost}</span>{" "}
+        <input
+          checked={costDisabled}
+          type="checkbox"
+          id="disableCost"
+          onChange={handleCheck}
+        />
+        <span>disable costs</span>
+      </p>
     </div>
   );
 }
