@@ -6,6 +6,7 @@ import UnitCard from "components/UnitCard/UnitCard";
 import { StatsCalculator } from "lib/StatsCalculator";
 import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
 import ArtisanFeatures from "./ArtisanFeatures/ArtisanFeatures";
+import StrongholdRetainersList from "./FollowersFeatures/Retainers/StrongholdRetainersList/StrongholdRetainersList";
 
 interface StrongholdFeaturesType {
   userId: string | null;
@@ -392,7 +393,11 @@ export default function StrongholdFeatures({
         }
         return <p>artisans</p>;
       case "followers":
-        return <p>followers</p>;
+        return (
+          <StrongholdRetainersList
+            strongholdId={strongholdId}
+          />
+        );
       default:
         return <p>nothing selected!</p>;
     }

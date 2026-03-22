@@ -1,0 +1,89 @@
+@use "../../../../../app/variables" as *;
+
+.card{
+    border: 1px solid $dark;
+    width: 60%;
+    @include cardContainer;
+
+    .header{
+        border-bottom: $bottomBorder;
+
+        .name{
+            font-size: large;
+            font-weight: bolder;
+            text-transform: capitalize;
+        }
+    
+        .title{
+            font-size: small;
+            text-transform: capitalize;
+        }
+    }
+
+    .stats{
+        border-bottom: $bottomBorder;
+
+        .statName{
+            font-size: medium;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+
+        .statValue{
+            font-weight: normal;
+            text-transform: lowercase;
+        }
+    }
+
+    .abilities{
+        display: flex;
+        border-bottom: $bottomBorder;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-around;
+
+        .abilityName{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-transform: uppercase;
+            font-weight: bold;
+
+            .abilityMod{
+                font-weight: normal;
+            }
+        }
+    }
+
+    .savesAndSenses{
+        border-bottom: $bottomBorder;
+
+        .title{
+            text-transform: capitalize;
+            font-weight: bold;
+
+            .value{
+                font-weight: normal;
+            }
+        }
+    }
+
+    .signatureAbility{
+        border-bottom: $bottomBorder;
+
+        .title{
+            font-weight: bold;
+            text-transform: capitalize;
+        
+            .description{
+                font-weight: normal;
+
+                .italic{
+                    font-style: italic;
+                }
+            }
+
+        }
+    }
+
+}
