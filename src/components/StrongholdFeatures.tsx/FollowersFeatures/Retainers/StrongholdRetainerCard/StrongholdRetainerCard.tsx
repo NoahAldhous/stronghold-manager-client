@@ -94,8 +94,8 @@ export default function StrongholdRetainerCard({
             <span className={styles.italic}>hit:</span>
             {retainer.signatureAttack.damage.average}(
             {retainer.signatureAttack.damage.numberOfDice}d
-            {retainer.signatureAttack.damage.diceSize} +{" "}
-            {retainer.signatureAttack.damage.modifier}){" "}
+            {retainer.signatureAttack.damage.diceSize}) 
+            {retainer.signatureAttack.type === "spell" ? null : <span>+ {""}{retainer.signatureAttack.damage.modifier})</span>}{" "}
             {retainer.signatureAttack.damage.type} damage.
           </span>
         </p>

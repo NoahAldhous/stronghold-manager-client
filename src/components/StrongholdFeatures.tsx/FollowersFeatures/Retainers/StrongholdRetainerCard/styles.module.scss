@@ -4,6 +4,7 @@
     border: 1px solid $dark;
     width: 60%;
     @include cardContainer;
+    padding-bottom: 1.75rem;
 
     .header{
         border-bottom: $bottomBorder;
