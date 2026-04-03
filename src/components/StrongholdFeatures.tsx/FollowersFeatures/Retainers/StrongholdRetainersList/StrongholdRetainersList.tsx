@@ -6,10 +6,14 @@ import StrongholdRetainerCard from "../StrongholdRetainerCard/StrongholdRetainer
 
 interface StrongholdArtisansListProps {
   strongholdId: string;
+  setContextualPanelType: React.Dispatch<
+  React.SetStateAction<{ type: string; subtype: string }>
+>;
 }
 
 export default function StrongholdRetainersList({
   strongholdId,
+  setContextualPanelType
 }: StrongholdArtisansListProps) {
   //set empty array as state
   const [strongholdRetainers, setStrongholdRetainers] =
@@ -21,7 +25,7 @@ export default function StrongholdRetainersList({
     setLoading(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/retainers/${strongholdId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/retainers/all/${strongholdId}`
       );
 
       if (!res.ok) {
@@ -43,6 +47,13 @@ export default function StrongholdRetainersList({
     }
   }, [strongholdRetainers]);
 
+  function handleClick(retainerId){
+    setContextualPanelType({
+      type: "retainer",
+      subtype: retainerId
+    })
+  }
+
   return (
       <section className={styles.retainerListContainer}>
         <section className={styles.retainerCategories}>
@@ -55,7 +66,7 @@ export default function StrongholdRetainersList({
         <section className={styles.retainerList}>    
             {strongholdRetainers?.map((retainer) => (
             // <StrongholdRetainerCard key={retainer.id} retainer={retainer}/>
-            <div key={retainer.id} className={styles.retainerRow}>
+            <div key={retainer.id} className={styles.retainerRow} onClick={() => handleClick(retainer.id.toString())}>
                 <p className={`${styles.large} ${styles.category}`}>{retainer.name}</p>
                 <p className={`${styles.medium} ${styles.category}`}>{retainer.title}</p>
                 <p className={`${styles.small} ${styles.category}`}>{retainer.armourClass.value}</p>

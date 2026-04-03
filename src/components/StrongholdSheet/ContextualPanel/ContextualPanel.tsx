@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import RaisingUnitsModal from "components/Modal/RaisingUnitsModal/RaisingUnitsModal";
 import { ArtisanShop, RaisingUnitsStatus, Stronghold } from "types";
 import ArtisanContextualPanel from "./ArtisanContextualPanel/ArtisanContextualPanel";
+import RetainerContextualPanel from "./FollowerContextualPanel/RetainerContextualPanel/RetainerContextualPanel";
 
 interface ContextualPanelProps {
   contextualPanelType: { type: string; subtype: string };
@@ -100,6 +101,13 @@ export default function ContextualMenu({
             setStronghold={setStronghold}
           />
         );
+      case "retainer":
+        return (
+          <RetainerContextualPanel
+            contextualPanelType={contextualPanelType}
+            
+          />
+        )
     }
   }
 

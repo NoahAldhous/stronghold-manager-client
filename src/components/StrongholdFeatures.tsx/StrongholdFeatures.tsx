@@ -396,6 +396,7 @@ export default function StrongholdFeatures({
         return (
           <StrongholdRetainersList
             strongholdId={strongholdId}
+            setContextualPanelType={setContextualPanelType}
           />
         );
       default:

@@ -1,10 +1,10 @@
 @use "../../../../../app/variables" as *;
 
 .card{
-    border: 1px solid $dark;
-    width: 60%;
-    @include cardContainer;
-    padding-bottom: 1.75rem;
+    // border: 1px solid $dark;
+    width: 100%;
+    // @include cardContainer;
+    padding: 0.5rem 0;
 
     .header{
         border-bottom: $bottomBorder;
