@@ -292,7 +292,7 @@ export default function ArtisanContextualPanel({
         <span>disable costs</span>
       </p>
       <p>{artisanShop?.bonuses?.map(item => (
-        <div>
+        <div key={item.bonusName}>
             <p>{item.bonusDescription}</p>
             <p>current bonus: {(item.numericalBonus * shopLevel)} {item.bonusName}</p>
         </div>

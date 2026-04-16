@@ -38,7 +38,7 @@ export default function StrongholdRetainerCard({
       </section>
       <section className={styles.abilities}>
         {abilities.map((item) => (
-          <p className={styles.abilityName}>
+          <p key={item} className={styles.abilityName}>
             {item}
             <span className={styles.abilityMod}>
               {retainer.primaryAbility.some(
@@ -54,7 +54,7 @@ export default function StrongholdRetainerCard({
         <p className={styles.title}>
           saving throws
           {abilities.map((item) => (
-            <span className={styles.value}>
+            <span key={item} className={styles.value}>
               {retainer.savingThrows.some((save) => save.abbreviation === item)
                 ? ` ${item} +6`
                 : null}
