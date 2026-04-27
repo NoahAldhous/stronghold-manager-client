@@ -1,24 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Units, Stronghold } from "types";
 import styles from "./styles.module.scss";
 import { StatsCalculator } from "lib/StatsCalculator";
 
 interface UnitsFeaturesProps {
-    userId: string | null;
-    stronghold: Stronghold;
-    strongholdId: string;
-    activeButton: {
-        category: string;
-        subCategory: string;
-    }
+  userId: string | null;
+  stronghold: Stronghold;
+  strongholdId: string;
+  activeButton: {
+    category: string;
+    subCategory: string;
+  };
 }
 
 export default function UnitsFeatures({
-    userId,
-    stronghold,
-    strongholdId,
-    activeButton,
+  userId,
+  stronghold,
+  strongholdId,
+  activeButton,
 }: UnitsFeaturesProps) {
   const [unitsList, setUnitsList] = useState<Units | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,26 +26,25 @@ export default function UnitsFeatures({
   async function fetchUnits(): Promise<void> {
     if (!unitsList) {
       setLoading(true);
-      if (userId) {
-        try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/units/?user_id=${userId}&stronghold_id=${strongholdId}`
+      console.log("fetching units...");
+
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/units/?user_id=${userId}&stronghold_id=${strongholdId}`
+        );
+
+        if (!res.ok) {
+          throw new Error(
+            "There was a problem fetching this Stronghold's units. Pleas try again"
           );
-
-          if (!res.ok) {
-            throw new Error(
-              "There was a problem fetching this Stronghold's units. Pleas try again"
-            );
-          }
-
-          const data = await res.json();
-          setUnitsList(data.units);
-          console.log(data.units);
-        } catch (err) {
-          console.log(err.message);
-        } finally {
-          setLoading(false);
         }
+
+        const data = await res.json();
+        setUnitsList(data.units);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        setLoading(false);
       }
     }
   }
@@ -61,6 +60,12 @@ export default function UnitsFeatures({
     const unitStats = newCalc.getCost(unit);
     return unitStats;
   }
+
+  useEffect(() => {
+    if(userId){
+      fetchUnits();
+    }
+  }, [userId, strongholdId]);
 
   function renderElements() {
     switch (activeButton.subCategory) {
@@ -79,12 +84,8 @@ export default function UnitsFeatures({
               {unitsList?.map((unit) => (
                 <div key={unit.id} className={styles.unit}>
                   <p className={styles.largeCategory}>{unit.name}</p>
-                  <p className={styles.smallCategory}>
-                    {unit.size.unitSize}
-                  </p>
-                  <p className={styles.mediumCategory}>
-                    {unit.ancestry.name}
-                  </p>
+                  <p className={styles.smallCategory}>{unit.size.unitSize}</p>
+                  <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
                   <p className={styles.mediumCategory}>
                     {unit.experience.name}
                   </p>
@@ -125,29 +126,19 @@ export default function UnitsFeatures({
                 return (
                   <div key={unit.id} className={`${styles.unit}`}>
                     <p className={`${styles.largeCategory}`}>{unit.name}</p>
-                    <p
-                      className={`${styles.smallCategory} ${styles.stats}`}
-                    >
+                    <p className={`${styles.smallCategory} ${styles.stats}`}>
                       +{stats.attack}
                     </p>
-                    <p
-                      className={`${styles.smallCategory} ${styles.stats}`}
-                    >
+                    <p className={`${styles.smallCategory} ${styles.stats}`}>
                       +{stats.power}
                     </p>
-                    <p
-                      className={`${styles.smallCategory} ${styles.stats}`}
-                    >
+                    <p className={`${styles.smallCategory} ${styles.stats}`}>
                       {stats.defense}{" "}
                     </p>
-                    <p
-                      className={`${styles.smallCategory} ${styles.stats}`}
-                    >
+                    <p className={`${styles.smallCategory} ${styles.stats}`}>
                       {stats.toughness}
                     </p>
-                    <p
-                      className={`${styles.smallCategory} ${styles.stats}`}
-                    >
+                    <p className={`${styles.smallCategory} ${styles.stats}`}>
                       +{stats.morale}
                     </p>
                   </div>
@@ -175,14 +166,10 @@ export default function UnitsFeatures({
                 return (
                   <div key={unit.id} className={`${styles.unit}`}>
                     <p className={`${styles.largeCategory}`}>{unit.name}</p>
-                    <p
-                      className={`${styles.smallCategory} ${styles.stats}`}
-                    >
+                    <p className={`${styles.smallCategory} ${styles.stats}`}>
                       {costs.cost}gp
                     </p>
-                    <p
-                      className={`${styles.smallCategory} ${styles.stats}`}
-                    >
+                    <p className={`${styles.smallCategory} ${styles.stats}`}>
                       {costs.upkeep}gp
                     </p>
                   </div>
@@ -194,8 +181,5 @@ export default function UnitsFeatures({
     }
   }
 
-  return (
-    renderElements()
-  )
-  
+  return renderElements();
 }
