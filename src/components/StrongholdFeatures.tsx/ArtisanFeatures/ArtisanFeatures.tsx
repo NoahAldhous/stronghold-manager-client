@@ -29,7 +29,7 @@ export default function ArtisanFeatures({
     null
   );
   const [strongholdArtisansList, setStrongholdArtisansList] =
-    useState<StrongholdArtisans | [] | null>();
+    useState<StrongholdArtisans>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function fetchArtisanShops(): Promise<void> {
@@ -120,7 +120,7 @@ export default function ArtisanFeatures({
 
   const artisanLevelMap = useMemo(() => {
     const map = new Map<string, number>();
-    strongholdArtisansList?.forEach((a) => {
+    strongholdArtisansList.forEach((a) => {
       map.set(a.name, a.shop.level);
     });
     return map;

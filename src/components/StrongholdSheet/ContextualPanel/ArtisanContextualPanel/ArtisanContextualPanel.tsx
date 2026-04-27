@@ -31,7 +31,7 @@ export default function ArtisanContextualPanel({
     { cost: number; artisan_level: number }[] | null
   >(null);
   const [strongholdArtisansList, setStrongholdArtisansList] =
-    useState<StrongholdArtisans | [] | null>();
+    useState<StrongholdArtisans>([]);
 
   async function fetchArtisanShop(artisan): Promise<void> {
     setLoading(true);
@@ -276,7 +276,7 @@ export default function ArtisanContextualPanel({
 
   function findArtisanShopLevel(artisan) {
     const strongholdArtisan = strongholdArtisansList?.find(
-      (strongholdArtisan) => strongholdArtisan?.name === artisan
+      (strongholdArtisan) => strongholdArtisan.name === artisan
     );
     return strongholdArtisan ? strongholdArtisan.shop.level : 0;
   }
@@ -291,7 +291,7 @@ export default function ArtisanContextualPanel({
 
   function findStrongholdArtisanId(artisan) {
     const strongholdArtisan = strongholdArtisansList?.find(
-      (item) => item.name === artisan 
+      (item) => item?.name === artisan 
     );
     return strongholdArtisan?.strongholdArtisanId
   }
