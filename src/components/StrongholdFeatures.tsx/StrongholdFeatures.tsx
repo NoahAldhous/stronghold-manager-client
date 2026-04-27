@@ -65,7 +65,6 @@ export default function StrongholdFeatures({
   needToUpdate,
   setNeedToUpdate,
 }: StrongholdFeaturesType) {
-  const [unitsList, setUnitsList] = useState<Units | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   //TODO: separate into units raised list component
   const [keepType, setKeepType] = useState<"keep" | "camp">("keep");
@@ -73,32 +72,6 @@ export default function StrongholdFeatures({
     RaisingUnitRow[] | null
   >(null);
 
-  async function fetchUnits(): Promise<void> {
-    if (!unitsList) {
-      setLoading(true);
-      if (userId) {
-        try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/units/?user_id=${userId}&stronghold_id=${strongholdId}`
-          );
-
-          if (!res.ok) {
-            throw new Error(
-              "There was a problem fetching this Stronghold's units. Pleas try again"
-            );
-          }
-
-          const data = await res.json();
-          setUnitsList(data.units);
-          console.log(data.units);
-        } catch (err) {
-          console.log(err.message);
-        } finally {
-          setLoading(false);
-        }
-      }
-    }
-  }
   //TODO: Extract this out into a separate component
   async function fetchUnitsRaised(): Promise<void> {
     if (!unitsRaisedList) {
@@ -121,24 +94,6 @@ export default function StrongholdFeatures({
         return;
       }
     }
-  }
-
-  useEffect(() => {
-    if (activeButton.category === "units") {
-      fetchUnits();
-    }
-  }, [activeButton.category]);
-
-  function getUnitStats(unit) {
-    const newCalc = StatsCalculator.fromUnit(unit, stronghold);
-    const unitStats = newCalc.getStats(false);
-    return unitStats;
-  }
-
-  function getUnitCosts(unit) {
-    const newCalc = StatsCalculator.fromUnit(unit, stronghold);
-    const unitStats = newCalc.getCost(unit);
-    return unitStats;
   }
 
   function renderText() {
@@ -253,135 +208,6 @@ export default function StrongholdFeatures({
           strongholdId={strongholdId}
           activeButton={activeButton}
         />
-        // switch (activeButton.subCategory) {
-        //   case "overview":
-        //     return (
-        //       <div className={styles.unitListContainer}>
-        //         <section className={styles.unitCategories}>
-        //           <div className={styles.largeCategory}>name</div>
-        //           <div className={styles.smallCategory}>size</div>
-        //           <div className={styles.mediumCategory}>ancestry</div>
-        //           <div className={styles.mediumCategory}>experience</div>
-        //           <div className={styles.mediumCategory}>equipment</div>
-        //           <div className={styles.smallCategory}>type</div>
-        //         </section>
-        //         <section className={styles.unitList}>
-        //           {unitsList?.map((unit) => (
-        //             <div key={unit.id} className={styles.unit}>
-        //               <p className={styles.largeCategory}>{unit.name}</p>
-        //               <p className={styles.smallCategory}>
-        //                 {unit.size.unitSize}
-        //               </p>
-        //               <p className={styles.mediumCategory}>
-        //                 {unit.ancestry.name}
-        //               </p>
-        //               <p className={styles.mediumCategory}>
-        //                 {unit.experience.name}
-        //               </p>
-        //               <p className={styles.mediumCategory}>
-        //                 {unit.equipment.name}{" "}
-        //               </p>
-        //               <p className={styles.smallCategory}>{unit.type.name}</p>
-        //             </div>
-        //           ))}
-        //         </section>
-        //       </div>
-        //     );
-        //   case "stats":
-        //     return (
-        //       <div className={styles.unitListContainer}>
-        //         <section className={styles.unitCategories}>
-        //           <div className={styles.largeCategory}>name</div>
-        //           <div className={`${styles.smallCategory} ${styles.stats}`}>
-        //             attack
-        //           </div>
-        //           <div className={`${styles.smallCategory} ${styles.stats}`}>
-        //             power
-        //           </div>
-        //           <div className={`${styles.smallCategory} ${styles.stats}`}>
-        //             defense
-        //           </div>
-        //           <div className={`${styles.smallCategory} ${styles.stats}`}>
-        //             toughness
-        //           </div>
-        //           <div className={`${styles.smallCategory} ${styles.stats}`}>
-        //             morale
-        //           </div>
-        //         </section>
-        //         <section className={styles.unitList}>
-        //           {unitsList?.map((unit) => {
-        //             const stats = getUnitStats(unit);
-
-        //             return (
-        //               <div key={unit.id} className={`${styles.unit}`}>
-        //                 <p className={`${styles.largeCategory}`}>{unit.name}</p>
-        //                 <p
-        //                   className={`${styles.smallCategory} ${styles.stats}`}
-        //                 >
-        //                   +{stats.attack}
-        //                 </p>
-        //                 <p
-        //                   className={`${styles.smallCategory} ${styles.stats}`}
-        //                 >
-        //                   +{stats.power}
-        //                 </p>
-        //                 <p
-        //                   className={`${styles.smallCategory} ${styles.stats}`}
-        //                 >
-        //                   {stats.defense}{" "}
-        //                 </p>
-        //                 <p
-        //                   className={`${styles.smallCategory} ${styles.stats}`}
-        //                 >
-        //                   {stats.toughness}
-        //                 </p>
-        //                 <p
-        //                   className={`${styles.smallCategory} ${styles.stats}`}
-        //                 >
-        //                   +{stats.morale}
-        //                 </p>
-        //               </div>
-        //             );
-        //           })}
-        //         </section>
-        //       </div>
-        //     );
-        //   case "costs":
-        //     return (
-        //       <div className={styles.unitListContainer}>
-        //         <section className={styles.unitCategories}>
-        //           <div className={styles.largeCategory}>name</div>
-        //           <div className={`${styles.smallCategory} ${styles.stats}`}>
-        //             cost
-        //           </div>
-        //           <div className={`${styles.smallCategory} ${styles.stats}`}>
-        //             upkeep
-        //           </div>
-        //         </section>
-        //         <section className={styles.unitList}>
-        //           {unitsList?.map((unit) => {
-        //             const costs = getUnitCosts(unit);
-
-        //             return (
-        //               <div key={unit.id} className={`${styles.unit}`}>
-        //                 <p className={`${styles.largeCategory}`}>{unit.name}</p>
-        //                 <p
-        //                   className={`${styles.smallCategory} ${styles.stats}`}
-        //                 >
-        //                   {costs.cost}gp
-        //                 </p>
-        //                 <p
-        //                   className={`${styles.smallCategory} ${styles.stats}`}
-        //                 >
-        //                   {costs.upkeep}gp
-        //                 </p>
-        //               </div>
-        //             );
-        //           })}
-        //         </section>
-        //       </div>
-        //     );
-        // }
       case "artisans":
         switch (activeButton.subCategory) {
           case "all":
