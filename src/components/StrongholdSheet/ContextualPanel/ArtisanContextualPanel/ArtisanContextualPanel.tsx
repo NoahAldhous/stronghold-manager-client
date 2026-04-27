@@ -276,7 +276,7 @@ export default function ArtisanContextualPanel({
 
   function findArtisanShopLevel(artisan) {
     const strongholdArtisan = strongholdArtisansList?.find(
-      (strongholdArtisan) => strongholdArtisan.name === artisan
+      (strongholdArtisan) => strongholdArtisan?.name === artisan
     );
     return strongholdArtisan ? strongholdArtisan.shop.level : 0;
   }
