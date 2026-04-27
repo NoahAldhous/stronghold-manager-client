@@ -262,7 +262,6 @@ export default function ArtisanContextualPanel({
     fetchStrongholdArtisans();
   }, [needToUpdate.artisans]);
 
-
   // useEffect(() => {
   //   if (!strongholdArtisansList || needToUpdate.artisans) {
   //     fetchStrongholdArtisans();
