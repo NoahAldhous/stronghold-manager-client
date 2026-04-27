@@ -29,7 +29,7 @@ export default function ArtisanFeatures({
     null
   );
   const [strongholdArtisansList, setStrongholdArtisansList] =
-    useState<StrongholdArtisans | null>();
+    useState<StrongholdArtisans | [] | null>();
   const [loading, setLoading] = useState<boolean>(false);
 
   async function fetchArtisanShops(): Promise<void> {
@@ -68,7 +68,7 @@ export default function ArtisanFeatures({
         }
 
         const data = await res.json();
-        setStrongholdArtisansList(data.artisans);
+        setStrongholdArtisansList(data.artisans ?? []);
         console.log(data.artisans);
       } catch (err) {
         console.log(err.message);

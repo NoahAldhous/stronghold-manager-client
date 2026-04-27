@@ -31,7 +31,7 @@ export default function ArtisanContextualPanel({
     { cost: number; artisan_level: number }[] | null
   >(null);
   const [strongholdArtisansList, setStrongholdArtisansList] =
-    useState<StrongholdArtisans | null>();
+    useState<StrongholdArtisans | [] | null>();
 
   async function fetchArtisanShop(artisan): Promise<void> {
     setLoading(true);
@@ -69,7 +69,7 @@ export default function ArtisanContextualPanel({
         }
 
         const data = await res.json();
-        setStrongholdArtisansList(data.artisans);
+        setStrongholdArtisansList(data.artisans ?? []);
         console.log(data.artisans);
       } catch (err) {
         console.log(err.message);
@@ -187,7 +187,7 @@ export default function ArtisanContextualPanel({
       }
 
       const data = await res.json();
-      
+      await fetchStrongholdArtisans();
       setNeedToUpdate((prev) => ({
         ...prev,
         artisans:true,
@@ -255,10 +255,13 @@ export default function ArtisanContextualPanel({
   }, [contextualPanelType.subtype]);
 
   useEffect(() => {
-    if(needToUpdate.artisans) {
-      fetchStrongholdArtisans();
-    }
-  }, [needToUpdate.artisans])
+    fetchStrongholdArtisans();
+  }, []);
+
+  useEffect(() => {
+    fetchStrongholdArtisans();
+  }, [needToUpdate.artisans]);
+
 
   // useEffect(() => {
   //   if (!strongholdArtisansList || needToUpdate.artisans) {
