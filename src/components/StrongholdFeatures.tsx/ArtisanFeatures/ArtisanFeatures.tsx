@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import ArtisanCard from "./ArtisanCard/ArtisanCard";
 import styles from "./styles.module.scss";
 import { ArtisanShop, ArtisanShops, StrongholdArtisans } from "types";
@@ -82,16 +82,22 @@ export default function ArtisanFeatures({
     if (!artisanShopsList) {
       fetchArtisanShops();
     }
+  }, []);
 
-    if (!strongholdArtisansList || needToUpdate.artisans) {
+  useEffect(() => {
+    fetchStrongholdArtisans();
+  }, [])
+
+  useEffect(() => {
+    if (needToUpdate.artisans) {
       fetchStrongholdArtisans();
-
-      setNeedToUpdate((prev) => {
-        if (!prev.artisans) return prev;
-        return { ...prev, artisans: false };
-      });
+  
+      setNeedToUpdate((prev) => ({
+        ...prev,
+        artisans: false,
+      }));
     }
-  }, [needToUpdate]);
+  },[needToUpdate.artisans])
 
   // function findArtisanShopLevel(artisan){
   //     const strongholdArtisan = strongholdArtisansList?.find(strongholdArtisan => strongholdArtisan.name === artisan);

@@ -155,6 +155,12 @@ export default function ArtisanContextualPanel({
 
       const data = await res.json();
       console.log(data);
+            
+      setNeedToUpdate((prev) => ({
+        ...prev,
+        artisans:true,
+      }))
+
     } catch (err) {
       console.log(err.message);
     } finally {
@@ -162,10 +168,34 @@ export default function ArtisanContextualPanel({
       if (!costDisabled) {
         updateTreasury("gp", cost, "decrease");
       }
-      setNeedToUpdate({
-        ...needToUpdate,
-        artisans: true,
-      });
+    }
+  }
+
+  async function deleteArtisanShop(strongholdArtisanId: number){
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/strongholds/artisans/delete/${strongholdArtisanId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+          }
+        }
+      )
+
+      if (!res.ok) {
+        throw new Error("There was a problem deleting Artisan.");
+      }
+
+      const data = await res.json();
+      
+      setNeedToUpdate((prev) => ({
+        ...prev,
+        artisans:true,
+      }))
+    } catch(err){
+      console.log(err.message)
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -225,15 +255,21 @@ export default function ArtisanContextualPanel({
   }, [contextualPanelType.subtype]);
 
   useEffect(() => {
-    if (!strongholdArtisansList || needToUpdate.artisans) {
+    if(needToUpdate.artisans) {
       fetchStrongholdArtisans();
-
-      setNeedToUpdate((prev) => {
-        if (!prev.artisans) return prev;
-        return { ...prev, artisans: false };
-      });
     }
-  }, [needToUpdate]);
+  }, [needToUpdate.artisans])
+
+  // useEffect(() => {
+  //   if (!strongholdArtisansList || needToUpdate.artisans) {
+  //     fetchStrongholdArtisans();
+
+  //     setNeedToUpdate((prev) => {
+  //       if (!prev.artisans) return prev;
+  //       return { ...prev, artisans: false };
+  //     });
+  //   }
+  // }, [needToUpdate]);
 
   function findArtisanShopLevel(artisan) {
     const strongholdArtisan = strongholdArtisansList?.find(
@@ -250,11 +286,20 @@ export default function ArtisanContextualPanel({
     return upgradeLevel?.cost ?? 0;
   }
 
+  function findStrongholdArtisanId(artisan) {
+    const strongholdArtisan = strongholdArtisansList?.find(
+      (item) => item.name === artisan 
+    );
+    return strongholdArtisan?.strongholdArtisanId
+  }
+
   function handleCheck(e: {target: {checked: boolean}}) {
     setCostsDisabled(e.target.checked);
   }
 
   const shopLevel = findArtisanShopLevel(artisanShop?.artisanName);
+
+  const strongholdArtisanId = findStrongholdArtisanId(artisanShop?.artisanName)
 
   const upgradeCost = findUpgradeCost(shopLevel);
 
@@ -280,6 +325,14 @@ export default function ArtisanContextualPanel({
       >
         upgrade
       </button>
+      <button
+      disabled={shopLevel < 1}
+       onClick={() =>
+        deleteArtisanShop(strongholdArtisanId ?? 0)
+       }
+      >
+        delete
+      </button>
       <p>
         cost: <span>{costDisabled ? 0 : upgradeCost}</span>{" "}
         <span>{goldNeededToUpgrade < 1 ? "" : `(${goldNeededToUpgrade}gp needed)`}</span>
@@ -291,12 +344,12 @@ export default function ArtisanContextualPanel({
         />
         <span>disable costs</span>
       </p>
-      <p>{artisanShop?.bonuses?.map(item => (
+      <div>{artisanShop?.bonuses?.map(item => (
         <div key={item.bonusName}>
             <p>{item.bonusDescription}</p>
             <p>current bonus: {(item.numericalBonus * shopLevel)} {item.bonusName}</p>
         </div>
-      ))}</p>
+      ))}</div>
     </div>
   );
 }

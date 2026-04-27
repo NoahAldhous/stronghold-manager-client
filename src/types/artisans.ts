@@ -16,10 +16,11 @@ export type ArtisanShop = {
 export type ArtisanShops = ArtisanShop[];
 
 export type StrongholdArtisan = {
-    artisanId: number,
+    strongholdArtisanId: number,
     name: string,
     strongholdId: number,
     shop: {
+        shopId: number,
         description: string,
         level: number,
         name: string,
