@@ -13,6 +13,10 @@ interface UnitsFeaturesProps {
     category: string;
     subCategory: string;
   };
+  contextualPanelType: {
+    type: string;
+    subtype: string;
+  };
   setContextualPanelType: React.Dispatch<
   React.SetStateAction<{ type: string; subtype: string }>
 >;
@@ -23,6 +27,7 @@ export default function UnitsFeatures({
   stronghold,
   strongholdId,
   activeButton,
+  contextualPanelType,
   setContextualPanelType
 }: UnitsFeaturesProps) {
   const [unitsList, setUnitsList] = useState<Units | null>(null);
@@ -30,7 +35,6 @@ export default function UnitsFeatures({
   const [hasNoUnits, setHasNoUnits] = useState<boolean | undefined>(undefined);
 
   async function fetchUnits(): Promise<void> {
-    if (!unitsList) {
       setLoading(true);
       console.log("fetching units...");
 
@@ -52,7 +56,6 @@ export default function UnitsFeatures({
       } finally {
         setLoading(false);
       }
-    }
   }
 
   function getUnitStats(unit) {
@@ -80,6 +83,12 @@ export default function UnitsFeatures({
       setHasNoUnits(false);
     }
   }, [unitsList])
+
+  useEffect(() => {
+    if(contextualPanelType.subtype === ""){
+      fetchUnits();
+    }
+  }, [contextualPanelType])
 
   function handleClick(unitId){
     setContextualPanelType({

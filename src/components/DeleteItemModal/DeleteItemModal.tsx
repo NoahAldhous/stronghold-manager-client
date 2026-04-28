@@ -8,6 +8,15 @@ interface DeleteItemModalProps {
     setDeleteModalSettings: React.Dispatch<React.SetStateAction<DeleteModalSettings>>;
     itemList?: any;
     setItemList?: any;
+    contextualPanelType?: {
+      type: string;
+      subtype: string;
+    };
+    setContextualPanelType?: React.Dispatch<React.SetStateAction<{
+      type: string;
+      subtype:string;
+    }>>;
+
 }
 
 export default function DeleteItemModal({
@@ -15,6 +24,8 @@ export default function DeleteItemModal({
   setDeleteModalSettings,
   itemList,
   setItemList,
+  contextualPanelType, 
+  setContextualPanelType
 }: DeleteItemModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -45,6 +56,12 @@ export default function DeleteItemModal({
         setItemList(
           itemList.filter((item) => item.id !== deleteModalSettings.itemId)
         );
+      }
+      if(contextualPanelType && setContextualPanelType){
+        setContextualPanelType({
+          type: "",
+          subtype: ""
+        })
       }
       setDeleteModalSettings({
         ...deleteModalSettings,

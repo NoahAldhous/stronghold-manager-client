@@ -356,6 +356,7 @@ export default function Page({
                     }
                     strongholdType={stronghold?.stronghold_type ?? null}
                     characterClass={stronghold?.class.name ?? null}
+                    contextualPanelType={contextualPanelType}
                     setContextualPanelType={setContextualPanelType}
                     needToUpdate={needToUpdate}
                     setNeedToUpdate={setNeedToUpdate}
@@ -404,6 +405,8 @@ export default function Page({
           <DeleteItemModal
             deleteModalSettings={deleteModalSettings}
             setDeleteModalSettings={setDeleteModalSettings}
+            contextualPanelType={contextualPanelType}
+            setContextualPanelType={setContextualPanelType}
           />
           : null
       }

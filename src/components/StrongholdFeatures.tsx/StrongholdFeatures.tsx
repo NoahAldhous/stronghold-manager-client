@@ -41,6 +41,10 @@ interface StrongholdFeaturesType {
   } | null;
   strongholdType: string | null;
   characterClass: string | null;
+  contextualPanelType: {
+    type: string;
+    subtype: string;
+  }
   setContextualPanelType: React.Dispatch<
     React.SetStateAction<{ type: string; subtype: string }>
   >;
@@ -61,6 +65,7 @@ export default function StrongholdFeatures({
   classFeatureImprovement,
   strongholdType,
   characterClass,
+  contextualPanelType,
   setContextualPanelType,
   needToUpdate,
   setNeedToUpdate,
@@ -207,6 +212,7 @@ export default function StrongholdFeatures({
           stronghold={stronghold}
           strongholdId={strongholdId}
           activeButton={activeButton}
+          contextualPanelType={contextualPanelType}
           setContextualPanelType={setContextualPanelType}
         />
       case "artisans":
