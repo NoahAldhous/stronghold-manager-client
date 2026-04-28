@@ -1,13 +1,17 @@
 "use client";
 import UnitCard from "components/UnitCard/UnitCard";
 import styles from "./styles.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Unit } from "types";
 import { useAuth } from "contexts/AuthContext";
 import UnitEditor from "components/UnitEditor/UnitEditor";
+import { useSearchParams } from "next/navigation";
 
 export default function Page() {
   const { userId } = useAuth();
+  const searchParams = useSearchParams();
+
+  const strongholdId = Number(searchParams.get("stronghold_id"))
 
   const [unit, setUnit] = useState<Unit>({
     ancestry: {
@@ -51,6 +55,12 @@ export default function Page() {
     user_id: Number(userId),
     id: 0,
   });
+
+  useEffect(() => {
+    if(strongholdId) {
+      setUnit({...unit, stronghold_id: strongholdId})
+    }
+  }, [strongholdId])
 
   return (
     <main className={styles.main}>

@@ -33,6 +33,31 @@
         width: 5%;
     }
 
+    .noUnitBody{
+        width: 100%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .box{
+            border: 2px solid $selected;
+            width: 50%;
+            height: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: $boxShadow;
+        }
+    }
+
+    .link{
+        @include linkAsButton;
+        min-width: 25%;
+    }
+
 
     .unitList{
         width: 100%;

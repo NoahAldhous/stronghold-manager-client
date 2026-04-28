@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Units, Stronghold } from "types";
 import styles from "./styles.module.scss";
 import { StatsCalculator } from "lib/StatsCalculator";
+import Link from "next/link";
 
 interface UnitsFeaturesProps {
   userId: string | null;
@@ -22,6 +23,7 @@ export default function UnitsFeatures({
 }: UnitsFeaturesProps) {
   const [unitsList, setUnitsList] = useState<Units | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasNoUnits, setHasNoUnits] = useState<boolean | undefined>(undefined);
 
   async function fetchUnits(): Promise<void> {
     if (!unitsList) {
@@ -67,11 +69,32 @@ export default function UnitsFeatures({
     }
   }, [userId, strongholdId]);
 
+  useEffect(() => {
+    if(unitsList && unitsList.length == 0){
+      setHasNoUnits(true)
+    } else if (unitsList && unitsList.length > 0){
+      setHasNoUnits(false);
+    }
+  }, [unitsList])
+
+
   function renderElements() {
     switch (activeButton.subCategory) {
       case "overview":
-        return (
-          <div className={styles.unitListContainer}>
+        return (!loading && hasNoUnits) ?
+                <div className={styles.unitListContainer}>
+                  <section className={styles.noUnitBody}>
+          <section className={styles.box}>
+            <p>You have no units</p>
+            {/* TODO: This link should include the stronghold id, automatically setting it in the unit creator.*/}
+            <Link className={styles.link} href={`/units/create?stronghold_id=${strongholdId}`}>
+              create a unit
+            </Link>
+          </section>
+        </section>
+                </div>
+                :
+                <div className={styles.unitListContainer}>
             <section className={styles.unitCategories}>
               <div className={styles.largeCategory}>name</div>
               <div className={styles.smallCategory}>size</div>
@@ -81,23 +104,22 @@ export default function UnitsFeatures({
               <div className={styles.smallCategory}>type</div>
             </section>
             <section className={styles.unitList}>
-              {unitsList?.map((unit) => (
-                <div key={unit.id} className={styles.unit}>
-                  <p className={styles.largeCategory}>{unit.name}</p>
-                  <p className={styles.smallCategory}>{unit.size.unitSize}</p>
-                  <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
-                  <p className={styles.mediumCategory}>
-                    {unit.experience.name}
-                  </p>
-                  <p className={styles.mediumCategory}>
-                    {unit.equipment.name}{" "}
-                  </p>
-                  <p className={styles.smallCategory}>{unit.type.name}</p>
-                </div>
-              ))}
+                {unitsList?.map((unit) => (
+                  <div key={unit.id} className={styles.unit}>
+                    <p className={styles.largeCategory}>{unit.name}</p>
+                    <p className={styles.smallCategory}>{unit.size.unitSize}</p>
+                    <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
+                    <p className={styles.mediumCategory}>
+                      {unit.experience.name}
+                    </p>
+                    <p className={styles.mediumCategory}>
+                      {unit.equipment.name}{" "}
+                    </p>
+                    <p className={styles.smallCategory}>{unit.type.name}</p>
+                  </div>
+                ))}
             </section>
-          </div>
-        );
+            </div>
       case "stats":
         return (
           <div className={styles.unitListContainer}>
