@@ -207,6 +207,7 @@ export default function StrongholdFeatures({
           stronghold={stronghold}
           strongholdId={strongholdId}
           activeButton={activeButton}
+          setContextualPanelType={setContextualPanelType}
         />
       case "artisans":
         switch (activeButton.subCategory) {

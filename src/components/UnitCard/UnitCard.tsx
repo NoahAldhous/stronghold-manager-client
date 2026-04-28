@@ -37,8 +37,6 @@ export default function UnitCard({
     placeholder: ""
   })
 
-
-
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   function handleDelete() {
@@ -165,7 +163,7 @@ export default function UnitCard({
     <>
       <div ref={cardRef}
         onClick={() => {
-          scrollToCard();
+          clickable ? scrollToCard() : null;
           clickable ? setActiveCard(true) : null;
         }}
         key={unit?.id}
@@ -339,7 +337,7 @@ export default function UnitCard({
           <p>upkeep: {stats.costs.upkeep}gp</p>
           <p>cost: {stats.costs.cost}gp</p>
         </section>
-        {activeCard ? (
+        {(clickable && activeCard) ? (
           <section className={styles.cardFooter}>
             <Link className={`${styles.link} ${styles.button}`} href={`/units/edit/${unit.id}`}>
               edit
@@ -350,12 +348,16 @@ export default function UnitCard({
           </section>
         ) : null}
       </div>
-      <div
-        onClick={() => {
-          setActiveCard(false);
-        }}
-        className={`${styles.background} ${activeCard ? styles.visible : ""}`}
-      />
+      {
+        clickable ?
+        <div
+          onClick={() => {
+            setActiveCard(false);
+          }}
+          className={`${styles.background} ${activeCard ? styles.visible : ""}`}
+        /> 
+        : null
+      }
     </>
   );
 }

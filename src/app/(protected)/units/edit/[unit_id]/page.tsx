@@ -37,11 +37,7 @@ export default function Page({ params } : { params: Promise<{unit_id: string}> }
 
     useEffect(() => {
         if (!unit) {
-            console.log('fetching unit', unit_id)
             fetchUnit(unit_id)
-        }
-        if (unit){
-            console.log("Unit", unit)
         }
     }, [unit])
 

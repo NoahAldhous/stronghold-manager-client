@@ -13,6 +13,9 @@ interface UnitsFeaturesProps {
     category: string;
     subCategory: string;
   };
+  setContextualPanelType: React.Dispatch<
+  React.SetStateAction<{ type: string; subtype: string }>
+>;
 }
 
 export default function UnitsFeatures({
@@ -20,6 +23,7 @@ export default function UnitsFeatures({
   stronghold,
   strongholdId,
   activeButton,
+  setContextualPanelType
 }: UnitsFeaturesProps) {
   const [unitsList, setUnitsList] = useState<Units | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -77,131 +81,138 @@ export default function UnitsFeatures({
     }
   }, [unitsList])
 
-
-  function renderElements() {
-    switch (activeButton.subCategory) {
-      case "overview":
-        return (!loading && hasNoUnits) ?
-                <div className={styles.unitListContainer}>
-                  <section className={styles.noUnitBody}>
-          <section className={styles.box}>
-            <p>You have no units</p>
-            {/* TODO: This link should include the stronghold id, automatically setting it in the unit creator.*/}
-            <Link className={styles.link} href={`/units/create?stronghold_id=${strongholdId}`}>
-              create a unit
-            </Link>
-          </section>
-        </section>
-                </div>
-                :
-                <div className={styles.unitListContainer}>
-            <section className={styles.unitCategories}>
-              <div className={styles.largeCategory}>name</div>
-              <div className={styles.smallCategory}>size</div>
-              <div className={styles.mediumCategory}>ancestry</div>
-              <div className={styles.mediumCategory}>experience</div>
-              <div className={styles.mediumCategory}>equipment</div>
-              <div className={styles.smallCategory}>type</div>
-            </section>
-            <section className={styles.unitList}>
-                {unitsList?.map((unit) => (
-                  <div key={unit.id} className={styles.unit}>
-                    <p className={styles.largeCategory}>{unit.name}</p>
-                    <p className={styles.smallCategory}>{unit.size.unitSize}</p>
-                    <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
-                    <p className={styles.mediumCategory}>
-                      {unit.experience.name}
-                    </p>
-                    <p className={styles.mediumCategory}>
-                      {unit.equipment.name}{" "}
-                    </p>
-                    <p className={styles.smallCategory}>{unit.type.name}</p>
-                  </div>
-                ))}
-            </section>
-            </div>
-      case "stats":
-        return (
-          <div className={styles.unitListContainer}>
-            <section className={styles.unitCategories}>
-              <div className={styles.largeCategory}>name</div>
-              <div className={`${styles.smallCategory} ${styles.stats}`}>
-                attack
-              </div>
-              <div className={`${styles.smallCategory} ${styles.stats}`}>
-                power
-              </div>
-              <div className={`${styles.smallCategory} ${styles.stats}`}>
-                defense
-              </div>
-              <div className={`${styles.smallCategory} ${styles.stats}`}>
-                toughness
-              </div>
-              <div className={`${styles.smallCategory} ${styles.stats}`}>
-                morale
-              </div>
-            </section>
-            <section className={styles.unitList}>
-              {unitsList?.map((unit) => {
-                const stats = getUnitStats(unit);
-
-                return (
-                  <div key={unit.id} className={`${styles.unit}`}>
-                    <p className={`${styles.largeCategory}`}>{unit.name}</p>
-                    <p className={`${styles.smallCategory} ${styles.stats}`}>
-                      +{stats.attack}
-                    </p>
-                    <p className={`${styles.smallCategory} ${styles.stats}`}>
-                      +{stats.power}
-                    </p>
-                    <p className={`${styles.smallCategory} ${styles.stats}`}>
-                      {stats.defense}{" "}
-                    </p>
-                    <p className={`${styles.smallCategory} ${styles.stats}`}>
-                      {stats.toughness}
-                    </p>
-                    <p className={`${styles.smallCategory} ${styles.stats}`}>
-                      +{stats.morale}
-                    </p>
-                  </div>
-                );
-              })}
-            </section>
-          </div>
-        );
-      case "costs":
-        return (
-          <div className={styles.unitListContainer}>
-            <section className={styles.unitCategories}>
-              <div className={styles.largeCategory}>name</div>
-              <div className={`${styles.smallCategory} ${styles.stats}`}>
-                cost
-              </div>
-              <div className={`${styles.smallCategory} ${styles.stats}`}>
-                upkeep
-              </div>
-            </section>
-            <section className={styles.unitList}>
-              {unitsList?.map((unit) => {
-                const costs = getUnitCosts(unit);
-
-                return (
-                  <div key={unit.id} className={`${styles.unit}`}>
-                    <p className={`${styles.largeCategory}`}>{unit.name}</p>
-                    <p className={`${styles.smallCategory} ${styles.stats}`}>
-                      {costs.cost}gp
-                    </p>
-                    <p className={`${styles.smallCategory} ${styles.stats}`}>
-                      {costs.upkeep}gp
-                    </p>
-                  </div>
-                );
-              })}
-            </section>
-          </div>
-        );
-    }
+  function handleClick(unitId){
+    setContextualPanelType({
+      type: "unit",
+      subtype: unitId
+    })
   }
 
+  function renderElements() {
+    if(!loading && hasNoUnits) {
+      return (
+        <div className={styles.unitListContainer}>
+          <section className={styles.noUnitBody}>
+            <section className={styles.box}>
+              <p>You have no units</p>
+              <Link className={styles.link} href={`/units/create?stronghold_id=${strongholdId}`}>
+                create a unit
+              </Link>
+            </section>
+          </section>
+        </div>
+      );
+    }
+    switch (activeButton.subCategory) {
+        case "overview":
+          return (
+            <div className={styles.unitListContainer}>
+              <section className={styles.unitCategories}>
+                <div className={styles.largeCategory}>name</div>
+                <div className={styles.smallCategory}>size</div>
+                <div className={styles.mediumCategory}>ancestry</div>
+                <div className={styles.mediumCategory}>experience</div>
+                <div className={styles.mediumCategory}>equipment</div>
+                <div className={styles.smallCategory}>type</div>
+              </section>
+              <section className={styles.unitList}>
+                  {unitsList?.map((unit) => (
+                    <div key={unit.id} className={styles.unit} onClick={() => handleClick(unit.id)}>
+                      <p className={styles.largeCategory}>{unit.name}</p>
+                      <p className={styles.smallCategory}>{unit.size.unitSize}</p>
+                      <p className={styles.mediumCategory}>{unit.ancestry.name}</p>
+                      <p className={styles.mediumCategory}>
+                        {unit.experience.name}
+                      </p>
+                      <p className={styles.mediumCategory}>
+                        {unit.equipment.name}{" "}
+                      </p>
+                      <p className={styles.smallCategory}>{unit.type.name}</p>
+                    </div>
+                  ))}
+              </section>
+              </div>)
+        case "stats":
+          return (
+            <div className={styles.unitListContainer}>
+              <section className={styles.unitCategories}>
+                <div className={styles.largeCategory}>name</div>
+                <div className={`${styles.smallCategory} ${styles.stats}`}>
+                  attack
+                </div>
+                <div className={`${styles.smallCategory} ${styles.stats}`}>
+                  power
+                </div>
+                <div className={`${styles.smallCategory} ${styles.stats}`}>
+                  defense
+                </div>
+                <div className={`${styles.smallCategory} ${styles.stats}`}>
+                  toughness
+                </div>
+                <div className={`${styles.smallCategory} ${styles.stats}`}>
+                  morale
+                </div>
+              </section>
+              <section className={styles.unitList}>
+                {unitsList?.map((unit) => {
+                  const stats = getUnitStats(unit);
+  
+                  return (
+                    <div key={unit.id} className={`${styles.unit}`}>
+                      <p className={`${styles.largeCategory}`}>{unit.name}</p>
+                      <p className={`${styles.smallCategory} ${styles.stats}`}>
+                        +{stats.attack}
+                      </p>
+                      <p className={`${styles.smallCategory} ${styles.stats}`}>
+                        +{stats.power}
+                      </p>
+                      <p className={`${styles.smallCategory} ${styles.stats}`}>
+                        {stats.defense}{" "}
+                      </p>
+                      <p className={`${styles.smallCategory} ${styles.stats}`}>
+                        {stats.toughness}
+                      </p>
+                      <p className={`${styles.smallCategory} ${styles.stats}`}>
+                        +{stats.morale}
+                      </p>
+                    </div>
+                  );
+                })}
+              </section>
+            </div>
+          );
+        case "costs":
+          return (
+            <div className={styles.unitListContainer}>
+              <section className={styles.unitCategories}>
+                <div className={styles.largeCategory}>name</div>
+                <div className={`${styles.smallCategory} ${styles.stats}`}>
+                  cost
+                </div>
+                <div className={`${styles.smallCategory} ${styles.stats}`}>
+                  upkeep
+                </div>
+              </section>
+              <section className={styles.unitList}>
+                {unitsList?.map((unit) => {
+                  const costs = getUnitCosts(unit);
+  
+                  return (
+                    <div key={unit.id} className={`${styles.unit}`}>
+                      <p className={`${styles.largeCategory}`}>{unit.name}</p>
+                      <p className={`${styles.smallCategory} ${styles.stats}`}>
+                        {costs.cost}gp
+                      </p>
+                      <p className={`${styles.smallCategory} ${styles.stats}`}>
+                        {costs.upkeep}gp
+                      </p>
+                    </div>
+                  );
+                })}
+              </section>
+            </div>
+          );
+      }
+  }
   return renderElements();
 }

@@ -6,6 +6,7 @@ import RaisingUnitsModal from "components/Modal/RaisingUnitsModal/RaisingUnitsMo
 import { ArtisanShop, RaisingUnitsStatus, Stronghold } from "types";
 import ArtisanContextualPanel from "./ArtisanContextualPanel/ArtisanContextualPanel";
 import RetainerContextualPanel from "./FollowerContextualPanel/RetainerContextualPanel/RetainerContextualPanel";
+import UnitContextualPanel from "./UnitContextualPanel/UnitContextualPanel";
 
 interface ContextualPanelProps {
   contextualPanelType: { type: string; subtype: string };
@@ -106,6 +107,12 @@ export default function ContextualMenu({
           <RetainerContextualPanel
             contextualPanelType={contextualPanelType}
             
+          />
+        );
+      case "unit":
+        return (
+          <UnitContextualPanel
+            contextualPanelType={contextualPanelType}
           />
         )
     }
