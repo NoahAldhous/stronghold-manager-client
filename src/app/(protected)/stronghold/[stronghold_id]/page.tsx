@@ -3,7 +3,7 @@ import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
-import type { RaisingUnitsStatus, Stronghold } from "types";
+import type { DeleteModalSettings, RaisingUnitsStatus, Stronghold } from "types";
 import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 import UpgradeStrongholdModal from "components/Modal/UpgradeStrongholdModal/UpgradeStrongholdModal";
@@ -13,6 +13,7 @@ import FeatureImprovement from "components/StrongholdSheet/FeatureImprovement/Fe
 import Treasury from "components/StrongholdSheet/Treasury/Treasury";
 import Link from "next/link";
 import ContextualPanel from "components/StrongholdSheet/ContextualPanel/ContextualPanel";
+import DeleteItemModal from "components/DeleteItemModal/DeleteItemModal";
 
 export default function Page({
   params,
@@ -61,6 +62,13 @@ export default function Page({
       ],
     },
   ];
+
+  const [deleteModalSettings, setDeleteModalSettings] = useState<DeleteModalSettings>({
+    isVisible: false,
+    itemId: 0,
+    itemType: "",
+    urlSlug: "",
+  })
 
   const [upgradeModal, setUpgradeModal] = useState<boolean>(false);
 
@@ -374,6 +382,8 @@ export default function Page({
             treasury={stronghold.treasury}
             stronghold={stronghold}
             setStronghold={setStronghold}
+            deleteModalSettings={deleteModalSettings}
+            setDeleteModalSettings={setDeleteModalSettings}
           />
           // <section className={styles.Info}>
           //   <div className={styles.cardHeader}>contextual ContextualPanelrmation</div>
@@ -389,6 +399,14 @@ export default function Page({
           setIsUpgraded={setStrongholdIsUpgraded}
         />
       </section>
+      {
+        deleteModalSettings.isVisible ?
+          <DeleteItemModal
+            deleteModalSettings={deleteModalSettings}
+            setDeleteModalSettings={setDeleteModalSettings}
+          />
+          : null
+      }
     </main>
   );
 }

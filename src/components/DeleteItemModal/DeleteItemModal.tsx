@@ -41,9 +41,11 @@ export default function DeleteItemModal({
       console.log(err.message);
     } finally {
       setLoading(false);
-      setItemList(
-        itemList.filter((item) => item.id !== deleteModalSettings.itemId)
-      );
+      if(itemList){
+        setItemList(
+          itemList.filter((item) => item.id !== deleteModalSettings.itemId)
+        );
+      }
       setDeleteModalSettings({
         ...deleteModalSettings,
         itemId: 0,

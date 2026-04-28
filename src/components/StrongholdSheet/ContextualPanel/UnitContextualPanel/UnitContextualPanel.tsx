@@ -12,10 +12,14 @@ interface UnitContextualPanelProps {
     type: string;
     subtype: string;
   };
+  deleteModalSettings: DeleteModalSettings;
+  setDeleteModalSettings: React.Dispatch<React.SetStateAction<DeleteModalSettings>>
 }
 
 export default function UnitContextualPanel({
   contextualPanelType,
+  deleteModalSettings,
+  setDeleteModalSettings
 }: UnitContextualPanelProps) {
   const unitId = contextualPanelType.subtype;
 
@@ -42,6 +46,15 @@ export default function UnitContextualPanel({
     }
   }
 
+  function handleDelete(id:number){
+    setDeleteModalSettings({
+        isVisible: true,
+        itemId: id,
+        urlSlug: "units",
+        itemType: "unit"
+    })
+  }
+
   useEffect(() => {
     setUnit(null);
     fetchUnit(unitId);
@@ -60,7 +73,7 @@ export default function UnitContextualPanel({
         <Link href={`/units/edit/${unit?.id}`} className={styles.link}>
           edit
         </Link>
-        <button onClick={() => {handleDelete(unit?.id)}} className={styles.button}>delete</button>
+        <button onClick={() => {handleDelete(Number(unit?.id))}} className={styles.button}>delete</button>
       </section>
     </div>
   );

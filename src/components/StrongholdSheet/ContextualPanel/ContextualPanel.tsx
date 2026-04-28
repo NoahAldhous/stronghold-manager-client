@@ -3,7 +3,7 @@ import RaisingUnitsList from "components/RaisingUnitsList/RaisingUnitsList";
 import styles from "./Styles.module.scss";
 import { useEffect, useState } from "react";
 import RaisingUnitsModal from "components/Modal/RaisingUnitsModal/RaisingUnitsModal";
-import { ArtisanShop, RaisingUnitsStatus, Stronghold } from "types";
+import { ArtisanShop, DeleteModalSettings, RaisingUnitsStatus, Stronghold } from "types";
 import ArtisanContextualPanel from "./ArtisanContextualPanel/ArtisanContextualPanel";
 import RetainerContextualPanel from "./FollowerContextualPanel/RetainerContextualPanel/RetainerContextualPanel";
 import UnitContextualPanel from "./UnitContextualPanel/UnitContextualPanel";
@@ -29,6 +29,8 @@ interface ContextualPanelProps {
   treasury: Stronghold["treasury"] | null;
   stronghold: Stronghold;
   setStronghold: React.Dispatch<React.SetStateAction<Stronghold | null>>;
+  deleteModalSettings: DeleteModalSettings;
+  setDeleteModalSettings: React.Dispatch<React.SetStateAction<DeleteModalSettings>>;
 }
 
 export default function ContextualMenu({
@@ -43,6 +45,8 @@ export default function ContextualMenu({
   treasury,
   stronghold,
   setStronghold,
+  deleteModalSettings,
+  setDeleteModalSettings
 }: ContextualPanelProps) {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -113,6 +117,8 @@ export default function ContextualMenu({
         return (
           <UnitContextualPanel
             contextualPanelType={contextualPanelType}
+            deleteModalSettings={deleteModalSettings}
+            setDeleteModalSettings={setDeleteModalSettings}
           />
         )
     }
