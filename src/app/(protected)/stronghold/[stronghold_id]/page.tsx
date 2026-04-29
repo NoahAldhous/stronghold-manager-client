@@ -3,7 +3,7 @@ import { useAuth } from "contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
-import type { DeleteModalSettings, RaisingUnitsStatus, Stronghold } from "types";
+import type { DeleteModalSettings, RaisingUnitsStatus, Stronghold, Unit } from "types";
 import StrongholdFeatures from "components/StrongholdFeatures.tsx/StrongholdFeatures";
 import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 import UpgradeStrongholdModal from "components/Modal/UpgradeStrongholdModal/UpgradeStrongholdModal";
@@ -402,7 +402,7 @@ export default function Page({
       </section>
       {
         deleteModalSettings.isVisible ?
-          <DeleteItemModal
+          <DeleteItemModal<Unit>
             deleteModalSettings={deleteModalSettings}
             setDeleteModalSettings={setDeleteModalSettings}
             contextualPanelType={contextualPanelType}

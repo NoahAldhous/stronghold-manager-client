@@ -3,11 +3,11 @@ import { useState } from "react";
 import styles from "./styles.module.scss";
 import { DeleteModalSettings } from "types";
 
-interface DeleteItemModalProps {
+interface DeleteItemModalProps<T extends {id: number}> {
     deleteModalSettings: DeleteModalSettings;
     setDeleteModalSettings: React.Dispatch<React.SetStateAction<DeleteModalSettings>>;
-    itemList?: any;
-    setItemList?: any;
+    itemList?: T[] | null;
+    setItemList?: React.Dispatch<React.SetStateAction<T[]>>;
     contextualPanelType?: {
       type: string;
       subtype: string;
@@ -16,17 +16,16 @@ interface DeleteItemModalProps {
       type: string;
       subtype:string;
     }>>;
-
 }
 
-export default function DeleteItemModal({
+export default function DeleteItemModal<T extends { id: number }>({
   deleteModalSettings,
   setDeleteModalSettings,
   itemList,
   setItemList,
   contextualPanelType, 
   setContextualPanelType
-}: DeleteItemModalProps) {
+}: DeleteItemModalProps<T>) {
   const [loading, setLoading] = useState(false);
 
   function handleCancel() {
@@ -52,7 +51,7 @@ export default function DeleteItemModal({
       console.log(err.message);
     } finally {
       setLoading(false);
-      if(itemList){
+      if(itemList && setItemList){
         setItemList(
           itemList.filter((item) => item.id !== deleteModalSettings.itemId)
         );

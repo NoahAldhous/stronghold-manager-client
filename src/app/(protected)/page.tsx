@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import type { DeleteModalSettings } from "types";
+import type { DeleteModalSettings, userStronghold} from "types";
 import { useAuth } from "contexts/AuthContext";
 import Link from "next/link";
 import styles from "./styles.module.scss";
@@ -10,22 +10,17 @@ import LoadingCard from "components/LoadingUI/LoadingCard/LoadingCard";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
-  const [noStrongholds, setNoStrongholds] = useState< boolean | undefined >(undefined);
-  const [deleteModalSettings, setDeleteModalSettings] = useState<DeleteModalSettings>({
-    isVisible: false,
-    itemId: 0,
-    itemType: "stronghold",
-    urlSlug: "strongholds"
-  })
-  const [listOfStrongholds, setListOfStrongholds] = useState<{
-    id: number,
-    name: string,
-    ownerName: string,
-    level: number,
-    type: string,
-    ownerClass: string,
-    classStrongholdName: string
-  }[] | null>(null)
+  const [noStrongholds, setNoStrongholds] = useState<boolean | undefined>(
+    undefined
+  );
+  const [deleteModalSettings, setDeleteModalSettings] =
+    useState<DeleteModalSettings>({
+      isVisible: false,
+      itemId: 0,
+      itemType: "stronghold",
+      urlSlug: "strongholds",
+    });
+  const [listOfStrongholds, setListOfStrongholds] = useState<userStronghold[]>([]);
 
   const { isLoggedIn, logout, userId, userName } = useAuth();
 
@@ -40,34 +35,35 @@ export default function Page() {
     if (listOfStrongholds?.length === 0) {
       setNoStrongholds(true);
     } else {
-      setNoStrongholds(false)
+      setNoStrongholds(false);
     }
   }, [listOfStrongholds]);
 
   async function fetchStrongholdsByUserId() {
-    setLoading(true)
-    setNoStrongholds(undefined)
+    setLoading(true);
+    setNoStrongholds(undefined);
 
     try {
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/user/${userId}`);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/strongholds/user/${userId}`
+      );
 
-    if (!res.ok) {
+      if (!res.ok) {
         throw new Error("There was a problem getting a response.");
-    }
+      }
 
-    const data = await res.json();
-    console.log(data.strongholds)
-    if (data.strongholds.length === 0) {
+      const data = await res.json();
+      console.log(data.strongholds);
+      if (data.strongholds.length === 0) {
         setNoStrongholds(true);
-    } else {
-      setNoStrongholds(false)
-      setListOfStrongholds(data.strongholds)
-    }
+      } else {
+        setNoStrongholds(false);
+        setListOfStrongholds(data.strongholds);
+      }
     } catch (err) {
-    console.log(err.message);
+      console.log(err.message);
     } finally {
-    setLoading(false);
+      setLoading(false);
     }
   }
   //TODO: break this up into components
@@ -75,16 +71,18 @@ export default function Page() {
     <main className={styles.main}>
       <section className={styles.strongholdsContainer}>
         <div className={styles.cardHeader}>Welcome, {userName}!</div>
-        {loading || (!listOfStrongholds && !noStrongholds) ?
+        {loading || (!listOfStrongholds && !noStrongholds) ? (
           <section className={styles.loadingContainer}>
-            <LoadingCard/>
+            <LoadingCard />
           </section>
-          : noStrongholds ? (
-            <div className={styles.noStrongholdsContainer}>
+        ) : noStrongholds ? (
+          <div className={styles.noStrongholdsContainer}>
             <p>You have no strongholds!</p>
-            <Link className={styles.createButton} href="/create">Create your first stronghold</Link>
+            <Link className={styles.createButton} href="/create">
+              Create your first stronghold
+            </Link>
           </div>
-          ) : ( 
+        ) : (
           <>
             <section className={styles.listText}>
               <p>your strongholds</p>
@@ -93,18 +91,24 @@ export default function Page() {
               <div className={styles.cardContainer}>
                 {listOfStrongholds?.map((item, index) => {
                   return (
-                    <StrongholdCard key={index} stronghold={item} deleteModalSettings={deleteModalSettings} setDeleteModalSettings={setDeleteModalSettings}/>
+                    <StrongholdCard
+                      key={index}
+                      stronghold={item}
+                      deleteModalSettings={deleteModalSettings}
+                      setDeleteModalSettings={setDeleteModalSettings}
+                    />
                     // <Link href={`/stronghold/${item.id}`} key={index}>name: {item.stronghold_name}</Link>
-                  )
+                  );
                 })}
               </div>
             </div>
             <section className={styles.createButtonContainer}>
-              <Link className={styles.createButton} href="/create">Create a new stronghold</Link>
+              <Link className={styles.createButton} href="/create">
+                Create a new stronghold
+              </Link>
             </section>
           </>
-          )
-      }
+        )}
         {/* {noStrongholds && !loading ? (
           <div>
             <p>you have no strongholds! boo!</p>
@@ -128,10 +132,14 @@ export default function Page() {
           </div>
         )} */}
       </section>
-      {deleteModalSettings.isVisible ? 
-        <DeleteItemModal deleteModalSettings={deleteModalSettings} setDeleteModalSettings={setDeleteModalSettings} itemList={listOfStrongholds} setItemList={setListOfStrongholds}/>
-      : null
-      }
+      {deleteModalSettings.isVisible ? (
+        <DeleteItemModal<userStronghold>
+          deleteModalSettings={deleteModalSettings}
+          setDeleteModalSettings={setDeleteModalSettings}
+          itemList={listOfStrongholds}
+          setItemList={setListOfStrongholds}
+        />
+      ) : null}
     </main>
   );
 }

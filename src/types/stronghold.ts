@@ -42,3 +42,14 @@ export interface Stronghold {
       }[];
     };
   }
+export interface userStronghold {
+    id: number;
+    name: string;
+    ownerName: string;
+    level: number;
+    type: string;
+    ownerClass: string;
+    classStrongholdName: string;
+  }
+
+export type userStrongholds = userStronghold[] | null
